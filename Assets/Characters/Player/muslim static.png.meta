@@ -1,0 +1,135 @@
+fileFormatVersion: 2
+guid: 9846c89f1fbf34a4dbfbfc27ec75ec25
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: muslim static_0
+    21300002: muslim static_1
+    21300004: muslim static_2
+    21300006: muslim static_3
+    21300008: muslim static_4
+    21300010: muslim static_5
+    21300012: muslim static_6
+    21300014: muslim static_7
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 1024
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: muslim static_0
+      rect:
+        serializedVersion: 2
+        x: 107
+        y: 230
+        width: 99
+        height: 162
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: muslim static_1
+      rect:
+        serializedVersion: 2
+        x: 246
+        y: 227
+        width: 99
+        height: 162
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: muslim static_2
+      rect:
+        serializedVersion: 2
+        x: 414
+        y: 225
+        width: 99
+        height: 161
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: muslim static_3
+      rect:
+        serializedVersion: 2
+        x: 561
+        y: 223
+        width: 99
+        height: 161
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: muslim static_4
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 6
+        width: 72
+        height: 166
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: muslim static_5
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 2
+        width: 72
+        height: 167
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: muslim static_6
+      rect:
+        serializedVersion: 2
+        x: 428
+        y: 0
+        width: 73
+        height: 166
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: muslim static_7
+      rect:
+        serializedVersion: 2
+        x: 550
+        y: 3
+        width: 72
+        height: 167
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 

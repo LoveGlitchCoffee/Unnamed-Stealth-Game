@@ -1,0 +1,333 @@
+fileFormatVersion: 2
+guid: 1155a029904f97c4a8f27300468d523b
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: naked_0
+    21300002: naked_1
+    21300004: naked_2
+    21300006: naked_3
+    21300008: naked_4
+    21300010: naked_5
+    21300012: naked_6
+    21300014: naked_7
+    21300016: naked_8
+    21300018: naked_9
+    21300020: naked_10
+    21300022: naked_11
+    21300024: naked_12
+    21300026: naked_13
+    21300028: naked_14
+    21300030: naked_15
+    21300032: naked_16
+    21300034: naked_17
+    21300036: naked_18
+    21300038: naked_19
+    21300040: naked_20
+    21300042: naked_21
+    21300044: naked_22
+    21300046: naked_23
+    21300048: naked_24
+    21300050: naked_25
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 1024
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: naked_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 918
+        width: 100
+        height: 165
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: naked_1
+      rect:
+        serializedVersion: 2
+        x: 248
+        y: 921
+        width: 102
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: naked_2
+      rect:
+        serializedVersion: 2
+        x: 493
+        y: 931
+        width: 101
+        height: 154
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: naked_3
+      rect:
+        serializedVersion: 2
+        x: 766
+        y: 932
+        width: 101
+        height: 152
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: naked_4
+      rect:
+        serializedVersion: 2
+        x: 1022
+        y: 921
+        width: 102
+        height: 162
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: naked_5
+      rect:
+        serializedVersion: 2
+        x: 1233
+        y: 920
+        width: 102
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: naked_6
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 594
+        width: 102
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: naked_7
+      rect:
+        serializedVersion: 2
+        x: 266
+        y: 597
+        width: 101
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: naked_8
+      rect:
+        serializedVersion: 2
+        x: 511
+        y: 607
+        width: 103
+        height: 156
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: naked_9
+      rect:
+        serializedVersion: 2
+        x: 784
+        y: 607
+        width: 102
+        height: 153
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: naked_10
+      rect:
+        serializedVersion: 2
+        x: 1040
+        y: 595
+        width: 103
+        height: 162
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: naked_11
+      rect:
+        serializedVersion: 2
+        x: 1251
+        y: 595
+        width: 102
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: naked_12
+      rect:
+        serializedVersion: 2
+        x: 28
+        y: 333
+        width: 75
+        height: 169
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: naked_13
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 322
+        width: 82
+        height: 171
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: naked_14
+      rect:
+        serializedVersion: 2
+        x: 511
+        y: 319
+        width: 86
+        height: 170
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: naked_15
+      rect:
+        serializedVersion: 2
+        x: 797
+        y: 335
+        width: 79
+        height: 169
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: naked_16
+      rect:
+        serializedVersion: 2
+        x: 1080
+        y: 318
+        width: 75
+        height: 169
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: naked_17
+      rect:
+        serializedVersion: 2
+        x: 1231
+        y: 318
+        width: 87
+        height: 173
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: naked_18
+      rect:
+        serializedVersion: 2
+        x: 1425
+        y: 318
+        width: 74
+        height: 171
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: naked_19
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 0
+        width: 75
+        height: 170
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: naked_20
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 0
+        width: 87
+        height: 173
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: naked_21
+      rect:
+        serializedVersion: 2
+        x: 435
+        y: 0
+        width: 75
+        height: 168
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: naked_22
+      rect:
+        serializedVersion: 2
+        x: 716
+        y: 16
+        width: 79
+        height: 168
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: naked_23
+      rect:
+        serializedVersion: 2
+        x: 993
+        y: 0
+        width: 87
+        height: 170
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: naked_24
+      rect:
+        serializedVersion: 2
+        x: 1201
+        y: 2
+        width: 82
+        height: 171
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: naked_25
+      rect:
+        serializedVersion: 2
+        x: 1488
+        y: 14
+        width: 73
+        height: 170
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 
