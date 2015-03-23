@@ -1,0 +1,3 @@
+Patrol
+Hear sound : based of velocity
+Line of sight

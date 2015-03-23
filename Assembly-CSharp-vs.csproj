@@ -46,8 +46,8 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\GuardAI.cs" />
      <Compile Include="Assets\Movement.cs" />
-     <Compile Include="Assets\SlaverBehaviour.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Game Dev/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.2/UnityEngine.UI.dll</HintPath>
  </Reference>
