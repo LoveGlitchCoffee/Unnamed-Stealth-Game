@@ -38,15 +38,18 @@ public class GuardAI : MonoBehaviour {
         }
         else
         {
+
             Wait();
 
-            if (goingLeft && waitTime == 5)
+            if (goingLeft && waitTime >= 5)
             {
+                waitTime = 0f;
                 goingLeft = false;
                 outOfPatrolArea = false;
             }
-            else if (!(goingLeft) && waitTime == 5)
+            else if (!(goingLeft) && waitTime >= 5)
             {
+                waitTime = 0f;
                 goingLeft = true;
                 outOfPatrolArea = false;
             }
@@ -57,9 +60,10 @@ public class GuardAI : MonoBehaviour {
 
     private void Wait()
     {
-        while (waitTime < 5)
+        if (waitTime < 5f)
         {
-            waitTime += 1 * Time.deltaTime;
+            Debug.Log(waitTime);
+            waitTime += 1f * Time.deltaTime;
         }
     }
 
