@@ -5,9 +5,10 @@ public class PlayerDetection : MonoBehaviour, IDetection
 {
 
     private PursuePlayer _pursue;
+    private GuardAI _regularAi;
 	private float _turnedAround;
 	private float _checkTime;
-    private bool _detectPlayer;
+    private bool _detectsPlayer;
 
     private const int LayerLiving = 9;
     private LayerMask _livingLayerMask;
@@ -24,11 +25,12 @@ public class PlayerDetection : MonoBehaviour, IDetection
 	    _livingLayerMask = 1 << LayerLiving; // should be 9?
 	    _pursue = gameObject.GetComponent<PursuePlayer>();
 	    _sightDistance = 10;
-	    _detectPlayer = false;
+	    _detectsPlayer = false;
+	    _regularAi = gameObject.GetComponent<GuardAI>();
 	}
 	
 	// Update is called once per frame
-	void Update ()
+	void FixedUpdate ()
 	{
 	    _checkTime -= 0.1f;
 
@@ -46,17 +48,19 @@ public class PlayerDetection : MonoBehaviour, IDetection
         RaycastHit2D detectPlayer = Physics2D.Raycast(_lineOfSight.origin, _lineOfSight.direction, _sightDistance, _livingLayerMask); // distance is x distance
 		Debug.DrawRay(_lineOfSight.origin, _lineOfSight.direction);
         
+        
         if (detectPlayer.collider != null && detectPlayer.collider.tag == PlayerTag)
         {
-            _detectPlayer = true; // redundant for now
+            _detectsPlayer = true;
             _pursue.enabled = true;
-            _pursue.Chase(detectPlayer.collider.transform.gameObject);
+            _regularAi.enabled = false;
+            Debug.Log("check");
         }
         else
         {
-            _detectPlayer = false;
-            //prob calcs
+            _detectsPlayer = false;
             _pursue.enabled = false;
+            _regularAi.enabled = true;
         }
 	}
 

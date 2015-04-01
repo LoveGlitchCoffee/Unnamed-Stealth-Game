@@ -8,11 +8,16 @@ public class Movement : MonoBehaviour {
   
     public Animator anim;
     int speed = 3;
-    int runSpeed = 6;
+    int runSpeed = 5;
+
+    private bool _onGround;
+    private string _groundTag;
 
 	// Use this for initialization
-	void Start () {
-	
+	void Start ()
+	{
+	    _onGround = true;
+	    _groundTag = "Ground";
 	}
 	
 	// Update is called once per frame
@@ -37,7 +42,7 @@ public class Movement : MonoBehaviour {
             anim.SetInteger("walkDirection", -2);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && _onGround == true)
         {
             rigidbody2D.AddForce(new Vector2(0, 300));
         }
@@ -56,4 +61,16 @@ public class Movement : MonoBehaviour {
             }
         }
 	}
+
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.gameObject.tag == _groundTag)
+        _onGround = true;
+    }
+
+    void OnCollisionExit2D(Collision2D col)
+    {
+        if (col.gameObject.tag == _groundTag)
+            _onGround = false;
+    }
 }
