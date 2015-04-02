@@ -6,7 +6,7 @@ public class PursuePlayer : MonoBehaviour
 {
 
     private GameObject _player;
-    private int _speed = 6; // speed will be on average 5 (less than player's 6)
+    private int _speed = 6; 
 	// Use this for initialization
 	void Start ()
 	{
