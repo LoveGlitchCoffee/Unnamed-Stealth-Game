@@ -35,13 +35,13 @@ public class GenerateNodes : MonoBehaviour
 	            newPos.layer = 12;
 
 	            newPos.AddComponent<Node>();
-	            newPos.GetComponent<Node>().SetUpNode(ref _graph); // pass by ref?
+	            newPos.GetComponent<Node>().SetUpNode(ref _graph);
 	        }
 	    }
 
 	    for (int j  = 0; j < _graph.ReturnGraph().Count; j++)
 	    {
-            Debug.Log("node " + j + ": " + _graph.ReturnGraph().ElementAt(j).GetX() + ", " + _graph.ReturnGraph().ElementAt(j).GetY());
+            //Debug.Log("node " + j + ": " + _graph.ReturnGraph().ElementAt(j).GetX() + ", " + _graph.ReturnGraph().ElementAt(j).GetY());
             _graph.ReturnGraph().ElementAt(j).AddNeighbour(-2,ref _graph);
             _graph.ReturnGraph().ElementAt(j).AddNeighbour(2,ref _graph);
 
@@ -56,7 +56,7 @@ public class GenerateNodes : MonoBehaviour
 	
 	}
 
-    public GraphOfMap ReturnGraph()
+    public GraphOfMap ReturnGeneratedGraph()
     {
         return _graph;
     }

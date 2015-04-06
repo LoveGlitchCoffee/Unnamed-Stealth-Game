@@ -35,7 +35,6 @@ public class PursuePlayer : MonoBehaviour
         // GoToPlayerX(xDiff);
 	    if (!_routeCalculated)
 	    {
-           
             routeToPlayer = CalculateRouteToPlayer(); 
 	        _routeCalculated = true;
 	    }
@@ -72,7 +71,8 @@ public class PursuePlayer : MonoBehaviour
         Node start = nodeAt;
         Node goal = _player.GetComponent<PlayerMapRelation>().ReturnNodePlayerAt();
 
-        return newSearch.FindRouteFrom(start, goal);
+        newSearch.FindRouteFrom(start, goal);
+        return new List<Node>();
         
     }
 
@@ -101,7 +101,7 @@ public class PursuePlayer : MonoBehaviour
     {
         if (col.gameObject.layer == 12)
         {
-            nodeAt = _gameMap.GetComponent<GenerateNodes>().ReturnGraph().nodeWith(col.gameObject.GetComponent<Node>());
+            nodeAt = _gameMap.GetComponent<GenerateNodes>().ReturnGeneratedGraph().nodeWith(col.gameObject.GetComponent<Node>());
            /* Debug.Log("node at x" + nodeAt.GetX());
             Debug.Log("node at y" + nodeAt.GetY());
             Debug.ClearDeveloperConsole();*/

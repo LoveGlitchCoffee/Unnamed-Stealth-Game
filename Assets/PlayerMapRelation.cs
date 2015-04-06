@@ -23,7 +23,8 @@ public class PlayerMapRelation : MonoBehaviour
     {
         if (col.gameObject.layer == 12)
         {
-            _nodeAt = _gameMap.GetComponent<GenerateNodes>().ReturnGraph().nodeWith(col.gameObject.GetComponent<Node>());           
+            _nodeAt = _gameMap.GetComponent<GenerateNodes>().ReturnGeneratedGraph().nodeWith(col.gameObject.GetComponent<Node>());
+            Debug.Log(_nodeAt);
         }
     }
 

@@ -52,17 +52,19 @@ public class Node : MonoBehaviour, IComparable<Node>
     {
         for(int i = 0; i < graph.ReturnGraph().Count; i++)
         {
-            if (graph.ReturnGraph().ElementAt(i).GetY() == this.GetY() && graph.ReturnGraph().ElementAt(i).GetX() == this.GetX() - direction && graph.ReturnGraph().ElementAt(i).CompareTo(this) != 0)
+            Node node = graph.ReturnGraph().ElementAt(i);
+
+            if (node.GetY() == this.GetY() && node.GetX() == this.GetX() - direction && node.CompareTo(this) != 0)
             {
-                AddSuccessor(graph.ReturnGraph().ElementAt(i), ref graph); 
+                AddSuccessor(node, ref graph); 
             }
         }
     }
 
     public int CompareTo(Node comparedNode)
     {
-        if (gameObject.transform.position.x == comparedNode.gameObject.transform.position.x &&
-            gameObject.transform.position.y == comparedNode.gameObject.transform.position.y)
+        if (this.GetX() == comparedNode.GetX() &&
+            this.GetY() == comparedNode.GetY())
             return 0;
         else
         {
@@ -76,25 +78,31 @@ public class Node : MonoBehaviour, IComparable<Node>
         if (col.gameObject.layer == 10 && col.gameObject.tag == "RisingPlatform" && justSpawned)
         {
             Node platformNode = null;
+            GraphOfMap graph = _gameMap.GetComponent<GenerateNodes>().ReturnGeneratedGraph();
 
-            foreach (Transform node in _gameMap.transform)
+            for (int i = 0; i < graph.ReturnGraph().Count; i++)
             {
-                if (node.position.x == this.gameObject.transform.position.x &&
-                    node.position.y == this.gameObject.transform.position.y + 2)
+                Node node = graph.ReturnGraph().ElementAt(i);
+
+                if (node.GetX()== this.GetX() &&
+                    node.GetY() == this.GetY() + 2)
                 {
-                    platformNode = node.gameObject.GetComponent<Node>();
+                    platformNode = node;
                 }
             }
 
-            /*foreach (Transform node in _gameMap.transform)
-            {
-                if ((node.position.x == this.gameObject.transform.position.x - 2 || node.position.x == this.gameObject.transform.position.x + 2) && node.position.y == this.gameObject.transform.position.y)
-                {
-                    node.gameObject.GetComponent<Node>().AddSuccessor(platformNode);
-                    
-                }
-            }*/
+           for (int j = 0; j < graph.ReturnGraph().Count; j++)
+           {
+               Node node = graph.ReturnGraph().ElementAt(j);
 
+                if ((node.GetX() == this.GetX() - 2 || node.GetX() == this.GetX() + 2) && node.GetY() == this.GetY())
+                {
+                    node.AddSuccessor(platformNode, ref graph);
+                    //platform node add them ass successors
+                }
+            }
+
+            
             justSpawned = false;
         }
     }

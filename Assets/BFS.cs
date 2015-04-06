@@ -8,13 +8,13 @@ using UnityEngine.UI;
 public class BFS
 {
 
-    private Stack<Node> _frontier;
+    private List<Node> _frontier;
     private HashSet<Node> _visited;
     private Dictionary<Node, Node> _possiblePath;
 
     public BFS()
     {
-        _frontier = new Stack<Node>();
+        _frontier = new List<Node>();
         _visited = new HashSet<Node>();
         _possiblePath = new Dictionary<Node, Node>();
     }
@@ -31,14 +31,15 @@ public class BFS
         _visited.Clear();
         _possiblePath.Clear();
 
-        _frontier.Push(start);
+        _frontier.Add(start);
 
 
         while (_frontier.Count != 0)
         {
 
 
-            current = _frontier.Pop();
+            current = _frontier.ElementAt(0);
+            _frontier.RemoveAt(0);
 
             Debug.Log("current " + current.GetX());
             Debug.Log("current " + current.GetY());
@@ -64,16 +65,20 @@ public class BFS
                 {
                     _visited.Add(current);
 
-                    foreach (Node successor in current.GetSuccessors())
+                    for (int i = 0; i < current.GetSuccessors().Count; i ++)
                     {
+                        Node successor = current.GetSuccessors().ElementAt(i);
+                        
                         Debug.Log("x: " + successor.GetX());
                         Debug.Log("y: " + successor.GetY());
                         Debug.Log("");
-                        _frontier.Push(successor);
+                        _frontier.Add(successor);
                     }
 
-                    foreach (Node successor in current.GetSuccessors())
+                    for (int j = 0; j < current.GetSuccessors().Count; j ++)
                     {
+                        Node successor = current.GetSuccessors().ElementAt(j);
+
                         if (!(_possiblePath.ContainsKey(successor)))
                         {
                             _possiblePath.Add(successor, current);                           
