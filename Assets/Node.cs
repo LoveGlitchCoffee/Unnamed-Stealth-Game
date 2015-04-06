@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Node : MonoBehaviour, IComparable<Node>
 {
@@ -12,7 +13,6 @@ public class Node : MonoBehaviour, IComparable<Node>
     private GameObject _gameMap;
 
     bool justSpawned = true;
-    private bool _neighboursAdded = false;
 
 	void Start () {
 	    
@@ -21,17 +21,13 @@ public class Node : MonoBehaviour, IComparable<Node>
 	
 	// Update is called once per frame
 	void Update () {
-	    if (!_neighboursAdded)
-	    {
-            AddNeighbour(-2);
-            AddNeighbour(2);
-	        _neighboursAdded = true;
-	    }
+	   
 	}
 
-    public void AddSuccessor(Node n)
+    public void AddSuccessor(Node n, ref GraphOfMap graph)
     {
-        Node succesor = _graph.nodeWith(n);
+        Node succesor = graph.nodeWith(n);
+        Debug.Log("successor: " + succesor.GetX() + ", " + succesor.GetY());
         _successors.Add(succesor);
     }
 
@@ -40,25 +36,25 @@ public class Node : MonoBehaviour, IComparable<Node>
         return _successors;
     }
 
-    public void SetUpNode(GraphOfMap graph)
+    public void SetUpNode(ref GraphOfMap graph)
     {
-        _graph = graph;
+        //_graph = graph;
         _successors = new List<Node>();
-        AddToGraph();        
+        AddToGraph(ref graph);        
     }
 
-    private void AddToGraph()
+    private void AddToGraph(ref GraphOfMap graph)
     {
-        Node newNode = _graph.nodeWith(this);
+        Node newNode = graph.nodeWith(this);
     }
 
-    private void AddNeighbour(int direction)
+    public void AddNeighbour(int direction, ref GraphOfMap graph)
     {
-        foreach (Node existingNode in _graph.ReturnGraph())
+        for(int i = 0; i < graph.ReturnGraph().Count; i++)
         {
-            if (existingNode.gameObject.transform.position.y == gameObject.transform.position.y && existingNode.gameObject.transform.position.x == gameObject.transform.position.x - direction && existingNode.CompareTo(this) != 0)
+            if (graph.ReturnGraph().ElementAt(i).GetY() == this.GetY() && graph.ReturnGraph().ElementAt(i).GetX() == this.GetX() - direction && graph.ReturnGraph().ElementAt(i).CompareTo(this) != 0)
             {
-                AddSuccessor(existingNode);                
+                AddSuccessor(graph.ReturnGraph().ElementAt(i), ref graph); 
             }
         }
     }
@@ -90,17 +86,26 @@ public class Node : MonoBehaviour, IComparable<Node>
                 }
             }
 
-            foreach (Transform node in _gameMap.transform)
+            /*foreach (Transform node in _gameMap.transform)
             {
                 if ((node.position.x == this.gameObject.transform.position.x - 2 || node.position.x == this.gameObject.transform.position.x + 2) && node.position.y == this.gameObject.transform.position.y)
                 {
                     node.gameObject.GetComponent<Node>().AddSuccessor(platformNode);
                     
                 }
-            }
+            }*/
 
             justSpawned = false;
         }
     }
 
+    public float GetX()
+    {
+        return gameObject.transform.position.x;
+    }
+
+    public float GetY()
+    {
+        return gameObject.transform.position.y;
+    }
 }

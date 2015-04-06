@@ -3,17 +3,18 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.UI;
 
 public class BFS
 {
 
-    private List<Node> _frontier;
+    private Stack<Node> _frontier;
     private HashSet<Node> _visited;
     private Dictionary<Node, Node> _possiblePath;
 
     public BFS()
     {
-        _frontier = new List<Node>();
+        _frontier = new Stack<Node>();
         _visited = new HashSet<Node>();
         _possiblePath = new Dictionary<Node, Node>();
     }
@@ -30,15 +31,17 @@ public class BFS
         _visited.Clear();
         _possiblePath.Clear();
 
-        _frontier.Add(start);
+        _frontier.Push(start);
 
 
         while (_frontier.Count != 0)
         {
 
 
-            current = _frontier.ElementAt(0);
-            _frontier.RemoveAt(0);
+            current = _frontier.Pop();
+
+            Debug.Log("current " + current.GetX());
+            Debug.Log("current " + current.GetY());
 
             if (!_visited.Contains(current))
             {
@@ -55,20 +58,28 @@ public class BFS
 
                     path.RemoveAt(0);
                     path.Reverse();
-                    Debug.Log(path);
+                    
                 }
                 else
                 {
                     _visited.Add(current);
-                    _frontier.AddRange(current.GetSuccessors());
 
                     foreach (Node successor in current.GetSuccessors())
                     {
-                        if (!(_possiblePath.ContainsKey(successor)) && !(_possiblePath[successor]))
+                        Debug.Log("x: " + successor.GetX());
+                        Debug.Log("y: " + successor.GetY());
+                        Debug.Log("");
+                        _frontier.Push(successor);
+                    }
+
+                    foreach (Node successor in current.GetSuccessors())
+                    {
+                        if (!(_possiblePath.ContainsKey(successor)))
                         {
-                            _possiblePath.Add(successor, current);
+                            _possiblePath.Add(successor, current);                           
                         }
                     }
+                    
                 }
             }
         }

@@ -102,6 +102,9 @@ public class PursuePlayer : MonoBehaviour
         if (col.gameObject.layer == 12)
         {
             nodeAt = _gameMap.GetComponent<GenerateNodes>().ReturnGraph().nodeWith(col.gameObject.GetComponent<Node>());
+           /* Debug.Log("node at x" + nodeAt.GetX());
+            Debug.Log("node at y" + nodeAt.GetY());
+            Debug.ClearDeveloperConsole();*/
         }
     }
 

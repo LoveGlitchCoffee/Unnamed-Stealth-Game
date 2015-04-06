@@ -23,7 +23,7 @@ public class GraphOfMap
 
         while (nodeFound == false && i < _abstractMap.Count)
         {
-            if (_abstractMap.ElementAt(i).transform.position.x == node.transform.position.x && _abstractMap.ElementAt(i).transform.position.y == node.transform.position.y)
+            if (_abstractMap.ElementAt(i).GetX() == node.GetX() && _abstractMap.ElementAt(i).GetY() == node.GetY())
             {
                 _returnNode = _abstractMap.ElementAt(i);
                 nodeFound = true;

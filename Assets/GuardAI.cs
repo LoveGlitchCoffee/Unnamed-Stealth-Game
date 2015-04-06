@@ -75,7 +75,7 @@ public class GuardAI : MonoBehaviour {
     {
         Wait();
 
-        if (_waitTime >= 5)
+        if (_waitTime >= 3)
         {
             _goingLeft = !_goingLeft;
             _waitTime = 0f;
@@ -90,7 +90,7 @@ public class GuardAI : MonoBehaviour {
      */
     private void Wait()
     {
-        if (_waitTime < 5f)
+        if (_waitTime < 3f)
         {
             _waitTime += 1f * Time.deltaTime;
         }

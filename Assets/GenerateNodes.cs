@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 public class GenerateNodes : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class GenerateNodes : MonoBehaviour
 	void Start ()
 	{
 	    _mapHeight = 3;
-	    _mapLength = 10;
+	    _mapLength = 4;
 
 	    _nodeSize = Node.GetComponent<CircleCollider2D>().radius * 2;
 
@@ -34,15 +35,19 @@ public class GenerateNodes : MonoBehaviour
 	            newPos.layer = 12;
 
 	            newPos.AddComponent<Node>();
-	            newPos.GetComponent<Node>().SetUpNode(_graph); // pass by ref?
+	            newPos.GetComponent<Node>().SetUpNode(ref _graph); // pass by ref?
 	        }
 	    }
 
-	    /*foreach (Transform nodes in gameObject.transform)
+	    for (int j  = 0; j < _graph.ReturnGraph().Count; j++)
 	    {
-	        nodes.gameObject.GetComponent<Node>().AddNeighbour(-2,ref _graph);
-            nodes.gameObject.GetComponent<Node>().AddNeighbour(2,ref _graph);
-	    }*/
+            Debug.Log("node " + j + ": " + _graph.ReturnGraph().ElementAt(j).GetX() + ", " + _graph.ReturnGraph().ElementAt(j).GetY());
+            _graph.ReturnGraph().ElementAt(j).AddNeighbour(-2,ref _graph);
+            _graph.ReturnGraph().ElementAt(j).AddNeighbour(2,ref _graph);
+
+	    }
+
+	   
 
 	}
 	
