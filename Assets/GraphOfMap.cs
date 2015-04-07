@@ -3,17 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class GraphOfMap
+public struct GraphOfMap
 {
-
-    private List<Node> _abstractMap;
+    //change here
+    public List<Node> _abstractMap;
 
     //diametre is 2
 
-    public GraphOfMap()
-    {
-        _abstractMap = new List<Node>();
-    }
 
     public Node nodeWith(Node node)
     {

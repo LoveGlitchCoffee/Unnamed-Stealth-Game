@@ -52,6 +52,7 @@
      <Compile Include="Assets\GuardAI.cs" />
      <Compile Include="Assets\IDetection.cs" />
      <Compile Include="Assets\IFunction.cs" />
+     <Compile Include="Assets\ListExtensions.cs" />
      <Compile Include="Assets\Movement.cs" />
      <Compile Include="Assets\Node.cs" />
      <Compile Include="Assets\PlayerDetection.cs" />

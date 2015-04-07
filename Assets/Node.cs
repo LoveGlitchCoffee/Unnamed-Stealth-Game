@@ -27,7 +27,7 @@ public class Node : MonoBehaviour, IComparable<Node>
     public void AddSuccessor(Node n, ref GraphOfMap graph)
     {
         Node succesor = graph.nodeWith(n);
-        Debug.Log("successor: " + succesor.GetX() + ", " + succesor.GetY());
+        //Debug.Log("successor: " + succesor.GetX() + ", " + succesor.GetY());
         _successors.Add(succesor);
     }
 

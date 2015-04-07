@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 public class GenerateNodes : MonoBehaviour
@@ -25,6 +26,7 @@ public class GenerateNodes : MonoBehaviour
 	    _nodeSize = Node.GetComponent<CircleCollider2D>().radius * 2;
 
         _graph = new GraphOfMap(); // where map is
+        _graph._abstractMap = new List<Node>();
 
 	    for (int i = StartX; i < _mapLength; i++)
 	    {

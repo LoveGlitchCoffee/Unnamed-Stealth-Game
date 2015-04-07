@@ -5,27 +5,21 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.UI;
 
-public class BFS
+public struct BFS
 {
 
-    private List<Node> _frontier;
-    private HashSet<Node> _visited;
-    private Dictionary<Node, Node> _possiblePath;
+    public List<Node> _frontier;
+    public HashSet<Node> _visited;
+    public Dictionary<Node, Node> _possiblePath;
 
-    public BFS()
-    {
-        _frontier = new List<Node>();
-        _visited = new HashSet<Node>();
-        _possiblePath = new Dictionary<Node, Node>();
-    }
 
-    public List<Node> FindRouteFrom(Node start, Node goal)
+    public Node[] FindRouteFrom(Node start, Node goal)
     {
 
         Node current;
         Node parent;
-        List<Node> path = new List<Node>();
-        path.Add(start);
+
+        List<Node> path = new List<Node> {start};
 
         _frontier.Clear();
         _visited.Clear();
@@ -37,12 +31,8 @@ public class BFS
         while (_frontier.Count != 0)
         {
 
-
             current = _frontier.ElementAt(0);
             _frontier.RemoveAt(0);
-
-            Debug.Log("current " + current.GetX());
-            Debug.Log("current " + current.GetY());
 
             if (!_visited.Contains(current))
             {
@@ -52,26 +42,28 @@ public class BFS
                     while (_possiblePath.ContainsKey(current))
                     {
                         path.Add(current);
-
+                        
                         parent = _possiblePath[current];
                         current = parent;
-                    }
-
+                    } 
+                    /*for (int i = 0; i < _possiblePath.Count; i++)
+                    {
+                        Node successor = _possiblePath.Keys.ElementAt(i);
+                        Node parnt = _possiblePath.Values.ElementAt(i);
+                        Debug.Log("successor is (" + successor.GetX() + ", " + successor.GetY() +  "), parent is (" + parnt.GetX() + ", " + parnt.GetY() + ")");
+                    }*/
                     path.RemoveAt(0);
-                    path.Reverse();
-                    
+                    path.Reverse_NoHeapAlloc();
+                    return path.ToArray();
                 }
                 else
-                {
+                {             
                     _visited.Add(current);
 
                     for (int i = 0; i < current.GetSuccessors().Count; i ++)
                     {
                         Node successor = current.GetSuccessors().ElementAt(i);
                         
-                        Debug.Log("x: " + successor.GetX());
-                        Debug.Log("y: " + successor.GetY());
-                        Debug.Log("");
                         _frontier.Add(successor);
                     }
 
@@ -79,7 +71,7 @@ public class BFS
                     {
                         Node successor = current.GetSuccessors().ElementAt(j);
 
-                        if (!(_possiblePath.ContainsKey(successor)))
+                        if (!(_possiblePath.ContainsKey(successor)) && !(_possiblePath.ContainsValue(successor)))
                         {
                             _possiblePath.Add(successor, current);                           
                         }
@@ -89,7 +81,9 @@ public class BFS
             }
         }
 
-        return new List<Node>(); // empty list
+        return new Node[0];// empty list
     }
+
+    
 }
 
