@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 public class PlayerDetection : MonoBehaviour, IDetection
 {
@@ -15,8 +17,13 @@ public class PlayerDetection : MonoBehaviour, IDetection
     private LayerMask _detectEnvi;
     private LayerMask _detectLayerMask;
 
-    public string PlayerTag = "Player";
+    private const string PlayerTag = "Player";
 
+    private List<Vector2> _leftVision = new List<Vector2>();
+    private List<Vector2> _rightVision = new List<Vector2>();
+    private EdgeCollider2D _visionCone;
+
+    private bool _sensePlayer = false;
 
 	Ray2D _lineOfSight;
     private int _sightDistance;
@@ -32,18 +39,43 @@ public class PlayerDetection : MonoBehaviour, IDetection
 
 	    _detectLayerMask = _detectLiving | _detectEnvi;
 
-	    _pursue = gameObject.GetComponent<PursuePlayer>();
-	    _regularAi = gameObject.GetComponent<GuardAI>();
+	    _pursue = gameObject.GetComponentInParent<PursuePlayer>();
+	    _regularAi = gameObject.GetComponentInParent<GuardAI>();
 	    _player = GameObject.FindGameObjectWithTag(PlayerTag);
 
         _sightDistance = 10;
+
+        _leftVision.Add(new Vector2(-0.2f, 0.7f));
+        _leftVision.Add(new Vector2(-7f, 2.5f));
+        _leftVision.Add(new Vector2(-7f, -1f));
+        _leftVision.Add(new Vector2(-0.2f, 0.6f));
+
+
+        for (int i = 0; i < 4; i++)
+        {
+            var rightEye = Vector2.Scale(_leftVision.ElementAt(i), new Vector2(-1f, 1f));
+            _rightVision.Add(rightEye);
+        }
+
+
+        _visionCone = GetComponent<EdgeCollider2D>();
+	    _visionCone.points = _leftVision.ToArray();
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate ()
 	{
+        if (_sensePlayer)
 			CheckLineOfSight();
 	}
+
+    /**
+     * Sets the vision cone to the direction guard walking
+     */
+    public void SetVisionCone(bool goingLeft)
+    {
+        _visionCone.points = goingLeft ? _leftVision.ToArray() : _rightVision.ToArray();
+    }
 
     /**
      * Calculates the direction to cast ray, should be direction towards player
@@ -68,4 +100,20 @@ public class PlayerDetection : MonoBehaviour, IDetection
             _regularAi.enabled = false;
         }
 	}
+
+    void OnTriggerStay2D(Collider2D col)
+    {
+        if (col.gameObject.tag == PlayerTag)
+        {
+            _sensePlayer = true;
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D col)
+    {
+        if (col.gameObject.tag == PlayerTag)
+        {
+            _sensePlayer = false;
+        }
+    }
 }

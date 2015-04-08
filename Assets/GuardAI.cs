@@ -18,10 +18,7 @@ public class GuardAI : MonoBehaviour {
     private const int WalkSpeed = 1;
     private float _waitTime = 0;
 
-    private List<Vector2> _leftVision = new List<Vector2>();
-    private List<Vector2> _rightVision = new List<Vector2>();
-    private EdgeCollider2D _visionCone;
-
+    
     private Node _nodeGuardAt;
 
     /**
@@ -36,25 +33,11 @@ public class GuardAI : MonoBehaviour {
         _outOfPatrolArea = false;
 
 
-        _playerDetection = gameObject.GetComponent<PlayerDetection>();
-        _playerDetection.enabled = false;
+        _playerDetection = gameObject.GetComponentInChildren<PlayerDetection>();
+        
         _pursuePlayer = gameObject.GetComponent<PursuePlayer>();
         _pursuePlayer.enabled = false;
 
-
-        
-        _leftVision.Add(new Vector2(-0.2f, 0.7f));
-        _leftVision.Add(new Vector2(-7f, 2.5f));
-        _leftVision.Add(new Vector2(-7f, -1f));
-        _leftVision.Add(new Vector2(-0.2f, 0.6f));
-
-        for (int i = 0; i < 4; i++)
-        {
-            var rightEye = Vector2.Scale(_leftVision.ElementAt(i), new Vector2(-1f, 1f));
-            _rightVision.Add(rightEye);
-        }
-
-        _visionCone = GetComponent<EdgeCollider2D>();
     }
 
     // Update is called once per frame
@@ -87,7 +70,7 @@ public class GuardAI : MonoBehaviour {
             _goingLeft = !_goingLeft;
             _waitTime = 0f;
             _outOfPatrolArea = false;
-            SetVisionCone();
+            _playerDetection.SetVisionCone(_goingLeft);
         }
     }
 
@@ -103,13 +86,7 @@ public class GuardAI : MonoBehaviour {
         }
     }
 
-    /**
-     * Sets the vision cone to the direction guard walking
-     */
-    private void SetVisionCone()
-    {
-        _visionCone.points = _goingLeft ? _leftVision.ToArray() : _rightVision.ToArray();
-    }
+    
 
 
     /**
@@ -122,27 +99,10 @@ public class GuardAI : MonoBehaviour {
             _outOfPatrolArea = true;
         }
 
-        if (col.tag == "Player")
-        {
-            _playerDetection.enabled = false;
-            gameObject.GetComponent<PursuePlayer>().enabled = false;
-        }
-        
     }
-
     
-    /**
-     * Whilst vision cone can 'see' player, turn on ray cast player detection
-     */
-    void OnTriggerStay2D(Collider2D col)
-    {
-        if (col.tag == "Player")
-        {
-            _playerDetection.enabled = true;
-        }        
-    }
 
-    void OnTriggerEnter2D(Collider2D col)
+    void OnTriggerStay2D(Collider2D col)
     {
         if (col.gameObject.layer == 12)
         {
