@@ -43,7 +43,7 @@ public class GenerateNodes : MonoBehaviour
 
 	    for (int j  = 0; j < _graph.ReturnGraph().Count; j++)
 	    {
-             Debug.Log("node " + j + ": " + _graph.ReturnGraph().ElementAt(j).GetX() + ", " + _graph.ReturnGraph().ElementAt(j).GetY());
+             //Debug.Log("node " + j + ": " + _graph.ReturnGraph().ElementAt(j).GetX() + ", " + _graph.ReturnGraph().ElementAt(j).GetY());
             _graph.ReturnGraph().ElementAt(j).AddNeighbour(-2,ref _graph);
             _graph.ReturnGraph().ElementAt(j).AddNeighbour(2,ref _graph);
 

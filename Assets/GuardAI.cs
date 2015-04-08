@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 public class GuardAI : MonoBehaviour {
 
@@ -9,6 +10,7 @@ public class GuardAI : MonoBehaviour {
     private bool _outOfPatrolArea;
 
     private PlayerDetection _playerDetection;
+    private PursuePlayer _pursuePlayer;
 
     private const string PatrolAreaTag = "PatrolRegion";
     private const string PlayerTag = "Player";
@@ -19,6 +21,8 @@ public class GuardAI : MonoBehaviour {
     private List<Vector2> _leftVision = new List<Vector2>();
     private List<Vector2> _rightVision = new List<Vector2>();
     private EdgeCollider2D _visionCone;
+
+    private Node _nodeGuardAt;
 
     /**
      * Guard Patrol pattern
@@ -34,6 +38,9 @@ public class GuardAI : MonoBehaviour {
 
         _playerDetection = gameObject.GetComponent<PlayerDetection>();
         _playerDetection.enabled = false;
+        _pursuePlayer = gameObject.GetComponent<PursuePlayer>();
+        _pursuePlayer.enabled = false;
+
 
         
         _leftVision.Add(new Vector2(-0.2f, 0.7f));
@@ -132,9 +139,26 @@ public class GuardAI : MonoBehaviour {
         if (col.tag == "Player")
         {
             _playerDetection.enabled = true;
+        }        
+    }
+
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.gameObject.layer == 12)
+        {
+            _nodeGuardAt =
+                GameObject.FindGameObjectWithTag("Map")
+                    .GetComponent<GenerateNodes>()
+                    .ReturnGeneratedGraph()
+                    .nodeWith(col.GetComponent<Node>());
+
+            Debug.Log(_nodeGuardAt.GetX() + ", " + _nodeGuardAt.GetY());
         }
     }
 
-   
+    public Node ReturnNodeGuardAt()
+    {
+        return _nodeGuardAt;
+    }
 
 }

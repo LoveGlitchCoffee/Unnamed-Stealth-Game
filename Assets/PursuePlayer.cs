@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PursuePlayer : MonoBehaviour
@@ -10,45 +11,33 @@ public class PursuePlayer : MonoBehaviour
 
     private bool _endOfRoute = false;
     private bool _routeCalculated = false;
+    private bool _startedMove = false;
+    private bool _startedMove2 = false;
 
     private Node[] _routeToPlayer;
-    private int _currentNode;
 
-    private const float SpeedScale = 2.5f;
-
-    private Node _nodeGuardAt;
+    private bool _loop = true;
 
     // Use this for initialization
 	void Start ()
-	{
-	    this.enabled = false;
+	{	    
 	    _player = GameObject.FindGameObjectWithTag("Player");
 	    _gameMap = GameObject.FindGameObjectWithTag("Map");
-	}
-	
-    /**
-     * when script is enabled, calculates a route from currrent node guard is at to ndoe where player is at, once, and make the movements there
-     */
-	// Update is called once per frame
-	void FixedUpdate ()
-	{        
-	    if (!_routeCalculated)
-	    {
-            _routeToPlayer = CalculateRouteToPlayer(); 
-	        _routeCalculated = true;
-            Debug.Log(_routeToPlayer.Length);
-	        _currentNode = 0;
-       	 }
 
-	    if (!_endOfRoute && _routeCalculated)
-	    {            
-            NavigateToPlayer(_currentNode); 
-	    }
-        else
-         {
-              this.enabled = false;
-              gameObject.GetComponent<GuardAI>().enabled = true;
-         }
+        _routeToPlayer = CalculateRouteToPlayer(); 
+	       
+        Debug.Log(_routeToPlayer.Length);	       
+            	        
+        StartCoroutine(NavigateToPlayer(_loop));        
+                    
+    }
+
+	
+    
+	// Update is called once per frame
+    public void FixedUpdate()
+    {
+
     }
 
     /**
@@ -62,8 +51,8 @@ public class PursuePlayer : MonoBehaviour
         newSearch._possiblePath = new Dictionary<Node, Node>();
         newSearch._visited = new HashSet<Node>();
 
-        Node start = _nodeGuardAt;        
-        Debug.Log("guard at " + _nodeGuardAt.GetX() + ", " + _nodeGuardAt.GetY());
+        Node start = gameObject.GetComponent<GuardAI>().ReturnNodeGuardAt();
+        Debug.Log("guard at " + start.GetX() + ", " + start.GetY());
         Node goal = _player.GetComponent<PlayerMapRelation>().ReturnNodePlayerAt();
         Debug.Log("palyer at " + goal.GetX() + ", " + goal.GetY());
 
@@ -71,45 +60,40 @@ public class PursuePlayer : MonoBehaviour
         return newSearch.FindRouteFrom(start, goal);
     }
 
+
     /**
      * moves guard to the next step in the route returned from search
      */
-    private void NavigateToPlayer(int currentNode)
+    IEnumerator NavigateToPlayer(bool loop)
     {
-        Node nextPosition = _routeToPlayer[currentNode];
-        Debug.Log(" guard next pos " + nextPosition.GetX() + ", " + nextPosition.GetY());
 
-        float guardX = gameObject.transform.position.x;
-        float guardY = gameObject.transform.position.y;
-        float playerX = _player.transform.position.x;
-        float playerY = _player.transform.position.y;
-
-        gameObject.transform.Translate((playerX - guardX) * Time.deltaTime, (playerY - guardY) * Time.deltaTime, gameObject.transform.position.z);
-
-        //if (guardX == nextPosition.GetX() && guardY == nextPosition.GetY())
-        //{
-            currentNode++;
-            Debug.Log("made move");
-            if (currentNode == _routeToPlayer.Length - 1)
-            {
-              //  Debug.Log(" at last node");
-                _endOfRoute = true;
-            }
-       // }
-    }
-
-    void OnTriggerEnter2D(Collider2D col)
-    {
-        if (col.gameObject.layer == 12)
+        do
         {
-            _nodeGuardAt = _gameMap.GetComponent<GenerateNodes>().ReturnGeneratedGraph().nodeWith(col.gameObject.GetComponent<Node>());             
-        }
+            for (int i = 0; i < _routeToPlayer.Length; i++)
+            {
+                yield return StartCoroutine(MoveToNextPosition(_routeToPlayer[i]));
+
+                Debug.Log("moved " + i);
+            }
+            loop = false;
+        } while (loop);
+
+        
+
     }
 
-    public Node ReturnNodeAt()
+    IEnumerator MoveToNextPosition(Node nextPosition)
     {
-        return _nodeGuardAt;
+        
+
+        while (transform.position.x != nextPosition.GetX() && transform.position.y != nextPosition.GetY())
+        {            
+            transform.Translate((nextPosition.GetX() - transform.position.x), (nextPosition.GetY() - transform.position.y), gameObject.transform.position.z);
+            yield return new WaitForSeconds(1f);    
+        }
+        
     }
+   
 
 
 

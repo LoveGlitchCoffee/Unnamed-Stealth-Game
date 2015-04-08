@@ -57,7 +57,7 @@ public class Node : MonoBehaviour, IComparable<Node>
             if (node.GetX() == GetX() - direction && node.GetY() == GetY())
             {
                 AddSuccessor(node, ref graph); 
-                Debug.Log("successor " + node.GetX() + ", " + node.GetY());
+                //Debug.Log("successor " + node.GetX() + ", " + node.GetY());
             }
         }
     }
