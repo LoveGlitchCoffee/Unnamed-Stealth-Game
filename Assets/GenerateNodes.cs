@@ -13,7 +13,7 @@ public class GenerateNodes : MonoBehaviour
     public int StartY;
 
     private int _mapLength;
-    private int _mapHeight;
+    private int _mapHeight;    
 
     private GraphOfMap _graph;
 
@@ -21,7 +21,7 @@ public class GenerateNodes : MonoBehaviour
 	void Start ()
 	{
 	    _mapHeight = 3;
-	    _mapLength = 4;
+	    _mapLength = 10;
 
 	    _nodeSize = Node.GetComponent<CircleCollider2D>().radius * 2;
 
@@ -32,7 +32,7 @@ public class GenerateNodes : MonoBehaviour
 	    {
 	        for (int j = StartY; j < _mapHeight; j++)
 	        {
-	            GameObject newPos = (GameObject)Instantiate(Node, new Vector3(i*_nodeSize, j*_nodeSize), Node.transform.rotation);
+	            GameObject newPos = (GameObject)Instantiate(Node, new Vector2(i * _nodeSize, j * _nodeSize), Node.transform.rotation);
 	            newPos.transform.parent = gameObject.transform;
 	            newPos.layer = 12;
 
@@ -43,7 +43,7 @@ public class GenerateNodes : MonoBehaviour
 
 	    for (int j  = 0; j < _graph.ReturnGraph().Count; j++)
 	    {
-            //Debug.Log("node " + j + ": " + _graph.ReturnGraph().ElementAt(j).GetX() + ", " + _graph.ReturnGraph().ElementAt(j).GetY());
+             Debug.Log("node " + j + ": " + _graph.ReturnGraph().ElementAt(j).GetX() + ", " + _graph.ReturnGraph().ElementAt(j).GetY());
             _graph.ReturnGraph().ElementAt(j).AddNeighbour(-2,ref _graph);
             _graph.ReturnGraph().ElementAt(j).AddNeighbour(2,ref _graph);
 

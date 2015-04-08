@@ -1,3 +1,16 @@
 Patrol
-Hear sound : based of velocity
 Line of sight
+search to player
+
+
+What makes a good stealth game
+
+no waiting to get through too much - detection stage
+can wait, test patience, to do something - anonymous stage
+once detected, pretty much fuked, or huge penalty so that player feels wanna restart more stealthly - detection stage
+if slip up, SMALL window of opprtunity to make up - suspicion stage
+let player choose how to deal with situation - give them different tools to use which effect stealth in different ways
+
+design level like puzzle rather than level - give player a bunch of tools, how they can solve it, don't give shit lot of tools, but many ways to use them
+
+DON'T LIMIT TO CURRENT AI,

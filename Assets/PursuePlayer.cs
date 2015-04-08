@@ -1,25 +1,22 @@
-﻿using System;
-using System.CodeDom;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEditor;
-using UnityEditor.VersionControl;
 
 public class PursuePlayer : MonoBehaviour
 {
 
     private GameObject _player;
-    private const float SpeedScale = 2.5f;
+    private GameObject _gameMap;
+    
+
     private bool _endOfRoute = false;
     private bool _routeCalculated = false;
-    private Node[] routeToPlayer;
+
+    private Node[] _routeToPlayer;
     private int _currentNode;
 
-    private Node nodeAt;
+    private const float SpeedScale = 2.5f;
 
-    private GameObject _gameMap;
+    private Node _nodeGuardAt;
 
     // Use this for initialization
 	void Start ()
@@ -29,43 +26,34 @@ public class PursuePlayer : MonoBehaviour
 	    _gameMap = GameObject.FindGameObjectWithTag("Map");
 	}
 	
+    /**
+     * when script is enabled, calculates a route from currrent node guard is at to ndoe where player is at, once, and make the movements there
+     */
 	// Update is called once per frame
 	void FixedUpdate ()
-	{
-        
+	{        
 	    if (!_routeCalculated)
 	    {
-            routeToPlayer = CalculateRouteToPlayer(); 
+            _routeToPlayer = CalculateRouteToPlayer(); 
 	        _routeCalculated = true;
+            Debug.Log(_routeToPlayer.Length);
 	        _currentNode = 0;
        	 }
-	    
-        if (!_endOfRoute && _routeCalculated)
-            NavigateToPlayer(_currentNode);
-         else
+
+	    if (!_endOfRoute && _routeCalculated)
+	    {            
+            NavigateToPlayer(_currentNode); 
+	    }
+        else
          {
               this.enabled = false;
-              gameObject.GetComponent<GuardAI>().enabled = true; // end after 1 turn    
+              gameObject.GetComponent<GuardAI>().enabled = true;
          }
-
     }
 
-    private void NavigateToPlayer(int currentNode)
-    {
-        Node nextPosition = routeToPlayer[currentNode];
-        Debug.Log(" guard next pos " + nextPosition.GetX() + ", " + nextPosition.GetY());
-
-        gameObject.rigidbody2D.AddForce(new Vector2((nextPosition.gameObject.transform.position.x - gameObject.transform.position.x) * SpeedScale/2, (nextPosition.gameObject.transform.position.y - gameObject.transform.position.y) * (SpeedScale * 2)));
-
-        currentNode++;
-        Debug.Log("made move");
-        if (currentNode == routeToPlayer.Length - 1)
-        {
-            Debug.Log(" at last node");
-            _endOfRoute = true;
-        }
-    }
-
+    /**
+     * Calculates route from guard to player, returning the route as an array
+     */
     private Node[] CalculateRouteToPlayer()
     {
      
@@ -74,28 +62,53 @@ public class PursuePlayer : MonoBehaviour
         newSearch._possiblePath = new Dictionary<Node, Node>();
         newSearch._visited = new HashSet<Node>();
 
-        Node start = nodeAt;
-        Debug.Log(nodeAt.GetX() + ", " + nodeAt.GetY());
+        Node start = _nodeGuardAt;        
+        Debug.Log("guard at " + _nodeGuardAt.GetX() + ", " + _nodeGuardAt.GetY());
         Node goal = _player.GetComponent<PlayerMapRelation>().ReturnNodePlayerAt();
-        Debug.Log(goal.GetX() + ", " + goal.GetY());
+        Debug.Log("palyer at " + goal.GetX() + ", " + goal.GetY());
 
 
         return newSearch.FindRouteFrom(start, goal);
-        
     }
 
+    /**
+     * moves guard to the next step in the route returned from search
+     */
+    private void NavigateToPlayer(int currentNode)
+    {
+        Node nextPosition = _routeToPlayer[currentNode];
+        Debug.Log(" guard next pos " + nextPosition.GetX() + ", " + nextPosition.GetY());
 
-    void OnTriggerStay2D(Collider2D col)
+        float guardX = gameObject.transform.position.x;
+        float guardY = gameObject.transform.position.y;
+        float playerX = _player.transform.position.x;
+        float playerY = _player.transform.position.y;
+
+        gameObject.transform.Translate((playerX - guardX) * Time.deltaTime, (playerY - guardY) * Time.deltaTime, gameObject.transform.position.z);
+
+        //if (guardX == nextPosition.GetX() && guardY == nextPosition.GetY())
+        //{
+            currentNode++;
+            Debug.Log("made move");
+            if (currentNode == _routeToPlayer.Length - 1)
+            {
+              //  Debug.Log(" at last node");
+                _endOfRoute = true;
+            }
+       // }
+    }
+
+    void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.layer == 12)
         {
-            nodeAt = _gameMap.GetComponent<GenerateNodes>().ReturnGeneratedGraph().nodeWith(col.gameObject.GetComponent<Node>());                             
+            _nodeGuardAt = _gameMap.GetComponent<GenerateNodes>().ReturnGeneratedGraph().nodeWith(col.gameObject.GetComponent<Node>());             
         }
     }
 
     public Node ReturnNodeAt()
     {
-        return nodeAt;
+        return _nodeGuardAt;
     }
 
 

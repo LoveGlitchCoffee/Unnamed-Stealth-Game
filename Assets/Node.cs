@@ -48,15 +48,16 @@ public class Node : MonoBehaviour, IComparable<Node>
         Node newNode = graph.nodeWith(this);
     }
 
-    public void AddNeighbour(int direction, ref GraphOfMap graph)
+    public void AddNeighbour(float direction, ref GraphOfMap graph)
     {
         for(int i = 0; i < graph.ReturnGraph().Count; i++)
         {
             Node node = graph.ReturnGraph().ElementAt(i);
-
-            if (node.GetY() == this.GetY() && node.GetX() == this.GetX() - direction && node.CompareTo(this) != 0)
+            
+            if (node.GetX() == GetX() - direction && node.GetY() == GetY())
             {
                 AddSuccessor(node, ref graph); 
+                Debug.Log("successor " + node.GetX() + ", " + node.GetY());
             }
         }
     }
@@ -76,7 +77,7 @@ public class Node : MonoBehaviour, IComparable<Node>
     {
         
         if (col.gameObject.layer == 10 && col.gameObject.tag == "RisingPlatform" && justSpawned)
-        {
+        {            
             Node platformNode = null;
             GraphOfMap graph = _gameMap.GetComponent<GenerateNodes>().ReturnGeneratedGraph();
 
@@ -84,7 +85,7 @@ public class Node : MonoBehaviour, IComparable<Node>
             {
                 Node node = graph.ReturnGraph().ElementAt(i);
 
-                if (node.GetX()== this.GetX() &&
+                if (node.GetX() == this.GetX() &&
                     node.GetY() == this.GetY() + 2)
                 {
                     platformNode = node;
@@ -97,6 +98,7 @@ public class Node : MonoBehaviour, IComparable<Node>
 
                 if ((node.GetX() == this.GetX() - 2 || node.GetX() == this.GetX() + 2) && node.GetY() == this.GetY())
                 {
+                    Debug.Log(GetX() + ", " + GetY() + " platform sucessor");
                     node.AddSuccessor(platformNode, ref graph);
                     //platform node add them ass successors
                 }

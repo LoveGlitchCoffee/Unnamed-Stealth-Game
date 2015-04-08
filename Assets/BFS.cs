@@ -1,9 +1,5 @@
-﻿using System;
-using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using UnityEngine.UI;
 
 public struct BFS
 {
@@ -12,7 +8,9 @@ public struct BFS
     public HashSet<Node> _visited;
     public Dictionary<Node, Node> _possiblePath;
 
-
+    /**
+     * searches for a route from the start node to goal node
+     */
     public Node[] FindRouteFrom(Node start, Node goal)
     {
 
@@ -26,7 +24,6 @@ public struct BFS
         _possiblePath.Clear();
 
         _frontier.Add(start);
-
 
         while (_frontier.Count != 0)
         {
@@ -46,12 +43,14 @@ public struct BFS
                         parent = _possiblePath[current];
                         current = parent;
                     } 
+
                     /*for (int i = 0; i < _possiblePath.Count; i++)
                     {
                         Node successor = _possiblePath.Keys.ElementAt(i);
                         Node parnt = _possiblePath.Values.ElementAt(i);
                         Debug.Log("successor is (" + successor.GetX() + ", " + successor.GetY() +  "), parent is (" + parnt.GetX() + ", " + parnt.GetY() + ")");
                     }*/
+
                     path.RemoveAt(0);
                     path.Reverse_NoHeapAlloc();
                     return path.ToArray();
@@ -75,13 +74,12 @@ public struct BFS
                         {
                             _possiblePath.Add(successor, current);                           
                         }
-                    }
-                    
+                    }                    
                 }
             }
         }
 
-        return new Node[0];// empty list
+        return new Node[0]; //empty list
     }
 
     

@@ -13,7 +13,7 @@ public class GuardAI : MonoBehaviour {
     private const string PatrolAreaTag = "PatrolRegion";
     private const string PlayerTag = "Player";
 
-    private const int WalkSpeed = 3;
+    private const int WalkSpeed = 1;
     private float _waitTime = 0;
 
     private List<Vector2> _leftVision = new List<Vector2>();
@@ -37,8 +37,8 @@ public class GuardAI : MonoBehaviour {
 
         
         _leftVision.Add(new Vector2(-0.2f, 0.7f));
-        _leftVision.Add(new Vector2(-5f, 2.5f));
-        _leftVision.Add(new Vector2(-5f, -1f));
+        _leftVision.Add(new Vector2(-7f, 2.5f));
+        _leftVision.Add(new Vector2(-7f, -1f));
         _leftVision.Add(new Vector2(-0.2f, 0.6f));
 
         for (int i = 0; i < 4; i++)
@@ -59,7 +59,7 @@ public class GuardAI : MonoBehaviour {
 
         if (!_outOfPatrolArea)
         {
-            gameObject.rigidbody2D.AddForce(_goingLeft ? new Vector2(-WalkSpeed, 0) : new Vector2(WalkSpeed, 0));
+            gameObject.transform.Translate(_goingLeft ? new Vector2(-WalkSpeed * Time.deltaTime, 0) : new Vector2(WalkSpeed * Time.deltaTime, 0));
         }
         else
         {
