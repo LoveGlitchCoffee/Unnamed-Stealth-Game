@@ -112,7 +112,7 @@ public class GuardAI : MonoBehaviour {
                     .ReturnGeneratedGraph()
                     .nodeWith(col.GetComponent<Node>());
 
-            Debug.Log(_nodeGuardAt.GetX() + ", " + _nodeGuardAt.GetY());
+            //Debug.Log(_nodeGuardAt.GetX() + ", " + _nodeGuardAt.GetY());
         }
     }
 

@@ -7,12 +7,8 @@ public class PursuePlayer : MonoBehaviour
 
     private GameObject _player;
     private GameObject _gameMap;
-    
 
-    private bool _endOfRoute = false;
-    private bool _routeCalculated = false;
-    private bool _startedMove = false;
-    private bool _startedMove2 = false;
+    private const float _speed = 2.5f;
 
     private Node[] _routeToPlayer;
 
@@ -71,6 +67,7 @@ public class PursuePlayer : MonoBehaviour
         {
             for (int i = 0; i < _routeToPlayer.Length; i++)
             {
+                
                 yield return StartCoroutine(MoveToNextPosition(_routeToPlayer[i]));
 
                 Debug.Log("moved " + i);
@@ -84,13 +81,18 @@ public class PursuePlayer : MonoBehaviour
 
     IEnumerator MoveToNextPosition(Node nextPosition)
     {
-        
 
-        while (transform.position.x != nextPosition.GetX() && transform.position.y != nextPosition.GetY())
+        Debug.Log(nextPosition.GetX() + ", " + nextPosition.GetY());
+        Debug.Log(transform.position.x);
+
+        while (!(transform.position.x == nextPosition.GetX() && transform.position.y == nextPosition.GetY()))
         {            
-            transform.Translate((nextPosition.GetX() - transform.position.x), (nextPosition.GetY() - transform.position.y), gameObject.transform.position.z);
-            yield return new WaitForSeconds(1f);    
+            Debug.Log("start 1 move");
+            transform.position = Vector2.MoveTowards(transform.position, nextPosition.gameObject.transform.position, _speed * Time.deltaTime);
+            yield return 0;
         }
+
+        Debug.Log("entering this coroutine");
         
     }
    
