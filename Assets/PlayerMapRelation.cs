@@ -19,6 +19,9 @@ public class PlayerMapRelation : MonoBehaviour
 	
 	}
 
+    /**
+     * tracks the node the player is currently at
+     */
     void OnTriggerStay2D(Collider2D col)
     {
         if (col.gameObject.layer == 12)
@@ -27,8 +30,11 @@ public class PlayerMapRelation : MonoBehaviour
         }
     }
 
+    /*
+     * Returns the node the player is at
+     */
     public Node ReturnNodePlayerAt()
-    {
+    {        
         return _nodeAt;
     }
 }

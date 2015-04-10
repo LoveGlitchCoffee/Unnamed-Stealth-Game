@@ -11,13 +11,14 @@ public class Movement : MonoBehaviour {
     int runSpeed = 5;
 
     private bool _onGround;
-    private string _groundTag;
+    private const string GroundTag = "Ground";
+    private const string PlatformTag = "Platform";
+    private const string RisingPlatformTag = "RisingPlatform";
 
-	// Use this for initialization
+    // Use this for initialization
 	void Start ()
 	{
-	    _onGround = true;
-	    _groundTag = "Ground";
+	    _onGround = true;	    
 	}
 	
 	// Update is called once per frame
@@ -44,7 +45,7 @@ public class Movement : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.Space) && _onGround == true)
         {
-            rigidbody2D.AddForce(new Vector2(0, 300));
+            rigidbody2D.AddForce(new Vector2(0, 400));
         }
 
         if (Input.GetKey(KeyCode.LeftShift))
@@ -52,7 +53,7 @@ public class Movement : MonoBehaviour {
             if (Input.GetKey(goLeft))
             {
                 rigidbody2D.AddForce(new Vector2(-runSpeed, 0));
-                anim.SetInteger("walkDirection", 0);
+                anim.SetInteger("walkDirection", 2);
             }
             else if (Input.GetKey(goRight))
             {
@@ -64,13 +65,15 @@ public class Movement : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.tag == _groundTag)
+        string collisionTag = col.gameObject.tag;
+        if (collisionTag == GroundTag || collisionTag == PlatformTag || collisionTag == RisingPlatformTag)
         _onGround = true;
     }
 
     void OnCollisionExit2D(Collision2D col)
     {
-        if (col.gameObject.tag == _groundTag)
+        string collisionTag = col.gameObject.tag;
+        if (collisionTag == GroundTag || collisionTag == PlatformTag || collisionTag == RisingPlatformTag)
             _onGround = false;
     }
 }

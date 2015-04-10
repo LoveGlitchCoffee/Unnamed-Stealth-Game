@@ -8,27 +8,25 @@ public class PursuePlayer : MonoBehaviour
     private GameObject _player;
     private GameObject _gameMap;
 
-    private const float _speed = 2.5f;
+    private const float Speed = 4f;
 
     private Node[] _routeToPlayer;
 
-    private bool _loop = true;
-
     // Use this for initialization
+    /*
+     * calculates the route to the player, using the map
+     * then goes to the player's position WHEN PLAYER LAST SEEN
+     */
 	void Start ()
 	{	    
 	    _player = GameObject.FindGameObjectWithTag("Player");
 	    _gameMap = GameObject.FindGameObjectWithTag("Map");
 
-        _routeToPlayer = CalculateRouteToPlayer(); 
+        _routeToPlayer = CalculateRouteToPlayer(); 	               
 	       
-        Debug.Log(_routeToPlayer.Length);	       
-            	        
-        StartCoroutine(NavigateToPlayer(_loop));        
-                    
+        bool _loop = true;            	        
+        StartCoroutine(NavigateToPlayer(_loop));                            
     }
-
-	
     
 	// Update is called once per frame
     public void FixedUpdate()
@@ -49,6 +47,7 @@ public class PursuePlayer : MonoBehaviour
 
         Node start = gameObject.GetComponent<GuardAI>().ReturnNodeGuardAt();
         Debug.Log("guard at " + start.GetX() + ", " + start.GetY());
+        Debug.Log(_player.GetComponent<PlayerMapRelation>());
         Node goal = _player.GetComponent<PlayerMapRelation>().ReturnNodePlayerAt();
         Debug.Log("palyer at " + goal.GetX() + ", " + goal.GetY());
 
@@ -58,7 +57,8 @@ public class PursuePlayer : MonoBehaviour
 
 
     /**
-     * moves guard to the next step in the route returned from search
+     * Go to each position in the route
+     * Should end up where player last seen
      */
     IEnumerator NavigateToPlayer(bool loop)
     {
@@ -69,34 +69,23 @@ public class PursuePlayer : MonoBehaviour
             {
                 
                 yield return StartCoroutine(MoveToNextPosition(_routeToPlayer[i]));
-
-                Debug.Log("moved " + i);
+                
             }
             loop = false;
         } while (loop);
 
-        
-
     }
-
+    
+    /*
+     *moves guard to the next step in the route returned from search
+     */     
     IEnumerator MoveToNextPosition(Node nextPosition)
-    {
-
-        Debug.Log(nextPosition.GetX() + ", " + nextPosition.GetY());
-        Debug.Log(transform.position.x);
-
+    {        
         while (!(transform.position.x == nextPosition.GetX() && transform.position.y == nextPosition.GetY()))
-        {            
-            Debug.Log("start 1 move");
-            transform.position = Vector2.MoveTowards(transform.position, nextPosition.gameObject.transform.position, _speed * Time.deltaTime);
+        {                    
+            transform.position = Vector2.MoveTowards(transform.position, nextPosition.gameObject.transform.position, Speed * Time.deltaTime);
             yield return 0;
-        }
-
-        Debug.Log("entering this coroutine");
-        
+        }        
     }
    
-
-
-
 }

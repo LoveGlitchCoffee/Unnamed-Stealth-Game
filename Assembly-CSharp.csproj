@@ -51,12 +51,12 @@
      <Compile Include="Assets\GraphOfMap.cs" />
      <Compile Include="Assets\GuardAI.cs" />
      <Compile Include="Assets\IDetection.cs" />
-     <Compile Include="Assets\IFunction.cs" />
      <Compile Include="Assets\ListExtensions.cs" />
      <Compile Include="Assets\Movement.cs" />
      <Compile Include="Assets\Node.cs" />
      <Compile Include="Assets\PlayerDetection.cs" />
      <Compile Include="Assets\PlayerMapRelation.cs" />
+     <Compile Include="Assets\PlayerNPCRelation.cs" />
      <Compile Include="Assets\PursuePlayer.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>E:/Development/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.1/UnityEngine.UI.dll</HintPath>

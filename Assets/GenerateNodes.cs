@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class GenerateNodes : MonoBehaviour
 {
@@ -18,6 +17,10 @@ public class GenerateNodes : MonoBehaviour
     private GraphOfMap _graph;
 
 	// Use this for initialization
+    /*
+     * creates a map, consisting of nodes which can be use for determining coordinates/location
+     * Once map has been generated, add neighbour (horizontal only) to each node, as null pointer otherwise
+     */
 	void Start ()
 	{
 	    _mapHeight = 3;
@@ -26,7 +29,7 @@ public class GenerateNodes : MonoBehaviour
 	    _nodeSize = Node.GetComponent<CircleCollider2D>().radius * 2;
 
         _graph = new GraphOfMap(); // where map is
-        _graph._abstractMap = new List<Node>();
+        _graph.AbstractMap = new List<Node>();
 
 	    for (int i = StartX; i < _mapLength; i++)
 	    {
@@ -43,14 +46,10 @@ public class GenerateNodes : MonoBehaviour
 
 	    for (int j  = 0; j < _graph.ReturnGraph().Count; j++)
 	    {
-             //Debug.Log("node " + j + ": " + _graph.ReturnGraph().ElementAt(j).GetX() + ", " + _graph.ReturnGraph().ElementAt(j).GetY());
-            _graph.ReturnGraph().ElementAt(j).AddNeighbour(-2,ref _graph);
-            _graph.ReturnGraph().ElementAt(j).AddNeighbour(2,ref _graph);
-
-	    }
-
-	   
-
+	        Node node = _graph.ReturnGraph().ElementAt(j);            
+            node.AddNeighbour(-2,ref _graph);
+            node.AddNeighbour(2,ref _graph);
+	    }	   
 	}
 	
 	// Update is called once per frame
@@ -58,6 +57,9 @@ public class GenerateNodes : MonoBehaviour
 	
 	}
 
+    /**
+     * returns the object that contains the graph
+     */
     public GraphOfMap ReturnGeneratedGraph()
     {
         return _graph;

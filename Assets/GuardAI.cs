@@ -1,8 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 public class GuardAI : MonoBehaviour {
 
@@ -23,21 +19,17 @@ public class GuardAI : MonoBehaviour {
 
     /**
      * Guard Patrol pattern
-     * Always in patrol region going left
-     * Also defines vectors for vision cone
+     * Always in patrol region going left     
      */
-
     private void Start()
     {
-        _goingLeft = true;
+        _goingLeft = false;
         _outOfPatrolArea = false;
-
 
         _playerDetection = gameObject.GetComponentInChildren<PlayerDetection>();
         
         _pursuePlayer = gameObject.GetComponent<PursuePlayer>();
         _pursuePlayer.enabled = false;
-
     }
 
     // Update is called once per frame
@@ -65,7 +57,7 @@ public class GuardAI : MonoBehaviour {
     {
         Wait();
 
-        if (_waitTime >= 3)
+        if (_waitTime >= 4.5)
         {
             _goingLeft = !_goingLeft;
             _waitTime = 0f;
@@ -80,17 +72,14 @@ public class GuardAI : MonoBehaviour {
      */
     private void Wait()
     {
-        if (_waitTime < 3f)
+        if (_waitTime < 4.5f)
         {
             _waitTime += 1f * Time.deltaTime;
         }
     }
-
-    
-
-
+   
     /**
-     * If vision cone no longer detects player, turns of player Detection ray cast, should turn on prob calc
+     *If out of patrol, turn on flag
      */
     void OnTriggerExit2D(Collider2D col)
     {
@@ -101,7 +90,9 @@ public class GuardAI : MonoBehaviour {
 
     }
     
-
+    /**
+     * tracks which map node guard is currently at
+     */
     void OnTriggerStay2D(Collider2D col)
     {
         if (col.gameObject.layer == 12)
@@ -116,6 +107,9 @@ public class GuardAI : MonoBehaviour {
         }
     }
 
+    /**
+     * returns node on map guard is at at time of method call
+     */
     public Node ReturnNodeGuardAt()
     {
         return _nodeGuardAt;

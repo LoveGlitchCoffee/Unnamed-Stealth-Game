@@ -1,27 +1,26 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 public struct GraphOfMap
 {
-    //change here
-    public List<Node> _abstractMap;
+    // A list of nodes that represents the graph of the map
+    public List<Node> AbstractMap;
 
-    //diametre is 2
-
-
+    /*
+     * chekcs to see if the passed node is in the map
+     * if it is, return that node, otherwise creates a new one and return that instead
+     */
     public Node nodeWith(Node node)
     {
         Node _returnNode = null;
         bool nodeFound = false;
         int i = 0;
 
-        while (nodeFound == false && i < _abstractMap.Count)
+        while (nodeFound == false && i < AbstractMap.Count)
         {
-            if (_abstractMap.ElementAt(i).GetX() == node.GetX() && _abstractMap.ElementAt(i).GetY() == node.GetY())
+            if (AbstractMap.ElementAt(i).GetX() == node.GetX() && AbstractMap.ElementAt(i).GetY() == node.GetY())
             {
-                _returnNode = _abstractMap.ElementAt(i);
+                _returnNode = AbstractMap.ElementAt(i);
                 nodeFound = true;
             }
             else
@@ -31,14 +30,17 @@ public struct GraphOfMap
         if (nodeFound == false)
         {
             _returnNode = node;
-            _abstractMap.Add(node);
+            AbstractMap.Add(node);
         }
 
         return _returnNode;
     }
 
+    /**
+     * return the graph 
+     */
     public List<Node> ReturnGraph()
     {
-        return _abstractMap;
+        return AbstractMap;
     }
 }

@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class PlayerDetection : MonoBehaviour, IDetection
 {
@@ -31,6 +30,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
 	// Use this for initialization
     /**
      * Ray cast only collides with player or environment that can block vision
+     * Vision cone is just reverse of one another
      */
 	void Start () {
 
@@ -45,10 +45,10 @@ public class PlayerDetection : MonoBehaviour, IDetection
 
         _sightDistance = 10;
 
-        _leftVision.Add(new Vector2(-0.2f, 0.7f));
-        _leftVision.Add(new Vector2(-7f, 2.5f));
-        _leftVision.Add(new Vector2(-7f, -1f));
-        _leftVision.Add(new Vector2(-0.2f, 0.6f));
+        _leftVision.Add(new Vector2(-0.2f, 0.5f));
+        _leftVision.Add(new Vector2(-5f, 2f));
+        _leftVision.Add(new Vector2(-5f, -0.8f));
+        _leftVision.Add(new Vector2(-0.2f, 0.4f));
 
 
         for (int i = 0; i < 4; i++)
@@ -59,7 +59,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
 
 
         _visionCone = GetComponent<EdgeCollider2D>();
-	    _visionCone.points = _leftVision.ToArray();
+	    _visionCone.points = _rightVision.ToArray();
 	}
 	
 	// Update is called once per frame
@@ -101,6 +101,9 @@ public class PlayerDetection : MonoBehaviour, IDetection
         }
 	}
 
+    /**
+     * If vision cone collides with player, cast ray cast
+     */
     void OnTriggerStay2D(Collider2D col)
     {
         if (col.gameObject.tag == PlayerTag)
@@ -109,6 +112,9 @@ public class PlayerDetection : MonoBehaviour, IDetection
         }
     }
 
+    /**
+     * If vision cone is no longer colliding with player, stop casting ray cast
+     */
     void OnTriggerExit2D(Collider2D col)
     {
         if (col.gameObject.tag == PlayerTag)

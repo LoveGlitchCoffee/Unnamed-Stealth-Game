@@ -12,10 +12,9 @@ public class Node : MonoBehaviour, IComparable<Node>
 
     private GameObject _gameMap;
 
-    bool justSpawned = true;
+    bool _justSpawned = true;
 
-	void Start () {
-	    
+	void Start () {	    
 	    _gameMap = GameObject.FindGameObjectWithTag("Map");
 	}
 	
@@ -24,30 +23,35 @@ public class Node : MonoBehaviour, IComparable<Node>
 	   
 	}
 
+    /**
+     * Add the passed node as this node's successor
+     */
     public void AddSuccessor(Node n, ref GraphOfMap graph)
     {
-        Node succesor = graph.nodeWith(n);
-        //Debug.Log("successor: " + succesor.GetX() + ", " + succesor.GetY());
+        Node succesor = graph.nodeWith(n);       
         _successors.Add(succesor);
     }
 
+    /**
+     * returns the list of this node's successors
+     */
     public List<Node> GetSuccessors()
     {
         return _successors;
     }
 
+    /**
+     * Adds the node to the passed graph
+     */
     public void SetUpNode(ref GraphOfMap graph)
-    {
-        //_graph = graph;
+    {       
         _successors = new List<Node>();
-        AddToGraph(ref graph);        
-    }
+        Node newNode = graph.nodeWith(this);        
+    }    
 
-    private void AddToGraph(ref GraphOfMap graph)
-    {
-        Node newNode = graph.nodeWith(this);
-    }
-
+    /**
+     * Adds this node horizontal neighbour as it successors
+     */
     public void AddNeighbour(float direction, ref GraphOfMap graph)
     {
         for(int i = 0; i < graph.ReturnGraph().Count; i++)
@@ -56,11 +60,11 @@ public class Node : MonoBehaviour, IComparable<Node>
             
             if (node.GetX() == GetX() - direction && node.GetY() == GetY())
             {
-                AddSuccessor(node, ref graph); 
-                //Debug.Log("successor " + node.GetX() + ", " + node.GetY());
+                AddSuccessor(node, ref graph);                
             }
         }
     }
+
 
     public int CompareTo(Node comparedNode)
     {
@@ -73,10 +77,13 @@ public class Node : MonoBehaviour, IComparable<Node>
         }
     }
 
-    void OnTriggerStay2D(Collider2D col) // could consider delete succesor
+    /**
+     * If this node is the position of a rising platform, add the node above it as its horizontal sucecssor's successor
+     */
+    void OnTriggerStay2D(Collider2D col)
     {
         
-        if (col.gameObject.layer == 10 && col.gameObject.tag == "RisingPlatform" && justSpawned)
+        if (col.gameObject.layer == 10 && col.gameObject.tag == "RisingPlatform" && _justSpawned)
         {            
             Node platformNode = null;
             GraphOfMap graph = _gameMap.GetComponent<GenerateNodes>().ReturnGeneratedGraph();
@@ -97,15 +104,14 @@ public class Node : MonoBehaviour, IComparable<Node>
                Node node = graph.ReturnGraph().ElementAt(j);
 
                 if ((node.GetX() == this.GetX() - 2 || node.GetX() == this.GetX() + 2) && node.GetY() == this.GetY())
-                {
-                    Debug.Log(GetX() + ", " + GetY() + " platform sucessor");
-                    node.AddSuccessor(platformNode, ref graph);
-                    //platform node add them ass successors
+                {                    
+                    node.AddSuccessor(platformNode, ref graph);                   
                 }
             }
 
+            AddSuccessor(platformNode,ref graph);
             
-            justSpawned = false;
+            _justSpawned = false;
         }
     }
 
