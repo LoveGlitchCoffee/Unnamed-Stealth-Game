@@ -1,0 +1,861 @@
+fileFormatVersion: 2
+guid: 5c4e56b968ef9334bba80aba384b1c3f
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: celianna_prison_torture_0
+    21300002: celianna_prison_torture_1
+    21300004: celianna_prison_torture_2
+    21300006: celianna_prison_torture_3
+    21300008: celianna_prison_torture_4
+    21300010: celianna_prison_torture_5
+    21300012: celianna_prison_torture_6
+    21300014: celianna_prison_torture_7
+    21300016: celianna_prison_torture_8
+    21300018: celianna_prison_torture_9
+    21300020: celianna_prison_torture_10
+    21300022: celianna_prison_torture_11
+    21300024: celianna_prison_torture_12
+    21300026: celianna_prison_torture_13
+    21300028: celianna_prison_torture_14
+    21300030: celianna_prison_torture_15
+    21300032: celianna_prison_torture_16
+    21300034: celianna_prison_torture_17
+    21300036: celianna_prison_torture_18
+    21300038: celianna_prison_torture_19
+    21300040: celianna_prison_torture_20
+    21300042: celianna_prison_torture_21
+    21300044: celianna_prison_torture_22
+    21300046: celianna_prison_torture_23
+    21300048: celianna_prison_torture_24
+    21300050: celianna_prison_torture_25
+    21300052: celianna_prison_torture_26
+    21300054: celianna_prison_torture_27
+    21300056: celianna_prison_torture_28
+    21300058: celianna_prison_torture_29
+    21300060: celianna_prison_torture_30
+    21300062: celianna_prison_torture_31
+    21300064: celianna_prison_torture_32
+    21300066: celianna_prison_torture_33
+    21300068: celianna_prison_torture_34
+    21300070: celianna_prison_torture_35
+    21300072: celianna_prison_torture_36
+    21300074: celianna_prison_torture_37
+    21300076: celianna_prison_torture_38
+    21300078: celianna_prison_torture_39
+    21300080: celianna_prison_torture_40
+    21300082: celianna_prison_torture_41
+    21300084: celianna_prison_torture_42
+    21300086: celianna_prison_torture_43
+    21300088: celianna_prison_torture_44
+    21300090: celianna_prison_torture_45
+    21300092: celianna_prison_torture_46
+    21300094: celianna_prison_torture_47
+    21300096: celianna_prison_torture_48
+    21300098: celianna_prison_torture_49
+    21300100: celianna_prison_torture_50
+    21300102: celianna_prison_torture_51
+    21300104: celianna_prison_torture_52
+    21300106: celianna_prison_torture_53
+    21300108: celianna_prison_torture_54
+    21300110: celianna_prison_torture_55
+    21300112: celianna_prison_torture_56
+    21300114: celianna_prison_torture_57
+    21300116: celianna_prison_torture_58
+    21300118: celianna_prison_torture_59
+    21300120: celianna_prison_torture_60
+    21300122: celianna_prison_torture_61
+    21300124: celianna_prison_torture_62
+    21300126: celianna_prison_torture_63
+    21300128: celianna_prison_torture_64
+    21300130: celianna_prison_torture_65
+    21300132: celianna_prison_torture_66
+    21300134: celianna_prison_torture_67
+    21300136: celianna_prison_torture_68
+    21300138: celianna_prison_torture_69
+    21300140: celianna_prison_torture_70
+    21300142: celianna_prison_torture_71
+    21300144: celianna_prison_torture_72
+    21300146: celianna_prison_torture_73
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 1024
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: celianna_prison_torture_0
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 453
+        width: 13
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_1
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 453
+        width: 7
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_2
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 453
+        width: 15
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_3
+      rect:
+        serializedVersion: 2
+        x: 62
+        y: 452
+        width: 13
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_4
+      rect:
+        serializedVersion: 2
+        x: 230
+        y: 451
+        width: 32
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_5
+      rect:
+        serializedVersion: 2
+        x: 276
+        y: 485
+        width: 33
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_6
+      rect:
+        serializedVersion: 2
+        x: 315
+        y: 490
+        width: 33
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_7
+      rect:
+        serializedVersion: 2
+        x: 355
+        y: 487
+        width: 32
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_8
+      rect:
+        serializedVersion: 2
+        x: 396
+        y: 487
+        width: 30
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_9
+      rect:
+        serializedVersion: 2
+        x: 429
+        y: 487
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_10
+      rect:
+        serializedVersion: 2
+        x: 453
+        y: 489
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_11
+      rect:
+        serializedVersion: 2
+        x: 471
+        y: 488
+        width: 13
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_12
+      rect:
+        serializedVersion: 2
+        x: 498
+        y: 494
+        width: 21
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_13
+      rect:
+        serializedVersion: 2
+        x: 524
+        y: 482
+        width: 46
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_14
+      rect:
+        serializedVersion: 2
+        x: 93
+        y: 454
+        width: 53
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_15
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 452
+        width: 72
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_16
+      rect:
+        serializedVersion: 2
+        x: 509
+        y: 471
+        width: 18
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_17
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 367
+        width: 47
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_18
+      rect:
+        serializedVersion: 2
+        x: 70
+        y: 403
+        width: 4
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_19
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 384
+        width: 36
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_20
+      rect:
+        serializedVersion: 2
+        x: 140
+        y: 415
+        width: 32
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_21
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 407
+        width: 24
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_22
+      rect:
+        serializedVersion: 2
+        x: 273
+        y: 397
+        width: 31
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_23
+      rect:
+        serializedVersion: 2
+        x: 312
+        y: 397
+        width: 28
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_24
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 393
+        width: 65
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_25
+      rect:
+        serializedVersion: 2
+        x: 437
+        y: 393
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_26
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 422
+        width: 64
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_27
+      rect:
+        serializedVersion: 2
+        x: 141
+        y: 400
+        width: 29
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_28
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 405
+        width: 33
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_29
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 366
+        width: 64
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_30
+      rect:
+        serializedVersion: 2
+        x: 70
+        y: 348
+        width: 17
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_31
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 354
+        width: 45
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_32
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 364
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_33
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 364
+        width: 23
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_34
+      rect:
+        serializedVersion: 2
+        x: 197
+        y: 364
+        width: 31
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_35
+      rect:
+        serializedVersion: 2
+        x: 229
+        y: 363
+        width: 31
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_36
+      rect:
+        serializedVersion: 2
+        x: 273
+        y: 354
+        width: 17
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_37
+      rect:
+        serializedVersion: 2
+        x: 295
+        y: 354
+        width: 17
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_38
+      rect:
+        serializedVersion: 2
+        x: 317
+        y: 354
+        width: 20
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_39
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 354
+        width: 21
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_40
+      rect:
+        serializedVersion: 2
+        x: 363
+        y: 354
+        width: 20
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_41
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 211
+        width: 74
+        height: 129
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_42
+      rect:
+        serializedVersion: 2
+        x: 127
+        y: 211
+        width: 170
+        height: 129
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_43
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 211
+        width: 73
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_44
+      rect:
+        serializedVersion: 2
+        x: 404
+        y: 236
+        width: 61
+        height: 107
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_45
+      rect:
+        serializedVersion: 2
+        x: 479
+        y: 262
+        width: 28
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_46
+      rect:
+        serializedVersion: 2
+        x: 553
+        y: 262
+        width: 24
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_47
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 100
+        width: 73
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_48
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 100
+        width: 73
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_49
+      rect:
+        serializedVersion: 2
+        x: 322
+        y: 108
+        width: 79
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_50
+      rect:
+        serializedVersion: 2
+        x: 409
+        y: 108
+        width: 50
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_51
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 167
+        width: 27
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_52
+      rect:
+        serializedVersion: 2
+        x: 553
+        y: 167
+        width: 23
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_53
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 100
+        width: 73
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_54
+      rect:
+        serializedVersion: 2
+        x: 496
+        y: 62
+        width: 64
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_55
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 12
+        width: 79
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_56
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 12
+        width: 50
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_57
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 12
+        width: 79
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_58
+      rect:
+        serializedVersion: 2
+        x: 253
+        y: 12
+        width: 50
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_59
+      rect:
+        serializedVersion: 2
+        x: 322
+        y: 12
+        width: 79
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_60
+      rect:
+        serializedVersion: 2
+        x: 409
+        y: 12
+        width: 50
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_61
+      rect:
+        serializedVersion: 2
+        x: 485
+        y: 42
+        width: 9
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_62
+      rect:
+        serializedVersion: 2
+        x: 495
+        y: 42
+        width: 5
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_63
+      rect:
+        serializedVersion: 2
+        x: 501
+        y: 42
+        width: 5
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_64
+      rect:
+        serializedVersion: 2
+        x: 507
+        y: 42
+        width: 5
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_65
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 42
+        width: 5
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_66
+      rect:
+        serializedVersion: 2
+        x: 522
+        y: 40
+        width: 5
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_67
+      rect:
+        serializedVersion: 2
+        x: 531
+        y: 42
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_68
+      rect:
+        serializedVersion: 2
+        x: 539
+        y: 42
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_69
+      rect:
+        serializedVersion: 2
+        x: 547
+        y: 42
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_70
+      rect:
+        serializedVersion: 2
+        x: 555
+        y: 42
+        width: 5
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_71
+      rect:
+        serializedVersion: 2
+        x: 561
+        y: 42
+        width: 5
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_72
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 42
+        width: 5
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: celianna_prison_torture_73
+      rect:
+        serializedVersion: 2
+        x: 487
+        y: 6
+        width: 82
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 

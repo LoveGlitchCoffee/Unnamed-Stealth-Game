@@ -46,18 +46,18 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\BFS.cs" />
-     <Compile Include="Assets\GenerateNodes.cs" />
-     <Compile Include="Assets\GraphOfMap.cs" />
-     <Compile Include="Assets\GuardAI.cs" />
-     <Compile Include="Assets\IDetection.cs" />
-     <Compile Include="Assets\ListExtensions.cs" />
-     <Compile Include="Assets\Movement.cs" />
-     <Compile Include="Assets\Node.cs" />
-     <Compile Include="Assets\PlayerDetection.cs" />
-     <Compile Include="Assets\PlayerMapRelation.cs" />
-     <Compile Include="Assets\PlayerNPCRelation.cs" />
-     <Compile Include="Assets\PursuePlayer.cs" />
+     <Compile Include="Assets\Scripts\GuardAI\BFS.cs" />
+     <Compile Include="Assets\Scripts\GuardAI\GenerateNodes.cs" />
+     <Compile Include="Assets\Scripts\GuardAI\GraphOfMap.cs" />
+     <Compile Include="Assets\Scripts\GuardAI\GuardAI.cs" />
+     <Compile Include="Assets\Scripts\GuardAI\IDetection.cs" />
+     <Compile Include="Assets\Scripts\GuardAI\ListExtensions.cs" />
+     <Compile Include="Assets\Scripts\GuardAI\Node.cs" />
+     <Compile Include="Assets\Scripts\GuardAI\PlayerDetection.cs" />
+     <Compile Include="Assets\Scripts\GuardAI\PursuePlayer.cs" />
+     <Compile Include="Assets\Scripts\PlayerScripts\Movement.cs" />
+     <Compile Include="Assets\Scripts\PlayerScripts\PlayerMapRelation.cs" />
+     <Compile Include="Assets\Scripts\PlayerScripts\PlayerNPCRelation.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>E:/Development/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.1/UnityEngine.UI.dll</HintPath>
  </Reference>
