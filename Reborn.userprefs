@@ -1,10 +1,8 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\PlayerDetection.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\PlayerScripts\Movement.cs">
     <Files>
-      <File FileName="Assets\GuardAI.cs" Line="1" Column="1" />
-      <File FileName="Assets\PlayerDetection.cs" Line="23" Column="17" />
-      <File FileName="Assets\IDetection.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\PlayerScripts\Movement.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -6,8 +6,8 @@ public class Movement : MonoBehaviour {
     private const KeyCode GoRight = KeyCode.D;
   
     private Animator _anim;
-    private const int Speed = 3;
-    private const int RunSpeed = 5;
+    private const float Speed = 1.7f;
+    private const float RunSpeed = 2.7f;
 
     private bool _onGround;
     private const string GroundTag = "Ground";
@@ -26,12 +26,12 @@ public class Movement : MonoBehaviour {
 
         if (Input.GetKey(GoLeft))
         {
-            rigidbody2D.AddForce(new Vector2(-Speed, 0));
+            transform.Translate(new Vector3(-Speed*Time.deltaTime, 0,transform.position.z));
             _anim.SetInteger("walkDirection", 2);
         }
         else if (Input.GetKey(GoRight))
         {
-            rigidbody2D.AddForce(new Vector2(Speed, 0));
+            transform.Translate(new Vector3(Speed * Time.deltaTime, 0, transform.position.z));            
             _anim.SetInteger("walkDirection", 1);
         }
         else if (Input.GetKeyUp(GoRight))
@@ -44,20 +44,20 @@ public class Movement : MonoBehaviour {
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && _onGround == true)
-        {
-            rigidbody2D.AddForce(new Vector2(0, 320));
+        {            
+            GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 320));
         }
 
         if (Input.GetKey(KeyCode.LeftShift))
         {
             if (Input.GetKey(GoLeft))
             {
-                rigidbody2D.AddForce(new Vector2(-RunSpeed, 0));
+                transform.Translate(new Vector3(-RunSpeed * Time.deltaTime, 0, transform.position.z));                            
                 _anim.SetInteger("walkDirection", 2);
             }
             else if (Input.GetKey(GoRight))
             {
-                rigidbody2D.AddForce(new Vector2(RunSpeed, 0));
+                transform.Translate(new Vector3(RunSpeed * Time.deltaTime, 0, transform.position.z));                                            
                 _anim.SetInteger("walkDirection", 1);
             }
         }
@@ -65,16 +65,26 @@ public class Movement : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D col)
     {
+        float spriteSize = GetComponent<SpriteRenderer>().sprite.bounds.size.y;
         string collisionTag = col.gameObject.tag;
-        Debug.Log(collisionTag);
-        if ((collisionTag == GroundTag || collisionTag == PlatformTag || collisionTag == RisingPlatformTag) && col.gameObject.transform.position.y < gameObject.transform.position.y)            
-        _onGround = true;
+        //Debug.Log(collisionTag);
+        if ((collisionTag == GroundTag || collisionTag == PlatformTag || collisionTag == RisingPlatformTag) && ((gameObject.transform.position.y - col.transform.position.y) >= spriteSize/2f)) 
+        {
+            //Debug.Log("can jump");
+            _onGround = true;
+        }
+
+        
     }
 
     void OnCollisionExit2D(Collision2D col)
     {
         string collisionTag = col.gameObject.tag;
         if (collisionTag == GroundTag || collisionTag == PlatformTag || collisionTag == RisingPlatformTag)
+        {
             _onGround = false;
+            //Debug.Log("cannot jump");
+        }
+            
     }
 }

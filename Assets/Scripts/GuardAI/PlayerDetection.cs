@@ -27,6 +27,12 @@ public class PlayerDetection : MonoBehaviour, IDetection
 	Ray2D _lineOfSight;
     private int _sightDistance;
 
+    private VisionConeRender _coneRender;
+    private Color _suspicion = Color.yellow;
+    private Color _alarmed = Color.red;
+    private Color _blind = Color.grey;
+
+
 	// Use this for initialization
     /**
      * Ray cast only collides with player or environment that can block vision
@@ -60,6 +66,10 @@ public class PlayerDetection : MonoBehaviour, IDetection
 
         _visionCone = GetComponent<EdgeCollider2D>();
 	    _visionCone.points = _rightVision.ToArray();
+
+	    _coneRender = GetComponent<VisionConeRender>();        
+        _coneRender.SetConeShape(_visionCone.points);
+        _coneRender.ActivateState(_blind);
 	}
 	
 	// Update is called once per frame
@@ -75,6 +85,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
     public void SetVisionCone(bool goingLeft)
     {
         _visionCone.points = goingLeft ? _leftVision.ToArray() : _rightVision.ToArray();
+        _coneRender.SetConeShape(_visionCone.points);
     }
 
     /**
@@ -96,6 +107,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
 
         if (detectPlayer.collider != null && detectPlayer.collider.tag == PlayerTag)
         {
+            _coneRender.ActivateState(_alarmed);
             _pursue.enabled = true;
             _regularAi.enabled = false;
         }
@@ -104,10 +116,11 @@ public class PlayerDetection : MonoBehaviour, IDetection
     /**
      * If vision cone collides with player, cast ray cast
      */
-    void OnTriggerStay2D(Collider2D col)
+    void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.tag == PlayerTag)
         {
+            _coneRender.ActivateState(_suspicion);
             _sensePlayer = true;
         }
     }
@@ -120,6 +133,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
         if (col.gameObject.tag == PlayerTag)
         {
             _sensePlayer = false;
+            _coneRender.ActivateState(_blind);
         }
     }
 }
