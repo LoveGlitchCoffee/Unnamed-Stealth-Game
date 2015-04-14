@@ -5,12 +5,13 @@ using UnityEngine;
 public class PursuePlayer : MonoBehaviour
 {
 
-    private GameObject _player;
+    //private GameObject _player;
     private GameObject _gameMap;
 
-    private const float Speed = 4f;
+    private float _speed = 4f;
 
     private Node[] _routeToPlayer;
+    private Node _goal;
 
     // Use this for initialization
     /*
@@ -19,11 +20,11 @@ public class PursuePlayer : MonoBehaviour
      */
 	void Start ()
 	{	    
-	    _player = GameObject.FindGameObjectWithTag("Player");
+	    //_player = GameObject.FindGameObjectWithTag("Player");
 	    _gameMap = GameObject.FindGameObjectWithTag("Map");
 
         _routeToPlayer = CalculateRouteToPlayer(); 	               
-	       
+	    Debug.Log(_routeToPlayer.Length);
         bool _loop = true;            	        
         StartCoroutine(NavigateToPlayer(_loop));                            
     }
@@ -47,12 +48,13 @@ public class PursuePlayer : MonoBehaviour
 
         Node start = gameObject.GetComponent<GuardAI>().ReturnNodeGuardAt();
         Debug.Log("guard at " + start.GetX() + ", " + start.GetY());
-        Debug.Log(_player.GetComponent<PlayerMapRelation>());
-        Node goal = _player.GetComponent<PlayerMapRelation>().ReturnNodePlayerAt();
-        Debug.Log("palyer at " + goal.GetX() + ", " + goal.GetY());
+
+        
+        //Node goal = _player.GetComponent<PlayerMapRelation>().ReturnNodePlayerAt();
+        Debug.Log("player last seen at " + _goal.GetX() + ", " + _goal.GetY());
 
 
-        return newSearch.FindRouteFrom(start, goal);
+        return newSearch.FindRouteFrom(start, _goal);
     }
 
 
@@ -83,9 +85,19 @@ public class PursuePlayer : MonoBehaviour
     {        
         while (!(transform.position.x == nextPosition.GetX() && transform.position.y == nextPosition.GetY()))
         {                    
-            transform.position = Vector2.MoveTowards(transform.position, nextPosition.gameObject.transform.position, Speed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, nextPosition.gameObject.transform.position, _speed * Time.deltaTime);
             yield return 0;
         }        
+    }
+
+    public void SetSpeed(float speed)
+    {
+        _speed = speed;
+    }
+
+    public void SetGoal(Node goal)
+    {
+        _goal = goal;
     }
    
 }

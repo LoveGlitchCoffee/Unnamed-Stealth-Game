@@ -93,7 +93,7 @@ public class GuardAI : MonoBehaviour {
     /**
      * tracks which map node guard is currently at
      */
-    void OnTriggerStay2D(Collider2D col)
+    void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.layer == 12)
         {

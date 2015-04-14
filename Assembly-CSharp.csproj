@@ -59,7 +59,6 @@
      <Compile Include="Assets\Scripts\PlayerScripts\Movement.cs" />
      <Compile Include="Assets\Scripts\PlayerScripts\PlayerMapRelation.cs" />
      <Compile Include="Assets\Scripts\PlayerScripts\PlayerNPCRelation.cs" />
-     <Compile Include="Assets\VisionConeLight.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Game Dev/Unity5/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

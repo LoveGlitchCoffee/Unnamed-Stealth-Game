@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
     private PursuePlayer _pursue;
     private GuardAI _regularAi;
     private GameObject _player;
+    private GameObject _gameMap;
 
    
     private const int LayerLiving = 11;
@@ -22,7 +24,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
     private List<Vector2> _rightVision = new List<Vector2>();
     private EdgeCollider2D _visionCone;
 
-    private bool _sensePlayer = false;
+    private bool _sensePlayer = false;       
 
 	Ray2D _lineOfSight;
     private int _sightDistance;
@@ -48,6 +50,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
 	    _pursue = gameObject.GetComponentInParent<PursuePlayer>();
 	    _regularAi = gameObject.GetComponentInParent<GuardAI>();
 	    _player = GameObject.FindGameObjectWithTag(PlayerTag);
+	    _gameMap = GameObject.FindGameObjectWithTag("Map");
 
         _sightDistance = 10;
 
@@ -75,8 +78,11 @@ public class PlayerDetection : MonoBehaviour, IDetection
 	// Update is called once per frame
 	void FixedUpdate ()
 	{
-        if (_sensePlayer)
-			CheckLineOfSight();
+	    if (_sensePlayer)
+	    {
+	        CheckLineOfSight();
+	    }
+			
 	}
 
     /**
@@ -103,15 +109,66 @@ public class PlayerDetection : MonoBehaviour, IDetection
     public void CheckLineOfSight()
 	{
         _lineOfSight = new Ray2D(new Vector2(gameObject.transform.position.x + 0.9f, gameObject.transform.position.y + 0.1f), CalculateDirection());
-        RaycastHit2D detectPlayer = Physics2D.Raycast(_lineOfSight.origin, _lineOfSight.direction, _sightDistance, _detectLayerMask); // distance is x distance
+        RaycastHit2D detectPlayer = Physics2D.Raycast(_lineOfSight.origin, _lineOfSight.direction, _sightDistance, _detectLayerMask); // distance is x distance                       
 
         if (detectPlayer.collider != null && detectPlayer.collider.tag == PlayerTag)
         {
-            _coneRender.ActivateState(_alarmed);
-            _pursue.enabled = true;
             _regularAi.enabled = false;
+            _sensePlayer = false;            
+            StartCoroutine(ReactToDetection(detectPlayer));
         }
 	}
+
+    IEnumerator ReactToDetection(RaycastHit2D playerLastSeen)
+    {
+        float baffledTime = 0f;
+        _coneRender.ActivateState(_suspicion);
+        RaycastHit2D detectPlayer = new RaycastHit2D();
+        GraphOfMap graph = _gameMap.GetComponent<GenerateNodes>().ReturnGeneratedGraph();
+
+        while (baffledTime < 0.5f)
+        {
+            _lineOfSight = new Ray2D(new Vector2(gameObject.transform.position.x + 0.9f, gameObject.transform.position.y + 0.1f), CalculateDirection());
+            detectPlayer = Physics2D.Raycast(_lineOfSight.origin, _lineOfSight.direction, _sightDistance, _detectLayerMask);
+
+            baffledTime += 1f*Time.deltaTime;            
+            yield return null;
+        }
+
+        if (detectPlayer.collider != null && detectPlayer.collider.tag == PlayerTag)
+        {
+            
+            _coneRender.ActivateState(_alarmed);
+            _pursue.SetSpeed(4f);
+            _pursue.SetGoal(graph.nodeWith(_player.GetComponent<PlayerMapRelation>().ReturnNodePlayerAt()));
+        }
+        else
+        {
+            
+            _pursue.SetSpeed(1f);
+            _pursue.SetGoal(CalculateNodeLastSeen(playerLastSeen, graph));
+        }
+
+       
+        _pursue.enabled = true;
+    }
+
+    private Node CalculateNodeLastSeen(RaycastHit2D playerLastSeen, GraphOfMap graph)
+    {
+        Vector2 pointLastSeen = playerLastSeen.point;
+        
+
+        for (int i = 0; i < _gameMap.transform.childCount; i++)
+        {
+            Collider2D nodeCollider = _gameMap.transform.GetChild(i).GetComponent<CircleCollider2D>();
+
+            if (nodeCollider.OverlapPoint(pointLastSeen))                
+                return graph.nodeWith(nodeCollider.gameObject.GetComponent<Node>());
+        }
+
+        return null; // shouldn't reach here
+    }
+    
 
     /**
      * If vision cone collides with player, cast ray cast
@@ -119,8 +176,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
     void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.tag == PlayerTag)
-        {
-            _coneRender.ActivateState(_suspicion);
+        {            
             _sensePlayer = true;
         }
     }
