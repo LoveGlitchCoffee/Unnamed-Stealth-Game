@@ -11,7 +11,7 @@ public class GuardAI : MonoBehaviour {
     private const string PatrolAreaTag = "PatrolRegion";
     private const string PlayerTag = "Player";
 
-    private const int WalkSpeed = 1;
+    private const int WalkSpeed = 3;
     private float _waitTime = 0;
 
     
@@ -57,7 +57,7 @@ public class GuardAI : MonoBehaviour {
     {
         Wait();
 
-        if (_waitTime >= 4.5)
+        if (_waitTime >= 2)
         {
             _goingLeft = !_goingLeft;
             _waitTime = 0f;
@@ -72,7 +72,7 @@ public class GuardAI : MonoBehaviour {
      */
     private void Wait()
     {
-        if (_waitTime < 4.5f)
+        if (_waitTime < 2f)
         {
             _waitTime += 1f * Time.deltaTime;
         }
@@ -97,6 +97,7 @@ public class GuardAI : MonoBehaviour {
     {
         if (col.gameObject.layer == 12)
         {
+            Debug.Log("node colliding " + col.gameObject.GetComponent<Node>().GetX() + ", " + col.gameObject.GetComponent<Node>().GetY());
             _nodeGuardAt =
                 GameObject.FindGameObjectWithTag("Map")
                     .GetComponent<GenerateNodes>()
@@ -111,7 +112,7 @@ public class GuardAI : MonoBehaviour {
      * returns node on map guard is at at time of method call
      */
     public Node ReturnNodeGuardAt()
-    {
+    {        
         return _nodeGuardAt;
     }
 

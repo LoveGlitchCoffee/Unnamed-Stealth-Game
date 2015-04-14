@@ -22,9 +22,10 @@ public class PlayerDetection : MonoBehaviour, IDetection
 
     private List<Vector2> _leftVision = new List<Vector2>();
     private List<Vector2> _rightVision = new List<Vector2>();
-    private EdgeCollider2D _visionCone;
+    private PolygonCollider2D _visionCone;
 
-    private bool _sensePlayer = false;       
+    private bool _sensePlayer = false;
+    private bool _seenPlayer = false;  
 
 	Ray2D _lineOfSight;
     private int _sightDistance;
@@ -52,7 +53,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
 	    _player = GameObject.FindGameObjectWithTag(PlayerTag);
 	    _gameMap = GameObject.FindGameObjectWithTag("Map");
 
-        _sightDistance = 10;
+        _sightDistance = 5;
 
         _leftVision.Add(new Vector2(-0.2f, 0.5f));
         _leftVision.Add(new Vector2(-5f, 2f));
@@ -67,7 +68,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
         }
 
 
-        _visionCone = GetComponent<EdgeCollider2D>();
+        _visionCone = GetComponent<PolygonCollider2D>();
 	    _visionCone.points = _rightVision.ToArray();
 
 	    _coneRender = GetComponent<VisionConeRender>();        
@@ -79,7 +80,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
 	void FixedUpdate ()
 	{
 	    if (_sensePlayer)
-	    {
+	    {            
 	        CheckLineOfSight();
 	    }
 			
@@ -110,11 +111,13 @@ public class PlayerDetection : MonoBehaviour, IDetection
 	{
         _lineOfSight = new Ray2D(new Vector2(gameObject.transform.position.x + 0.9f, gameObject.transform.position.y + 0.1f), CalculateDirection());
         RaycastHit2D detectPlayer = Physics2D.Raycast(_lineOfSight.origin, _lineOfSight.direction, _sightDistance, _detectLayerMask); // distance is x distance                       
+        Debug.DrawLine(_lineOfSight.origin, detectPlayer.point);
 
         if (detectPlayer.collider != null && detectPlayer.collider.tag == PlayerTag)
         {
             _regularAi.enabled = false;
-            _sensePlayer = false;            
+            _sensePlayer = false;
+            _seenPlayer = true;
             StartCoroutine(ReactToDetection(detectPlayer));
         }
 	}
@@ -130,14 +133,14 @@ public class PlayerDetection : MonoBehaviour, IDetection
         {
             _lineOfSight = new Ray2D(new Vector2(gameObject.transform.position.x + 0.9f, gameObject.transform.position.y + 0.1f), CalculateDirection());
             detectPlayer = Physics2D.Raycast(_lineOfSight.origin, _lineOfSight.direction, _sightDistance, _detectLayerMask);
+            Debug.DrawLine(_lineOfSight.origin, detectPlayer.point);
 
             baffledTime += 1f*Time.deltaTime;            
             yield return null;
         }
 
         if (detectPlayer.collider != null && detectPlayer.collider.tag == PlayerTag)
-        {
-            
+        {            
             _coneRender.ActivateState(_alarmed);
             _pursue.SetSpeed(4f);
             _pursue.SetGoal(graph.nodeWith(_player.GetComponent<PlayerMapRelation>().ReturnNodePlayerAt()));
@@ -149,7 +152,11 @@ public class PlayerDetection : MonoBehaviour, IDetection
             _pursue.SetGoal(CalculateNodeLastSeen(playerLastSeen, graph));
         }
 
-       
+        Transform parentTransfrom = gameObject.transform.parent;
+        GameObject guard = parentTransfrom.gameObject;
+        guard.layer = 11;
+        
+
         _pursue.enabled = true;
     }
 
@@ -175,21 +182,18 @@ public class PlayerDetection : MonoBehaviour, IDetection
      */
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.tag == PlayerTag)
-        {            
+        if (col.gameObject.tag == PlayerTag && !_seenPlayer)
+        {                       
             _sensePlayer = true;
         }
     }
 
-    /**
-     * If vision cone is no longer colliding with player, stop casting ray cast
-     */
     void OnTriggerExit2D(Collider2D col)
     {
-        if (col.gameObject.tag == PlayerTag)
-        {
+        if (col.gameObject.tag == PlayerTag && !_seenPlayer)
+        {            
             _sensePlayer = false;
-            _coneRender.ActivateState(_blind);
         }
     }
+    
 }

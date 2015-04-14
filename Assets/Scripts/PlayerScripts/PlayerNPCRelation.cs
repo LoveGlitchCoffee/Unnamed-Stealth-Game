@@ -24,12 +24,12 @@ public class PlayerNPCRelation : MonoBehaviour
     {
         if (col.gameObject.tag == GuardTag)
         {
-            Debug.Log("guard killed me");
+            
             _anim.SetInteger("walkDirection", 0);
-            Debug.Log(_anim.GetInteger("walkDirection"));
+            
             _anim.SetBool("dead",true);
             _playerMovement.enabled = false;
-            Debug.Log(_anim.GetBool("dead"));
+            
         }
     }
 }

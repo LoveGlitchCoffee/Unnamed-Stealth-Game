@@ -23,7 +23,7 @@ public class GenerateNodes : MonoBehaviour
      */
 	void Start ()
 	{
-	    _mapHeight = 3;
+	    _mapHeight = 2;
 	    _mapLength = 10;
 
 	    _nodeSize = Node.GetComponent<CircleCollider2D>().radius * 2;
@@ -46,7 +46,7 @@ public class GenerateNodes : MonoBehaviour
 
 	    for (int j  = 0; j < _graph.ReturnGraph().Count; j++)
 	    {
-	        Node node = _graph.ReturnGraph().ElementAt(j);            
+	        Node node = _graph.ReturnGraph().ElementAt(j);           
             node.AddNeighbour(-2,ref _graph);
             node.AddNeighbour(2,ref _graph);
 	    }	   
