@@ -21,7 +21,7 @@ public class GenerateNodes : MonoBehaviour
      * creates a map, consisting of nodes which can be use for determining coordinates/location
      * Once map has been generated, add neighbour (horizontal only) to each node, as null pointer otherwise
      */
-	void Start ()
+	void Awake ()
 	{
 	    _mapHeight = 2;
 	    _mapLength = 10;

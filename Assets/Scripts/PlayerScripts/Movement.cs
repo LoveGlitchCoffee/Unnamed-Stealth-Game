@@ -1,90 +1,65 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Movement : MonoBehaviour {
 
     private const KeyCode GoLeft = KeyCode.A;
     private const KeyCode GoRight = KeyCode.D;
+    
   
     private Animator _anim;
-    private const float Speed = 1.7f;
-    private const float RunSpeed = 2.7f;
+    private const float MoveForce = 150f;
+    private const float MaxSpeed = 1f;
+    private const float JumpSpeed = 300f;
+    private const float MaxRunSpeed = 7f;
 
-    private bool _onGround;
-    private const string GroundTag = "Ground";
-    private const string PlatformTag = "Platform";
-    private const string RisingPlatformTag = "RisingPlatform";
+    private bool _onGround = true;
+    private bool _jump = true;
+    private bool _goingRight;
 
+    private Rigidbody2D _playerRb;
+    public Transform GroundCheck;
+    
     // Use this for initialization
 	void Start ()
 	{
 	    _anim = gameObject.GetComponent<Animator>();
-	    _onGround = true;	    
+	    _playerRb = gameObject.GetComponent<Rigidbody2D>();
 	}
 	
 	// Update is called once per frame
-	void FixedUpdate () {
+	void Update ()
+	{
 
-        if (Input.GetKey(GoLeft))
-        {
-            transform.Translate(new Vector3(-Speed*Time.deltaTime, 0,transform.position.z));
-            _anim.SetInteger("walkDirection", 2);
-        }
-        else if (Input.GetKey(GoRight))
-        {
-            transform.Translate(new Vector3(Speed * Time.deltaTime, 0, transform.position.z));            
-            _anim.SetInteger("walkDirection", 1);
-        }
-        else if (Input.GetKeyUp(GoRight))
-        {
-            _anim.SetInteger("walkDirection", -1);
-        }
-        else if (Input.GetKeyUp(GoLeft))
-        {
-            _anim.SetInteger("walkDirection", -2);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space) && _onGround == true)
-        {            
-            GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 320));
-        }
-
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            if (Input.GetKey(GoLeft))
-            {
-                transform.Translate(new Vector3(-RunSpeed * Time.deltaTime, 0, transform.position.z));                            
-                _anim.SetInteger("walkDirection", 2);
-            }
-            else if (Input.GetKey(GoRight))
-            {
-                transform.Translate(new Vector3(RunSpeed * Time.deltaTime, 0, transform.position.z));                                            
-                _anim.SetInteger("walkDirection", 1);
-            }
-        }
+	    _onGround = Physics2D.Linecast(gameObject.transform.position, GroundCheck.position, 1 << LayerMask.NameToLayer("Environment"));
+        Debug.DrawLine(gameObject.transform.position, GroundCheck.position);
+	    if (Input.GetKeyDown(KeyCode.Space) && _onGround)
+	    {
+	        _jump = true;
+	    }
 	}
 
-    void OnCollisionEnter2D(Collision2D col)
+    void FixedUpdate()
     {
-        float spriteSize = GetComponent<SpriteRenderer>().sprite.bounds.size.y;
-        string collisionTag = col.gameObject.tag;
-        //Debug.Log(collisionTag);
-        if ((collisionTag == GroundTag || collisionTag == PlatformTag || collisionTag == RisingPlatformTag) && ((gameObject.transform.position.y - col.transform.position.y) >= spriteSize/2f)) 
+        float axisPress = Input.GetAxisRaw("Horizontal");
+
+        _anim.SetInteger("walkDirection",(int)axisPress);
+
+        if (axisPress*_playerRb.velocity.x < MaxSpeed)
         {
-            //Debug.Log("can jump");
-            _onGround = true;
+            _playerRb.AddForce(Vector2.right * axisPress * MoveForce);
         }
 
-        
-    }
-
-    void OnCollisionExit2D(Collision2D col)
-    {
-        string collisionTag = col.gameObject.tag;
-        if (collisionTag == GroundTag || collisionTag == PlatformTag || collisionTag == RisingPlatformTag)
+        if (Math.Abs(_playerRb.velocity.x) > MaxSpeed)
         {
-            _onGround = false;
-            //Debug.Log("cannot jump");
+            _playerRb.velocity = new Vector2(Math.Sign(_playerRb.velocity.x) * MaxSpeed, _playerRb.velocity.y);
         }
-            
+
+        if (_jump)
+        {
+            _playerRb.AddForce(new Vector2(0, JumpSpeed));
+            _jump = false;
+        }
     }
+    
 }
