@@ -2,8 +2,8 @@
 
 public class GuardAI : MonoBehaviour {
 
-    private bool _goingLeft;
-    private bool _outOfPatrolArea;
+    [HideInInspector] public bool GoingLeft;
+    [HideInInspector] public bool OutOfPatrolArea;
 
     private PlayerDetection _playerDetection;
     private PursuePlayer _pursuePlayer;
@@ -23,8 +23,8 @@ public class GuardAI : MonoBehaviour {
      */
     private void Start()
     {
-        _goingLeft = false;
-        _outOfPatrolArea = false;
+        GoingLeft = false;
+        OutOfPatrolArea = false;
 
         _playerDetection = gameObject.GetComponentInChildren<PlayerDetection>();
         
@@ -39,9 +39,9 @@ public class GuardAI : MonoBehaviour {
      */
 	void Update () {
 
-        if (!_outOfPatrolArea)
+        if (!OutOfPatrolArea)
         {
-            gameObject.transform.Translate(_goingLeft ? new Vector2(-WalkSpeed * Time.deltaTime, 0) : new Vector2(WalkSpeed * Time.deltaTime, 0));
+            gameObject.transform.Translate(GoingLeft ? new Vector2(-WalkSpeed * Time.deltaTime, 0) : new Vector2(WalkSpeed * Time.deltaTime, 0));
         }
         else
         {
@@ -57,12 +57,13 @@ public class GuardAI : MonoBehaviour {
     {
         Wait();
 
-        if (_waitTime >= 4.5)
+        if (_waitTime >= 4)
         {
-            _goingLeft = !_goingLeft;
+            GoingLeft = !GoingLeft;
+            GetComponent<Spritehandler>().FlipSprite();
             _waitTime = 0f;
-            _outOfPatrolArea = false;
-            _playerDetection.SetVisionCone(_goingLeft);
+            OutOfPatrolArea = false;
+            _playerDetection.SetVisionCone(GoingLeft);
         }
     }
 
@@ -72,7 +73,7 @@ public class GuardAI : MonoBehaviour {
      */
     private void Wait()
     {
-        if (_waitTime < 4.5f)
+        if (_waitTime < 4f)
         {
             _waitTime += 1f * Time.deltaTime;
         }
@@ -85,7 +86,7 @@ public class GuardAI : MonoBehaviour {
     {
         if (col.tag == PatrolAreaTag)
         {
-            _outOfPatrolArea = true;
+            OutOfPatrolArea = true;
         }
 
     }

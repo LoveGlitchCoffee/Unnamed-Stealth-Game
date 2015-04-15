@@ -23,10 +23,7 @@ public class PlayerNPCRelation : MonoBehaviour
     void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.tag == GuardTag)
-        {
-            
-            _anim.SetInteger("walkDirection", 0);
-            
+        {                                   
             _anim.SetBool("dead",true);
             _playerMovement.enabled = false;
             

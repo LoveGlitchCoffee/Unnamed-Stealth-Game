@@ -9,19 +9,21 @@ public class Movement : MonoBehaviour {
   
     private Animator _anim;
     private const float MoveForce = 150f;
-    private const float MaxSpeed = 1f;
+    private float _speed = 1f;
     private const float JumpSpeed = 300f;
-    private const float MaxRunSpeed = 7f;
+    private const float OriginalSpeed = 0.7f;
+    private const float MaxRunSpeed = 2f;
 
     private bool _onGround = true;
     private bool _jump = true;
-    private bool _goingRight;
+    private bool _goingRight = true;
+    
 
     private Rigidbody2D _playerRb;
     public Transform GroundCheck;
     
     // Use this for initialization
-	void Start ()
+	void Awake ()
 	{
 	    _anim = gameObject.GetComponent<Animator>();
 	    _playerRb = gameObject.GetComponent<Rigidbody2D>();
@@ -32,10 +34,19 @@ public class Movement : MonoBehaviour {
 	{
 
 	    _onGround = Physics2D.Linecast(gameObject.transform.position, GroundCheck.position, 1 << LayerMask.NameToLayer("Environment"));
-        Debug.DrawLine(gameObject.transform.position, GroundCheck.position);
+        
 	    if (Input.GetKeyDown(KeyCode.Space) && _onGround)
 	    {
 	        _jump = true;
+	    }
+
+	    if (Input.GetKeyDown(KeyCode.LeftShift))
+	    {
+	        _speed = MaxRunSpeed;
+	    }
+	    else if (Input.GetKeyUp(KeyCode.LeftShift))
+	    {
+	        _speed = OriginalSpeed;
 	    }
 	}
 
@@ -43,16 +54,27 @@ public class Movement : MonoBehaviour {
     {
         float axisPress = Input.GetAxisRaw("Horizontal");
 
-        _anim.SetInteger("walkDirection",(int)axisPress);
+        _anim.SetFloat("Speed", Math.Abs(axisPress));
 
-        if (axisPress*_playerRb.velocity.x < MaxSpeed)
+        if (axisPress*_playerRb.velocity.x < _speed)
         {
             _playerRb.AddForce(Vector2.right * axisPress * MoveForce);
         }
 
-        if (Math.Abs(_playerRb.velocity.x) > MaxSpeed)
+        if (Math.Abs(_playerRb.velocity.x) > _speed)
         {
-            _playerRb.velocity = new Vector2(Math.Sign(_playerRb.velocity.x) * MaxSpeed, _playerRb.velocity.y);
+            _playerRb.velocity = new Vector2(Math.Sign(_playerRb.velocity.x) * _speed, _playerRb.velocity.y);
+        }
+
+        if (axisPress < 0 && _goingRight)
+        {
+            Debug.Log("turn left");
+            Flip();
+        }
+        else if (axisPress > 0 && !_goingRight)
+        {
+            Debug.Log("turn right");
+            Flip();
         }
 
         if (_jump)
@@ -60,6 +82,16 @@ public class Movement : MonoBehaviour {
             _playerRb.AddForce(new Vector2(0, JumpSpeed));
             _jump = false;
         }
+        
+    }
+
+    private void Flip()
+    {
+            _goingRight = !_goingRight;
+            Vector3 localScale = gameObject.transform.localScale;
+            localScale.x *= -1;
+            gameObject.transform.localScale = localScale;
+
     }
     
 }
