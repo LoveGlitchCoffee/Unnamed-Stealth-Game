@@ -91,7 +91,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
      */
     public void SetVisionCone(bool goingLeft)
     {
-        Debug.Log(goingLeft);
+        
        // _visionCone.points = goingLeft ? _leftVision.ToArray() : _rightVision.ToArray();
         _coneRender.SetConeShape(_visionCone.points);
     }

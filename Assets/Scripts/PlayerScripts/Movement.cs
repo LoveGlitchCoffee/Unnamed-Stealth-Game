@@ -10,7 +10,7 @@ public class Movement : MonoBehaviour {
     private Animator _anim;
     private const float MoveForce = 150f;
     private float _speed = 1f;
-    private const float JumpSpeed = 300f;
+    private const float JumpSpeed = 320f;
     private const float OriginalSpeed = 0.7f;
     private const float MaxRunSpeed = 2f;
 
@@ -67,13 +67,11 @@ public class Movement : MonoBehaviour {
         }
 
         if (axisPress < 0 && _goingRight)
-        {
-            Debug.Log("turn left");
+        {            
             Flip();
         }
         else if (axisPress > 0 && !_goingRight)
         {
-            Debug.Log("turn right");
             Flip();
         }
 

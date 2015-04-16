@@ -13,6 +13,7 @@ public class GuardAI : MonoBehaviour {
 
     private const int WalkSpeed = 1;
     private float _waitTime = 0;
+    private const float MaxWaitTime = 2f;
 
     
     private Node _nodeGuardAt;
@@ -57,7 +58,7 @@ public class GuardAI : MonoBehaviour {
     {
         Wait();
 
-        if (_waitTime >= 4)
+        if (_waitTime >= MaxWaitTime)
         {
             GoingLeft = !GoingLeft;
             GetComponent<Spritehandler>().FlipSprite();
@@ -73,7 +74,7 @@ public class GuardAI : MonoBehaviour {
      */
     private void Wait()
     {
-        if (_waitTime < 4f)
+        if (_waitTime < MaxWaitTime)
         {
             _waitTime += 1f * Time.deltaTime;
         }

@@ -83,11 +83,40 @@ public class PursuePlayer : MonoBehaviour
      */     
     IEnumerator MoveToNextPosition(Node nextPosition)
     {        
-        while (!(transform.position.x == nextPosition.GetX() && transform.position.y == nextPosition.GetY()))
-        {                    
-            transform.position = Vector2.MoveTowards(transform.position, nextPosition.gameObject.transform.position, _speed * Time.deltaTime);
-            yield return 0;
+        while (!(transform.position.x == nextPosition.GetX()))
+        {
+            if (nextPosition.GetY() > transform.position.y)
+            {                
+                Debug.Log("platform to jump");
+                    yield return StartCoroutine(JumpToPlatform(nextPosition.gameObject.transform.position));                         
+            }
+            else
+            {
+                transform.position = Vector2.MoveTowards(transform.position, nextPosition.gameObject.transform.position, _speed * Time.deltaTime);
+                yield return 0;
+            }
+            
         }        
+    }
+
+    IEnumerator JumpToPlatform(Vector2 platformPosition)
+    {
+        Vector2 bendPosition = Vector2.up;
+        float timeToJump = 1.7f; // need to calc time to jump
+        float timeStamp = Time.time;
+
+        while (Time.time - timeStamp < timeToJump)
+        {                        
+            transform.position = Vector2.MoveTowards(transform.position, platformPosition, (Time.time - timeStamp)/timeToJump);            
+            float newY = transform.position.y + bendPosition.y*Mathf.Sin(Mathf.Clamp01((Time.time - timeStamp)/timeToJump)*Mathf.PI);            
+            float newX = transform.position.x + bendPosition.x * Mathf.Sin(Mathf.Clamp01((Time.time - timeStamp) / timeToJump) * Mathf.PI);
+            
+            if (transform.position.y != platformPosition.y)
+            transform.position = new Vector2(newX, newY * 0.8f);           
+            
+ 
+            yield return 0;
+        }
     }
 
     public void SetSpeed(float speed)
