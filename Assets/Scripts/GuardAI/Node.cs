@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 public class Node : MonoBehaviour, IComparable<Node>
 {
@@ -82,9 +83,11 @@ public class Node : MonoBehaviour, IComparable<Node>
      */
     void OnTriggerStay2D(Collider2D col)
     {
-        
+        float nodeDistance = GetComponentInParent<GenerateNodes>().NodeDistance;   
+    
         if (col.gameObject.layer == 10 && col.gameObject.tag == "RisingPlatform" && _justSpawned)
         {            
+            //Debug.Log("platform here");
             Node platformNode = null;
             GraphOfMap graph = _gameMap.GetComponent<GenerateNodes>().ReturnGeneratedGraph();
 
@@ -93,23 +96,21 @@ public class Node : MonoBehaviour, IComparable<Node>
                 Node node = graph.ReturnGraph().ElementAt(i);
 
                 if (node.GetX() == this.GetX() &&
-                    node.GetY() == this.GetY() + 2)
+                    node.GetY() == this.GetY() + nodeDistance)
                 {
                     platformNode = node;
                 }
             }
-
+            
            for (int j = 0; j < graph.ReturnGraph().Count; j++)
            {
                Node node = graph.ReturnGraph().ElementAt(j);
 
-                if ((node.GetX() == this.GetX() - 2 || node.GetX() == this.GetX() + 2) && node.GetY() == this.GetY())
+               if ((node.GetX() == this.GetX() - nodeDistance || node.GetX() == this.GetX() + nodeDistance) && node.GetY() == this.GetY())
                 {                    
                     node.AddSuccessor(platformNode, ref graph);                   
                 }
             }
-
-            AddSuccessor(platformNode,ref graph);
             
             _justSpawned = false;
         }

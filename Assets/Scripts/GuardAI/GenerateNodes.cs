@@ -7,6 +7,7 @@ public class GenerateNodes : MonoBehaviour
 
     public GameObject Node;
     private float _nodeSize;
+    [HideInInspector] public float NodeDistance;
 
     public int StartX;
     public int StartY;
@@ -23,10 +24,13 @@ public class GenerateNodes : MonoBehaviour
      */
 	void Awake ()
 	{
-	    _mapHeight = 2;
+	    _mapHeight = 3;
 	    _mapLength = 10;
 
 	    _nodeSize = Node.GetComponent<CircleCollider2D>().radius * 2;
+	    const float nodeGap = 0.5f;
+	    NodeDistance = _nodeSize + nodeGap;        
+
 
         _graph = new GraphOfMap(); // where map is
         _graph.AbstractMap = new List<Node>();
@@ -35,7 +39,7 @@ public class GenerateNodes : MonoBehaviour
 	    {
 	        for (int j = StartY; j < _mapHeight; j++)
 	        {
-	            GameObject newPos = (GameObject)Instantiate(Node, new Vector2(i * _nodeSize, j * _nodeSize), Node.transform.rotation);
+	            GameObject newPos = (GameObject)Instantiate(Node, new Vector2(i * (NodeDistance), j * (NodeDistance)), Node.transform.rotation);
 	            newPos.transform.parent = gameObject.transform;
 	            newPos.layer = 12;
 
@@ -47,8 +51,8 @@ public class GenerateNodes : MonoBehaviour
 	    for (int j  = 0; j < _graph.ReturnGraph().Count; j++)
 	    {
 	        Node node = _graph.ReturnGraph().ElementAt(j);           
-            node.AddNeighbour(-2,ref _graph);
-            node.AddNeighbour(2,ref _graph);
+            node.AddNeighbour(-NodeDistance,ref _graph);
+            node.AddNeighbour(NodeDistance,ref _graph);
 	    }	   
 	}
 	

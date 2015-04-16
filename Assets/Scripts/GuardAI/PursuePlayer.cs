@@ -24,7 +24,7 @@ public class PursuePlayer : MonoBehaviour
 	    _gameMap = GameObject.FindGameObjectWithTag("Map");
 
         _routeToPlayer = CalculateRouteToPlayer(); 	               
-	    Debug.Log(_routeToPlayer.Length);
+	    //Debug.Log(_routeToPlayer.Length);
         bool _loop = true;            	        
         StartCoroutine(NavigateToPlayer(_loop));                            
     }
@@ -47,11 +47,11 @@ public class PursuePlayer : MonoBehaviour
         newSearch._visited = new HashSet<Node>();
 
         Node start = gameObject.GetComponent<GuardAI>().ReturnNodeGuardAt();
-        Debug.Log("guard at " + start.GetX() + ", " + start.GetY());
+        //Debug.Log("guard at " + start.GetX() + ", " + start.GetY());
 
         
         //Node goal = _player.GetComponent<PlayerMapRelation>().ReturnNodePlayerAt();
-        Debug.Log("player last seen at " + _goal.GetX() + ", " + _goal.GetY());
+        //Debug.Log("player last seen at " + _goal.GetX() + ", " + _goal.GetY());
 
 
         return newSearch.FindRouteFrom(start, _goal);
@@ -86,9 +86,9 @@ public class PursuePlayer : MonoBehaviour
         while (!(transform.position.x == nextPosition.GetX()))
         {
             if (nextPosition.GetY() > transform.position.y)
-            {                
-                Debug.Log("platform to jump");
-                    yield return StartCoroutine(JumpToPlatform(nextPosition.gameObject.transform.position));                         
+            {                 
+                Debug.Log("start jump");
+                    yield return StartCoroutine(JumpToPlatform(transform.position, nextPosition.gameObject.transform.position));                         
             }
             else
             {
@@ -99,20 +99,28 @@ public class PursuePlayer : MonoBehaviour
         }        
     }
 
-    IEnumerator JumpToPlatform(Vector2 platformPosition)
+    IEnumerator JumpToPlatform(Vector2 startPosition, Vector2 platformPosition)
     {
         Vector2 bendPosition = Vector2.up;
-        float timeToJump = 1.7f; // need to calc time to jump
+        float timeToJump = 1.2f;
         float timeStamp = Time.time;
+        
 
         while (Time.time - timeStamp < timeToJump)
-        {                        
-            transform.position = Vector2.MoveTowards(transform.position, platformPosition, (Time.time - timeStamp)/timeToJump);            
-            float newY = transform.position.y + bendPosition.y*Mathf.Sin(Mathf.Clamp01((Time.time - timeStamp)/timeToJump)*Mathf.PI);            
+        {            
+            transform.position = Vector2.MoveTowards(transform.position, platformPosition, (Time.time - timeStamp)/(timeToJump));
+            
+            //bug is when make jump, y suddenly decrease
+
+            Debug.Log("fraction of tiem jumped " + Mathf.Clamp01(Time.time - timeStamp) / timeToJump);
+            Debug.Log("sin of angle " + (transform.position.y + bendPosition.y * Mathf.Sin(Mathf.Clamp01((Time.time - timeStamp)/timeToJump)*Mathf.PI)));
+            float newY = transform.position.y + bendPosition.y * Mathf.Sin(Mathf.Clamp01((Time.time - timeStamp)/timeToJump)*Mathf.PI);            
             float newX = transform.position.x + bendPosition.x * Mathf.Sin(Mathf.Clamp01((Time.time - timeStamp) / timeToJump) * Mathf.PI);
             
+            Debug.Log("new y position " + newY);
+
             if (transform.position.y != platformPosition.y)
-            transform.position = new Vector2(newX, newY * 0.8f);           
+                transform.position = new Vector2(newX, newY * 0.8f);           
             
  
             yield return 0;
