@@ -79,7 +79,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
 	// Update is called once per frame
 	void FixedUpdate ()
 	{
-	    if (_sensePlayer)
+	    if (_sensePlayer && !_seenPlayer)
 	    {            
 	        CheckLineOfSight();
 	    }
@@ -184,7 +184,8 @@ public class PlayerDetection : MonoBehaviour, IDetection
     void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.tag == PlayerTag && !_seenPlayer)
-        {                       
+        {         
+            Debug.Log("see player");  
             _sensePlayer = true;
         }
     }

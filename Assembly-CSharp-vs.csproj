@@ -46,7 +46,15 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\PlayerTools\Scripts\DragHandler.cs" />
+     <Compile Include="Assets\PlayerTools\Scripts\InventoryLogic.cs" />
+     <Compile Include="Assets\PlayerTools\Scripts\InventoryRenderer.cs" />
+     <Compile Include="Assets\PlayerTools\Scripts\ItemUI.cs" />
+     <Compile Include="Assets\PlayerTools\Scripts\Tool.cs" />
+     <Compile Include="Assets\PlayerTools\Scripts\ToolDB.cs" />
      <Compile Include="Assets\Scripts\GuardAI\BFS.cs" />
+     <Compile Include="Assets\Scripts\GuardAI\Behaviours\CoinLover.cs" />
+     <Compile Include="Assets\Scripts\GuardAI\FindPlayer.cs" />
      <Compile Include="Assets\Scripts\GuardAI\GenerateNodes.cs" />
      <Compile Include="Assets\Scripts\GuardAI\GraphOfMap.cs" />
      <Compile Include="Assets\Scripts\GuardAI\GuardAI.cs" />

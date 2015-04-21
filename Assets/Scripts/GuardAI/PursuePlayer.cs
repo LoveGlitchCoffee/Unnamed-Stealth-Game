@@ -7,11 +7,13 @@ public class PursuePlayer : MonoBehaviour
 
     //private GameObject _player;
     private GameObject _gameMap;
+    private FindPlayer _postSearch;
 
     private float _speed = 4f;
 
     private Node[] _routeToPlayer;
     private Node _goal;
+    private bool _searching; 
 
     // Use this for initialization
     /*
@@ -22,11 +24,8 @@ public class PursuePlayer : MonoBehaviour
 	{	    
 	    //_player = GameObject.FindGameObjectWithTag("Player");
 	    _gameMap = GameObject.FindGameObjectWithTag("Map");
-
-        _routeToPlayer = CalculateRouteToPlayer(); 	               
-	    //Debug.Log(_routeToPlayer.Length);
-        bool _loop = true;            	        
-        StartCoroutine(NavigateToPlayer(_loop));                            
+	    _postSearch = GetComponentInChildren<FindPlayer>();
+        StartSearch();        
     }
     
 	// Update is called once per frame
@@ -62,7 +61,7 @@ public class PursuePlayer : MonoBehaviour
      * Go to each position in the route
      * Should end up where player last seen
      */
-    IEnumerator NavigateToPlayer(bool loop)
+    IEnumerator NavigateToPlayer(bool searching)
     {
 
         do
@@ -73,9 +72,12 @@ public class PursuePlayer : MonoBehaviour
                 yield return StartCoroutine(MoveToNextPosition(_routeToPlayer[i]));
                 
             }
-            loop = false;
-        } while (loop);
+            searching = false;
+        } while (searching);
 
+        Debug.Log("finsihed search");                
+        _postSearch.enabled = true;
+        
     }
     
     /*
@@ -86,9 +88,8 @@ public class PursuePlayer : MonoBehaviour
         while (!(transform.position.x == nextPosition.GetX()))
         {
             if (nextPosition.GetY() > transform.position.y)
-            {                 
-                Debug.Log("start jump");
-                    yield return StartCoroutine(JumpToPlatform(transform.position, nextPosition.gameObject.transform.position));                         
+            {                                 
+                yield return StartCoroutine(JumpToPlatform(transform.position, nextPosition.gameObject.transform.position));                         
             }
             else
             {
@@ -102,7 +103,7 @@ public class PursuePlayer : MonoBehaviour
     IEnumerator JumpToPlatform(Vector2 startPosition, Vector2 platformPosition)
     {
         Vector2 bendPosition = Vector2.up;
-        float timeToJump = 1.2f;
+        float timeToJump = 1.5f;
         float timeStamp = Time.time;
         
 
@@ -112,12 +113,12 @@ public class PursuePlayer : MonoBehaviour
             
             //bug is when make jump, y suddenly decrease
 
-            Debug.Log("fraction of tiem jumped " + Mathf.Clamp01(Time.time - timeStamp) / timeToJump);
-            Debug.Log("sin of angle " + (transform.position.y + bendPosition.y * Mathf.Sin(Mathf.Clamp01((Time.time - timeStamp)/timeToJump)*Mathf.PI)));
+           // Debug.Log("fraction of tiem jumped " + Mathf.Clamp01(Time.time - timeStamp) / timeToJump);
+            //Debug.Log("sin of angle " + (transform.position.y + bendPosition.y * Mathf.Sin(Mathf.Clamp01((Time.time - timeStamp)/timeToJump)*Mathf.PI)));
             float newY = transform.position.y + bendPosition.y * Mathf.Sin(Mathf.Clamp01((Time.time - timeStamp)/timeToJump)*Mathf.PI);            
             float newX = transform.position.x + bendPosition.x * Mathf.Sin(Mathf.Clamp01((Time.time - timeStamp) / timeToJump) * Mathf.PI);
             
-            Debug.Log("new y position " + newY);
+            //Debug.Log("new y position " + newY);
 
             if (transform.position.y != platformPosition.y)
                 transform.position = new Vector2(newX, newY * 0.8f);           
@@ -136,5 +137,14 @@ public class PursuePlayer : MonoBehaviour
     {
         _goal = goal;
     }
-   
+
+    public void StartSearch()
+    {
+        _routeToPlayer = CalculateRouteToPlayer();
+        //Debug.Log(_routeToPlayer.Length);
+        _searching = true;
+        StartCoroutine(NavigateToPlayer(_searching));    
+        
+    }
+
 }
