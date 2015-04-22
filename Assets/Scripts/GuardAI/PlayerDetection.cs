@@ -84,11 +84,11 @@ public class PlayerDetection : MonoBehaviour, IDetection
 	    {
 	        if (_regularAi.GoingLeft)
 	        {
-	            CheckLineOfSight(-0.9f);
+	            CheckLineOfSight(-0.5f);
 	        }
 	        else
 	        {
-	            CheckLineOfSight(0.9f);
+	            CheckLineOfSight(0.5f);
 	        }
 	    }
 			
@@ -118,7 +118,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
      */
     public void CheckLineOfSight(float direction)
 	{
-        _lineOfSight = new Ray2D(new Vector2(gameObject.transform.position.x + direction, gameObject.transform.position.y + 0.1f), CalculateDirection());
+        _lineOfSight = new Ray2D(new Vector2(gameObject.transform.position.x + direction, gameObject.transform.position.y + 0.4f), CalculateDirection());
         RaycastHit2D detectPlayer = Physics2D.Raycast(_lineOfSight.origin, _lineOfSight.direction, _sightDistance, _detectLayerMask); // distance is x distance                               
         Debug.DrawLine(_lineOfSight.origin, detectPlayer.point);
 
@@ -131,6 +131,10 @@ public class PlayerDetection : MonoBehaviour, IDetection
         }
 	}
 
+    /*
+     * reaciton is to be astonished for 0.5 seconds before assuring that player is defintely within line of sight or not
+     * if player is defenitely seen, pursue player, else go to where player was last seen, cautiously.
+     */
     IEnumerator ReactToDetection(RaycastHit2D playerLastSeen, float direction)
     {
         float baffledTime = 0f;
@@ -140,7 +144,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
 
         while (baffledTime < 0.5f)
         {
-            _lineOfSight = new Ray2D(new Vector2(gameObject.transform.position.x + direction, gameObject.transform.position.y + 0.1f), CalculateDirection());
+            _lineOfSight = new Ray2D(new Vector2(gameObject.transform.position.x + direction, gameObject.transform.position.y + 0.4f), CalculateDirection());
             detectPlayer = Physics2D.Raycast(_lineOfSight.origin, _lineOfSight.direction, _sightDistance, _detectLayerMask);
             Debug.DrawLine(_lineOfSight.origin, detectPlayer.point);
 
@@ -170,7 +174,10 @@ public class PlayerDetection : MonoBehaviour, IDetection
         _pursue.StartSearch();
     }
 
-    //problem of bug
+    /*
+     * Calculates the node player last seen (checks which collider overlaps point of last seen
+     * if last seen is outside collider, calculate closest point (left most only)
+     */
     private Node CalculateNodeLastSeen(RaycastHit2D playerLastSeen, GraphOfMap graph)
     {
         Vector2 pointLastSeen = playerLastSeen.point;
@@ -195,7 +202,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
     /**
      * If vision cone collides with player, cast ray cast
      */
-    void OnTriggerEnter2D(Collider2D col)
+    void OnTriggerStay2D(Collider2D col)
     {
         if (col.gameObject.tag == PlayerTag && !SeenPlayer)
         {                    

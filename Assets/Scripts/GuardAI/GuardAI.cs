@@ -23,8 +23,7 @@ public class GuardAI : MonoBehaviour {
      * Always in patrol region going left     
      */
     private void Start()
-    {
-        gameObject.layer = 9;
+    {        
         GoingLeft = false;
         OutOfPatrolArea = false;
 
@@ -40,7 +39,7 @@ public class GuardAI : MonoBehaviour {
      * once out of patrol region, turns around and continues patrol
      */
 	void Update () {
-
+        
         if (!OutOfPatrolArea)
         {
             gameObject.transform.Translate(GoingLeft ? new Vector2(-WalkSpeed * Time.deltaTime, 0) : new Vector2(WalkSpeed * Time.deltaTime, 0));

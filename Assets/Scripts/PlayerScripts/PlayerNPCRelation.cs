@@ -8,6 +8,8 @@ public class PlayerNPCRelation : MonoBehaviour
     private Animator _anim;
     private Movement _playerMovement;
 
+    [HideInInspector] public bool dead { get; set; }
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -26,7 +28,7 @@ public class PlayerNPCRelation : MonoBehaviour
         {                                   
             _anim.SetBool("dead",true);
             _playerMovement.enabled = false;
-            
+            dead = true;
         }
     }
 }

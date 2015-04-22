@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class PursuePlayer : MonoBehaviour
 {
-
-    //private GameObject _player;
+   
     private GameObject _gameMap;
     private FindPlayer _postSearch;
     private PlayerDetection _detector;
+    private GameObject _player;
 
     private float _speed = 4f;
 
@@ -16,24 +16,18 @@ public class PursuePlayer : MonoBehaviour
     private Node _goal;
     private bool _searching; 
 
-    // Use this for initialization
     /*
      * calculates the route to the player, using the map
      * then goes to the player's position WHEN PLAYER LAST SEEN
      */
 	void Start ()
 	{	    
-	    //_player = GameObject.FindGameObjectWithTag("Player");
 	    _gameMap = GameObject.FindGameObjectWithTag("Map");
 	    _detector = transform.GetChild(0).GetComponent<PlayerDetection>();
-	    _postSearch = GetComponentInChildren<FindPlayer>();        
-    }
+	    _postSearch = GetComponentInChildren<FindPlayer>();
+	    _player = GameObject.FindGameObjectWithTag("Player");
+	}
     
-	// Update is called once per frame
-    public void FixedUpdate()
-    {
-
-    }
 
     /**
      * Calculates route from guard to player, returning the route as an array
@@ -58,7 +52,7 @@ public class PursuePlayer : MonoBehaviour
 
     /**
      * Go to each position in the route
-     * Should end up where player last seen
+     * Should end up where player last seen, then do the post searching behaviour
      */
     IEnumerator NavigateToPlayer(bool searching)
     {        
@@ -70,14 +64,26 @@ public class PursuePlayer : MonoBehaviour
                 yield return StartCoroutine(MoveToNextPosition(_routeToPlayer[i]));
                 
             }
+
             searching = false;
+
         } while (searching);
 
-        Debug.Log("finsihed search");
-        _detector.SeenPlayer = false;
-        _postSearch.enabled = true;        
-        _postSearch.VisualSearch();
+        //Debug.Log("finsihed search");
 
+        if (_player.GetComponent<PlayerNPCRelation>().dead)
+        {
+            enabled = false;
+            gameObject.layer = 9;
+            GetComponent<GuardAI>().enabled = true;
+        }
+        else
+        {
+            _detector.SeenPlayer = false;
+            _postSearch.enabled = true;
+            _postSearch.VisualSearch();
+        }
+        
     }
     
     /*
@@ -100,6 +106,9 @@ public class PursuePlayer : MonoBehaviour
         }        
     }
 
+    /*
+     * Moves guard to platform by lerping but y position + sin(y) so larger proportion to x and creates curve
+     */
     IEnumerator JumpToPlatform(Vector2 startPosition, Vector2 platformPosition)
     {
         Vector2 bendPosition = Vector2.up;
@@ -113,7 +122,7 @@ public class PursuePlayer : MonoBehaviour
             
             //bug is when make jump, y suddenly decrease
 
-           // Debug.Log("fraction of tiem jumped " + Mathf.Clamp01(Time.time - timeStamp) / timeToJump);
+            //Debug.Log("fraction of tiem jumped " + Mathf.Clamp01(Time.time - timeStamp) / timeToJump);
             //Debug.Log("sin of angle " + (transform.position.y + bendPosition.y * Mathf.Sin(Mathf.Clamp01((Time.time - timeStamp)/timeToJump)*Mathf.PI)));
             float newY = transform.position.y + bendPosition.y * Mathf.Sin(Mathf.Clamp01((Time.time - timeStamp)/timeToJump)*Mathf.PI);            
             float newX = transform.position.x + bendPosition.x * Mathf.Sin(Mathf.Clamp01((Time.time - timeStamp) / timeToJump) * Mathf.PI);
@@ -123,10 +132,10 @@ public class PursuePlayer : MonoBehaviour
             if (transform.position.y != platformPosition.y)
                 transform.position = new Vector2(newX, newY * 0.8f);           
             
- 
             yield return 0;
         }
     }
+
 
     public void SetSpeed(float speed)
     {
@@ -138,10 +147,12 @@ public class PursuePlayer : MonoBehaviour
         _goal = goal;
     }
 
+    /*
+     * Starts a new search and navigation from current position to player's last seen position
+     */
     public void StartSearch()
     {
-        _routeToPlayer = CalculateRouteToPlayer();
-         Debug.Log(_routeToPlayer.Length);
+        _routeToPlayer = CalculateRouteToPlayer();       
         _searching = true;
         StartCoroutine(NavigateToPlayer(_searching));            
     }

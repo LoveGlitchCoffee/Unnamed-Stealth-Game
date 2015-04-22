@@ -21,10 +21,6 @@ public class VisionConeRender : MonoBehaviour
 
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	    
-	}
 
     /*
      * Sets the vision cone's near and far position and width according to abstract player detection

@@ -15,10 +15,10 @@ public class Spritehandler : MonoBehaviour
 	    _anim = GetComponent<Animator>();
 	}
 	
-	// Update is called once per frame
+
 	void Update ()
 	{
-	    _guardIdle = _guardAi.OutOfPatrolArea; // logic m8        
+	    _guardIdle = _guardAi.OutOfPatrolArea;      
 	}
 
     void FixedUpdate()

@@ -4,65 +4,98 @@ using UnityEngine;
 public class FindPlayer : MonoBehaviour
 {
     
-    private float _scanAngle = 0.3f; //  euler angles
+    private float _scanAngle = 0.3f; //euler angles    
+    private const float StepLook = 1;
     
-        
-	// Use this for initialization
-	void Start () {
-	    
-	}
-		
-
     public void VisualSearch()
-    {
-        // pass in to say found or not
+    {        
         StartCoroutine(VisualScan());
-
-        //StartCoroutine(RestoreVisual());
+        
         enabled = false;
     }
 
-    //IEnumerator RestoreVisual()
-    //{
-     //   while ()
-    //}
+    /**
+     * restore sight to 0 on z rotation, looks striaght again
+     */
+    IEnumerator RestoreVisual()
+    {
+        
+        while (gameObject.transform.rotation.z != 0)
+        {
+            if (gameObject.transform.rotation.z > 0)
+                RotateView(-StepLook);
+            else
+            {
+                RotateView(StepLook);
+            }
+            
+            yield return null;
+        }
 
+        gameObject.transform.rotation = new Quaternion(); //(0,0,0,0) ?
+        
+        
+    }
+
+    /*
+     * look up , wait for a couple of seconds then look down to find the player
+     * method is just to rotate the detector object on the z axis in euler angles
+     */
     IEnumerator VisualScan()
     {       
-        const float stepLook = 1;
+        
         const int turns = 3;
         int turnTaken = 0;
         float delayCounter;
-        float delayTime = 3f;
+        float delayTime = 3f;        
+        
 
-        while (turnTaken < turns)
-        {
+        Debug.Log(GetComponent<PlayerDetection>().SeenPlayer);
+        while (turnTaken < turns && !GetComponent<PlayerDetection>().SeenPlayer)
+        {            
             delayCounter = 0;
 
-             while (gameObject.transform.rotation.z < _scanAngle)
-             {                 
-                gameObject.transform.Rotate(new Vector3(0, 0, stepLook));
-                yield return null;
+            while (gameObject.transform.rotation.z < _scanAngle)
+             {                           
+                RotateView(StepLook);
+                 yield return 0;
              }
 
-            while (delayCounter < delayTime)
+            while (delayCounter < delayCounter)
             {
-                delayCounter += 0.4f;                
-                yield return null;
+                Debug.Log(delayCounter);
+                yield return StartCoroutine(Wait(delayTime));
             }
-             turnTaken++;// won't terminate
-
+             
              while (gameObject.transform.rotation.z > -_scanAngle)
-            {
-                gameObject.transform.Rotate(new Vector3(0, 0, -stepLook));
-                yield return null;
-            }
+             {
+                 RotateView(-StepLook);
+                 yield return 0;
+             }
 
             turnTaken++;
         }
+        
+        StartCoroutine(RestoreVisual());
 
-    
+        if (!GetComponent<PlayerDetection>().SeenPlayer)
+        {
+            GetComponentInParent<GuardAI>().enabled = true;
+            GetComponentInParent<PursuePlayer>().enabled = false;
+        }
+            
+
+
     }
 
-    
+    private IEnumerator Wait(float delayCounter)
+    {
+        delayCounter += 0.2f;
+        yield return 0;
+    }
+
+    private void RotateView(float stepLook)
+    {
+        gameObject.transform.Rotate(new Vector3(0, 0, stepLook));
+    }
 }
