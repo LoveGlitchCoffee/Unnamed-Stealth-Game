@@ -108,7 +108,8 @@ public class Node : MonoBehaviour, IComparable<Node>
 
                if ((node.GetX() == this.GetX() - nodeDistance || node.GetX() == this.GetX() + nodeDistance) && node.GetY() == this.GetY())
                 {                    
-                    node.AddSuccessor(platformNode, ref graph);                   
+                    node.AddSuccessor(platformNode, ref graph);
+                    platformNode.AddSuccessor(node, ref graph);
                 }
             }
             

@@ -61,8 +61,7 @@ public class PursuePlayer : MonoBehaviour
      * Should end up where player last seen
      */
     IEnumerator NavigateToPlayer(bool searching)
-    {
-        Debug.Log(searching);
+    {        
         do
         {
             for (int i = 0; i < _routeToPlayer.Length; i++)
@@ -142,7 +141,7 @@ public class PursuePlayer : MonoBehaviour
     public void StartSearch()
     {
         _routeToPlayer = CalculateRouteToPlayer();
-        //Debug.Log(_routeToPlayer.Length);
+         Debug.Log(_routeToPlayer.Length);
         _searching = true;
         StartCoroutine(NavigateToPlayer(_searching));            
     }

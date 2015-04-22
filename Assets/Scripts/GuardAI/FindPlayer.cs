@@ -4,7 +4,7 @@ using UnityEngine;
 public class FindPlayer : MonoBehaviour
 {
     
-    private float _scanAngle = 0.5f; //  euler angles
+    private float _scanAngle = 0.3f; //  euler angles
     
         
 	// Use this for initialization
@@ -15,29 +15,41 @@ public class FindPlayer : MonoBehaviour
 
     public void VisualSearch()
     {
-        
+        // pass in to say found or not
         StartCoroutine(VisualScan());
-        
-        //reset visual rotation
+
+        //StartCoroutine(RestoreVisual());
         enabled = false;
     }
 
+    //IEnumerator RestoreVisual()
+    //{
+     //   while ()
+    //}
+
     IEnumerator VisualScan()
-    {
-        Debug.Log(_scanAngle);
+    {       
         const float stepLook = 1;
         const int turns = 3;
         int turnTaken = 0;
+        float delayCounter;
+        float delayTime = 3f;
 
         while (turnTaken < turns)
         {
+            delayCounter = 0;
+
              while (gameObject.transform.rotation.z < _scanAngle)
-             {
-                 Debug.Log(gameObject.transform.rotation.z);
+             {                 
                 gameObject.transform.Rotate(new Vector3(0, 0, stepLook));
                 yield return null;
              }
 
+            while (delayCounter < delayTime)
+            {
+                delayCounter += 0.4f;                
+                yield return null;
+            }
              turnTaken++;// won't terminate
 
              while (gameObject.transform.rotation.z > -_scanAngle)
