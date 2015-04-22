@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 public struct BFS
@@ -16,6 +17,8 @@ public struct BFS
 
         Node current;
         Node parent;
+
+        
 
         List<Node> path = new List<Node> {start};
 

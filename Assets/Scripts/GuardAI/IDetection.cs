@@ -3,5 +3,5 @@ using System.Collections;
 
 public interface IDetection
 {
-     void CheckLineOfSight();
+     void CheckLineOfSight(float direction);
 }

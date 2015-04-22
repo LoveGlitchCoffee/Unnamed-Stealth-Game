@@ -24,6 +24,7 @@ public class GuardAI : MonoBehaviour {
      */
     private void Start()
     {
+        gameObject.layer = 9;
         GoingLeft = false;
         OutOfPatrolArea = false;
 
@@ -95,7 +96,7 @@ public class GuardAI : MonoBehaviour {
     /**
      * tracks which map node guard is currently at
      */
-    void OnTriggerEnter2D(Collider2D col)
+    void OnTriggerStay2D(Collider2D col)
     {
         if (col.gameObject.layer == 12)
         {            

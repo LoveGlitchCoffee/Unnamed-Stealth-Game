@@ -8,6 +8,7 @@ public class PursuePlayer : MonoBehaviour
     //private GameObject _player;
     private GameObject _gameMap;
     private FindPlayer _postSearch;
+    private PlayerDetection _detector;
 
     private float _speed = 4f;
 
@@ -24,8 +25,8 @@ public class PursuePlayer : MonoBehaviour
 	{	    
 	    //_player = GameObject.FindGameObjectWithTag("Player");
 	    _gameMap = GameObject.FindGameObjectWithTag("Map");
-	    _postSearch = GetComponentInChildren<FindPlayer>();
-        StartSearch();        
+	    _detector = transform.GetChild(0).GetComponent<PlayerDetection>();
+	    _postSearch = GetComponent<FindPlayer>();        
     }
     
 	// Update is called once per frame
@@ -46,11 +47,9 @@ public class PursuePlayer : MonoBehaviour
         newSearch._visited = new HashSet<Node>();
 
         Node start = gameObject.GetComponent<GuardAI>().ReturnNodeGuardAt();
-        //Debug.Log("guard at " + start.GetX() + ", " + start.GetY());
-
-        
-        //Node goal = _player.GetComponent<PlayerMapRelation>().ReturnNodePlayerAt();
-        //Debug.Log("player last seen at " + _goal.GetX() + ", " + _goal.GetY());
+        Debug.Log("guard at " + start.GetX() + ", " + start.GetY());
+              
+        Debug.Log("player last seen at " + _goal.GetX() + ", " + _goal.GetY());
 
 
         return newSearch.FindRouteFrom(start, _goal);
@@ -63,7 +62,7 @@ public class PursuePlayer : MonoBehaviour
      */
     IEnumerator NavigateToPlayer(bool searching)
     {
-
+        Debug.Log(searching);
         do
         {
             for (int i = 0; i < _routeToPlayer.Length; i++)
@@ -75,9 +74,9 @@ public class PursuePlayer : MonoBehaviour
             searching = false;
         } while (searching);
 
-        Debug.Log("finsihed search");                
-        _postSearch.enabled = true;
-        
+        Debug.Log("finsihed search");
+        _detector.SeenPlayer = false;        
+
     }
     
     /*
@@ -143,8 +142,7 @@ public class PursuePlayer : MonoBehaviour
         _routeToPlayer = CalculateRouteToPlayer();
         //Debug.Log(_routeToPlayer.Length);
         _searching = true;
-        StartCoroutine(NavigateToPlayer(_searching));    
-        
+        StartCoroutine(NavigateToPlayer(_searching));            
     }
 
 }

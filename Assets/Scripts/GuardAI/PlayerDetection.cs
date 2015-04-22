@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using UnityEngine;
 
 public class PlayerDetection : MonoBehaviour, IDetection
@@ -25,7 +26,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
     private PolygonCollider2D _visionCone;
 
     private bool _sensePlayer = false;
-    private bool _seenPlayer = false;  
+    [HideInInspector] public bool SeenPlayer = false;  
 
 	Ray2D _lineOfSight;
     private int _sightDistance;
@@ -79,9 +80,16 @@ public class PlayerDetection : MonoBehaviour, IDetection
 	// Update is called once per frame
 	void FixedUpdate ()
 	{
-	    if (_sensePlayer && !_seenPlayer)
-	    {            
-	        CheckLineOfSight();
+	    if (_sensePlayer && !SeenPlayer)
+	    {
+	        if (_regularAi.GoingLeft)
+	        {
+	            CheckLineOfSight(-0.9f);
+	        }
+	        else
+	        {
+	            CheckLineOfSight(0.9f);
+	        }
 	    }
 			
 	}
@@ -108,22 +116,22 @@ public class PlayerDetection : MonoBehaviour, IDetection
      * Ray cast towards player if within vision cone
      * If ray cast hits player, i.e. no obstacles between them, then enable guard's pursue behaviour, turning off patrol behaviour
      */
-    public void CheckLineOfSight()
+    public void CheckLineOfSight(float direction)
 	{
-        _lineOfSight = new Ray2D(new Vector2(gameObject.transform.position.x + 0.9f, gameObject.transform.position.y + 0.1f), CalculateDirection());
-        RaycastHit2D detectPlayer = Physics2D.Raycast(_lineOfSight.origin, _lineOfSight.direction, _sightDistance, _detectLayerMask); // distance is x distance                       
+        _lineOfSight = new Ray2D(new Vector2(gameObject.transform.position.x + direction, gameObject.transform.position.y + 0.1f), CalculateDirection());
+        RaycastHit2D detectPlayer = Physics2D.Raycast(_lineOfSight.origin, _lineOfSight.direction, _sightDistance, _detectLayerMask); // distance is x distance                               
         Debug.DrawLine(_lineOfSight.origin, detectPlayer.point);
 
         if (detectPlayer.collider != null && detectPlayer.collider.tag == PlayerTag)
         {
             _regularAi.enabled = false;
             _sensePlayer = false;
-            _seenPlayer = true;
-            StartCoroutine(ReactToDetection(detectPlayer));
+            SeenPlayer = true;
+            StartCoroutine(ReactToDetection(detectPlayer, direction));
         }
 	}
 
-    IEnumerator ReactToDetection(RaycastHit2D playerLastSeen)
+    IEnumerator ReactToDetection(RaycastHit2D playerLastSeen, float direction)
     {
         float baffledTime = 0f;
         _coneRender.ActivateState(_suspicion);
@@ -132,7 +140,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
 
         while (baffledTime < 0.5f)
         {
-            _lineOfSight = new Ray2D(new Vector2(gameObject.transform.position.x + 0.9f, gameObject.transform.position.y + 0.1f), CalculateDirection());
+            _lineOfSight = new Ray2D(new Vector2(gameObject.transform.position.x + direction, gameObject.transform.position.y + 0.1f), CalculateDirection());
             detectPlayer = Physics2D.Raycast(_lineOfSight.origin, _lineOfSight.direction, _sightDistance, _detectLayerMask);
             Debug.DrawLine(_lineOfSight.origin, detectPlayer.point);
 
@@ -147,24 +155,26 @@ public class PlayerDetection : MonoBehaviour, IDetection
             _pursue.SetGoal(graph.nodeWith(_player.GetComponent<PlayerMapRelation>().ReturnNodePlayerAt()));
         }
         else
-        {
-            
-            _pursue.SetSpeed(1f);
+        {            
+            _pursue.SetSpeed(1f);           
             _pursue.SetGoal(CalculateNodeLastSeen(playerLastSeen, graph));
+            
         }
 
         Transform parentTransfrom = gameObject.transform.parent;
         GameObject guard = parentTransfrom.gameObject;
         guard.layer = 11;
-        
+
 
         _pursue.enabled = true;
+        _pursue.StartSearch();
     }
 
+    //problem of bug
     private Node CalculateNodeLastSeen(RaycastHit2D playerLastSeen, GraphOfMap graph)
     {
         Vector2 pointLastSeen = playerLastSeen.point;
-        
+        Node alternateNode = null;
 
         for (int i = 0; i < _gameMap.transform.childCount; i++)
         {
@@ -172,9 +182,13 @@ public class PlayerDetection : MonoBehaviour, IDetection
 
             if (nodeCollider.OverlapPoint(pointLastSeen))                
                 return graph.nodeWith(nodeCollider.gameObject.GetComponent<Node>());
+
+            if (!(nodeCollider.gameObject.transform.position.x > pointLastSeen.x) &&
+                !(nodeCollider.gameObject.transform.position.y > pointLastSeen.y))
+                alternateNode = nodeCollider.gameObject.GetComponent<Node>();
         }
 
-        return null; // shouldn't reach here
+        return alternateNode;
     }
     
 
@@ -183,16 +197,15 @@ public class PlayerDetection : MonoBehaviour, IDetection
      */
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.tag == PlayerTag && !_seenPlayer)
-        {         
-            Debug.Log("see player");  
+        if (col.gameObject.tag == PlayerTag && !SeenPlayer)
+        {                    
             _sensePlayer = true;
         }
     }
 
     void OnTriggerExit2D(Collider2D col)
     {
-        if (col.gameObject.tag == PlayerTag && !_seenPlayer)
+        if (col.gameObject.tag == PlayerTag && !SeenPlayer)
         {            
             _sensePlayer = false;
         }
