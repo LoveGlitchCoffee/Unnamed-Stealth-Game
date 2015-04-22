@@ -13,7 +13,8 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public void OnBeginDrag(PointerEventData eventData)
     {
         _itemBeingDragged = gameObject.transform.parent.gameObject.GetComponent<ItemUI>().ReturnToolInSlot();
-        _startPosition = transform.position;
+        _startPosition = new Vector3(0,0,0);
+        
 
         _physicalSpawn = Instantiate(InteractiveObj);
         _physicalSpawn.GetComponent<Identifer>().SetIdentity(_itemBeingDragged);
@@ -23,11 +24,15 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void OnDrag(PointerEventData eventData)
     {
+        Debug.Log("mouse at " + Input.mousePosition);
+        Debug.Log(_physicalSpawn.transform.position.ToString());
         _physicalSpawn.transform.position = Input.mousePosition;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-    
+        //do coroutine
+
+        
     }
 }
