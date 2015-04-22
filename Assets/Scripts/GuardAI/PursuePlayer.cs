@@ -26,7 +26,7 @@ public class PursuePlayer : MonoBehaviour
 	    //_player = GameObject.FindGameObjectWithTag("Player");
 	    _gameMap = GameObject.FindGameObjectWithTag("Map");
 	    _detector = transform.GetChild(0).GetComponent<PlayerDetection>();
-	    _postSearch = GetComponent<FindPlayer>();        
+	    _postSearch = GetComponentInChildren<FindPlayer>();        
     }
     
 	// Update is called once per frame
@@ -75,7 +75,9 @@ public class PursuePlayer : MonoBehaviour
         } while (searching);
 
         Debug.Log("finsihed search");
-        _detector.SeenPlayer = false;        
+        _detector.SeenPlayer = false;
+        _postSearch.enabled = true;        
+        _postSearch.VisualSearch();
 
     }
     

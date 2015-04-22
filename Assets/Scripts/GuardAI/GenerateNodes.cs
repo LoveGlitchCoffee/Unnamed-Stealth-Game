@@ -50,7 +50,7 @@ public class GenerateNodes : MonoBehaviour
 
 	    for (int j  = 0; j < _graph.ReturnGraph().Count; j++)
 	    {
-	        Node node = _graph.ReturnGraph().ElementAt(j);           
+	        Node node = _graph.ReturnGraph().ElementAt(j);             
             node.AddNeighbour(-NodeDistance,ref _graph);
             node.AddNeighbour(NodeDistance,ref _graph);
 	    }	   
