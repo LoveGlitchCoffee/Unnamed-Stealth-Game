@@ -184,15 +184,16 @@ public class PlayerDetection : MonoBehaviour, IDetection
         Node alternateNode = null;
 
         for (int i = 0; i < _gameMap.transform.childCount; i++)
-        {
+        {            
             Collider2D nodeCollider = _gameMap.transform.GetChild(i).GetComponent<CircleCollider2D>();
+            
+                if (nodeCollider != null && nodeCollider.OverlapPoint(pointLastSeen))
+                    return graph.nodeWith(nodeCollider.gameObject.GetComponent<Node>());
 
-            if (nodeCollider.OverlapPoint(pointLastSeen))                
-                return graph.nodeWith(nodeCollider.gameObject.GetComponent<Node>());
-
-            if (!(nodeCollider.gameObject.transform.position.x > pointLastSeen.x) &&
-                !(nodeCollider.gameObject.transform.position.y > pointLastSeen.y))
-                alternateNode = nodeCollider.gameObject.GetComponent<Node>();
+                if (nodeCollider != null &&
+                    !(nodeCollider.gameObject.transform.position.x > pointLastSeen.x) &&
+                    !(nodeCollider.gameObject.transform.position.y > pointLastSeen.y))
+                    alternateNode = nodeCollider.gameObject.GetComponent<Node>();            
         }
 
         return alternateNode;

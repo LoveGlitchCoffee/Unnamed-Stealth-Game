@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Text;
 using UnityEngine;
 
 public class FindPlayer : MonoBehaviour
@@ -6,11 +7,11 @@ public class FindPlayer : MonoBehaviour
     
     private float _scanAngle = 0.3f; //euler angles    
     private const float StepLook = 1;
+    public bool ResumePatrol;
     
     public void VisualSearch()
     {        
-        StartCoroutine(VisualScan());
-        
+        StartCoroutine(VisualScan());        
         enabled = false;
     }
 
@@ -19,7 +20,7 @@ public class FindPlayer : MonoBehaviour
      */
     IEnumerator RestoreVisual()
     {
-        
+        Debug.Log("restoring visuals");
         while (gameObject.transform.rotation.z != 0)
         {
             if (gameObject.transform.rotation.z > 0)
@@ -44,15 +45,14 @@ public class FindPlayer : MonoBehaviour
     IEnumerator VisualScan()
     {       
         
-        const int turns = 3;
+        const int turns = 2;
         int turnTaken = 0;
         float delayCounter;
         float delayTime = 3f;        
         
-
-        Debug.Log(GetComponent<PlayerDetection>().SeenPlayer);
+        
         while (turnTaken < turns && !GetComponent<PlayerDetection>().SeenPlayer)
-        {            
+        {                       
             delayCounter = 0;
 
             while (gameObject.transform.rotation.z < _scanAngle)
@@ -61,38 +61,47 @@ public class FindPlayer : MonoBehaviour
                  yield return 0;
              }
 
-            while (delayCounter < delayCounter)
+            
+            while (delayCounter < delayTime)
             {
-                Debug.Log(delayCounter);
-                yield return StartCoroutine(Wait(delayTime));
+                delayCounter += 0.2f;
+                yield return 0;
             }
-             
+
              while (gameObject.transform.rotation.z > -_scanAngle)
-             {
+             {                 
+                 //weird bug here                 
                  RotateView(-StepLook);
                  yield return 0;
              }
 
-            turnTaken++;
+            delayCounter = 0f;
+
+            while (delayCounter < delayTime)
+            {
+                delayCounter += 0.2f;
+                yield return 0;
+            }
+
+            turnTaken++;            
         }
         
         StartCoroutine(RestoreVisual());
 
         if (!GetComponent<PlayerDetection>().SeenPlayer)
-        {
-            GetComponentInParent<GuardAI>().enabled = true;
+        {            
+            ResumePatrol = true;
+            Debug.Log("resume patrol " + ResumePatrol);
+            gameObject.transform.parent.gameObject.layer = 9;
+            GetComponent<VisionConeRender>().ActivateState(Color.grey);
+            GetComponentInParent<Spritehandler>().FlipSprite();
+            GetComponentInParent<PursuePlayer>().ReverseRoute();
+            GetComponentInParent<PursuePlayer>().ReturnToPatrol();
             GetComponentInParent<PursuePlayer>().enabled = false;
-        }
-            
-
+        }            
 
     }
 
-    private IEnumerator Wait(float delayCounter)
-    {
-        delayCounter += 0.2f;
-        yield return 0;
-    }
 
     private void RotateView(float stepLook)
     {

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class GuardAI : MonoBehaviour {
 
@@ -116,5 +117,6 @@ public class GuardAI : MonoBehaviour {
     {        
         return _nodeGuardAt;
     }
+   
 
 }

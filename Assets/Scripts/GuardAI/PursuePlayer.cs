@@ -75,13 +75,23 @@ public class PursuePlayer : MonoBehaviour
         {
             enabled = false;
             gameObject.layer = 9;
-            GetComponent<GuardAI>().enabled = true;
+            transform.GetChild(0).GetComponent<VisionConeRender>().ActivateState(Color.grey);
+            _postSearch.ResumePatrol = true;
         }
         else
         {
             _detector.SeenPlayer = false;
             _postSearch.enabled = true;
             _postSearch.VisualSearch();
+        }
+
+        if (_postSearch.ResumePatrol)
+        {
+            if (!(_player.GetComponent<PlayerNPCRelation>().dead))
+                GetComponent<Spritehandler>().FlipSprite();  
+          
+            GetComponent<GuardAI>().enabled = true;
+            _postSearch.ResumePatrol = false;
         }
         
     }
@@ -154,7 +164,31 @@ public class PursuePlayer : MonoBehaviour
     {
         _routeToPlayer = CalculateRouteToPlayer();       
         _searching = true;
+        Debug.Log(_routeToPlayer.Length);
         StartCoroutine(NavigateToPlayer(_searching));            
+    }
+
+    public void ReturnToPatrol()
+    {
+        _searching = true;
+        SetSpeed(1f);
+        StartCoroutine(NavigateToPlayer(_searching));        
+    }
+
+    public Node[] ReverseRoute()
+    {
+        Node[] newRoute = new Node[_routeToPlayer.Length];
+        int counter = 0;
+
+        for (int i = _routeToPlayer.Length - 1; i > 0; i--)
+        {
+            newRoute[counter] = _routeToPlayer[i];
+            counter++;
+        }
+
+        Debug.Log(_routeToPlayer.Length);
+        _routeToPlayer = newRoute;
+        return _routeToPlayer;
     }
 
 }
