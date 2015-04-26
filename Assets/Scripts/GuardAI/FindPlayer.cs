@@ -10,7 +10,8 @@ public class FindPlayer : MonoBehaviour
     public bool ResumePatrol;
     
     public void VisualSearch()
-    {        
+    {
+        Debug.Log("begin search");
         StartCoroutine(VisualScan());        
         enabled = false;
     }
@@ -20,7 +21,7 @@ public class FindPlayer : MonoBehaviour
      */
     IEnumerator RestoreVisual()
     {
-        Debug.Log("restoring visuals");
+        
         while (gameObject.transform.rotation.z != 0)
         {
             if (gameObject.transform.rotation.z > 0)
@@ -31,9 +32,7 @@ public class FindPlayer : MonoBehaviour
             }
             
             yield return null;
-        }
-
-        gameObject.transform.rotation = new Quaternion(); //(0,0,0,0) ?
+        }        
         
         
     }
@@ -49,28 +48,28 @@ public class FindPlayer : MonoBehaviour
         int turnTaken = 0;
         float delayCounter;
         float delayTime = 3f;        
-        
-        
+                
         while (turnTaken < turns && !GetComponent<PlayerDetection>().SeenPlayer)
         {                       
             delayCounter = 0;
 
             while (gameObject.transform.rotation.z < _scanAngle)
-             {                           
-                RotateView(StepLook);
+             {
+                
+                 RotateView(StepLook);
                  yield return 0;
              }
 
             
             while (delayCounter < delayTime)
             {
+                
                 delayCounter += 0.2f;
                 yield return 0;
             }
 
              while (gameObject.transform.rotation.z > -_scanAngle)
              {                 
-                 //weird bug here                 
                  RotateView(-StepLook);
                  yield return 0;
              }
@@ -85,7 +84,8 @@ public class FindPlayer : MonoBehaviour
 
             turnTaken++;            
         }
-        
+
+        Debug.Log("restoring visuals");
         StartCoroutine(RestoreVisual());
 
         if (!GetComponent<PlayerDetection>().SeenPlayer)
@@ -94,8 +94,7 @@ public class FindPlayer : MonoBehaviour
             Debug.Log("resume patrol " + ResumePatrol);
             gameObject.transform.parent.gameObject.layer = 9;
             GetComponent<VisionConeRender>().ActivateState(Color.grey);
-            GetComponentInParent<Spritehandler>().FlipSprite();
-            GetComponentInParent<PursuePlayer>().ReverseRoute();
+            GetComponentInParent<Spritehandler>().FlipSprite();            
             GetComponentInParent<PursuePlayer>().ReturnToPatrol();
             GetComponentInParent<PursuePlayer>().enabled = false;
         }            

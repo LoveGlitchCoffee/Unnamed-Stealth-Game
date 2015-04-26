@@ -41,9 +41,9 @@ public class PursuePlayer : MonoBehaviour
         newSearch._visited = new HashSet<Node>();
 
         Node start = gameObject.GetComponent<GuardAI>().ReturnNodeGuardAt();
-        Debug.Log("guard at " + start.GetX() + ", " + start.GetY());
+        //Debug.Log("guard at " + start.GetX() + ", " + start.GetY());
               
-        Debug.Log("player last seen at " + _goal.GetX() + ", " + _goal.GetY());
+        //Debug.Log("player last seen at " + _goal.GetX() + ", " + _goal.GetY());
 
 
         return newSearch.FindRouteFrom(start, _goal);
@@ -54,15 +54,13 @@ public class PursuePlayer : MonoBehaviour
      * Go to each position in the route
      * Should end up where player last seen, then do the post searching behaviour
      */
-    IEnumerator NavigateToPlayer(bool searching)
+    IEnumerator NavigateToPlayer(bool searching, bool returnFromSearch)
     {        
         do
         {
             for (int i = 0; i < _routeToPlayer.Length; i++)
-            {
-                
-                yield return StartCoroutine(MoveToNextPosition(_routeToPlayer[i]));
-                
+            {                              
+                yield return StartCoroutine(MoveToNextPosition(_routeToPlayer[i]));                
             }
 
             searching = false;
@@ -71,28 +69,36 @@ public class PursuePlayer : MonoBehaviour
 
         //Debug.Log("finsihed search");
 
-        if (_player.GetComponent<PlayerNPCRelation>().dead)
+        //start again after return
+
+        if (!returnFromSearch)
         {
-            enabled = false;
-            gameObject.layer = 9;
-            transform.GetChild(0).GetComponent<VisionConeRender>().ActivateState(Color.grey);
-            _postSearch.ResumePatrol = true;
-        }
-        else
-        {
-            _detector.SeenPlayer = false;
-            _postSearch.enabled = true;
-            _postSearch.VisualSearch();
+            if (_player.GetComponent<PlayerNPCRelation>().dead)
+            {
+                enabled = false;
+                gameObject.layer = 9;
+                transform.GetChild(0).GetComponent<VisionConeRender>().ActivateState(Color.grey);
+                _postSearch.ResumePatrol = true;
+            }
+            else
+            {
+                //Debug.Log("cannot find player");
+                _detector.SeenPlayer = false;
+                _postSearch.enabled = true;
+                _postSearch.VisualSearch();
+            }
+
         }
 
         if (_postSearch.ResumePatrol)
-        {
-            if (!(_player.GetComponent<PlayerNPCRelation>().dead))
-                GetComponent<Spritehandler>().FlipSprite();  
+            {
+                if (!(_player.GetComponent<PlayerNPCRelation>().dead))
+                    GetComponent<Spritehandler>().FlipSprite();  
           
-            GetComponent<GuardAI>().enabled = true;
-            _postSearch.ResumePatrol = false;
-        }
+                GetComponent<GuardAI>().enabled = true;
+                _postSearch.ResumePatrol = false;
+            }
+        
         
     }
     
@@ -103,6 +109,8 @@ public class PursuePlayer : MonoBehaviour
     {        
         while (!(transform.position.x == nextPosition.GetX()))
         {
+            Debug.Log("next position's x is: " + nextPosition.GetX());
+
             if (nextPosition.GetY() > transform.position.y)
             {                                 
                 yield return StartCoroutine(JumpToPlatform(transform.position, nextPosition.gameObject.transform.position));                         
@@ -164,31 +172,33 @@ public class PursuePlayer : MonoBehaviour
     {
         _routeToPlayer = CalculateRouteToPlayer();       
         _searching = true;
-        Debug.Log(_routeToPlayer.Length);
-        StartCoroutine(NavigateToPlayer(_searching));            
+        //Debug.Log(_routeToPlayer.Length);
+        StartCoroutine(NavigateToPlayer(_searching, false));            
     }
 
     public void ReturnToPatrol()
     {
+        _routeToPlayer =  ReverseRoute();
         _searching = true;
         SetSpeed(1f);
-        StartCoroutine(NavigateToPlayer(_searching));        
+        StartCoroutine(NavigateToPlayer(_searching, true));        
     }
 
-    public Node[] ReverseRoute()
+    private Node[] ReverseRoute()
     {
-        Node[] newRoute = new Node[_routeToPlayer.Length];
+        //adding another node would be ideal
+        Node[] newRoute = new Node[_routeToPlayer.Length - 1];
         int counter = 0;
+        //Debug.Log("new route length will be " + newRoute.Length);
 
         for (int i = _routeToPlayer.Length - 1; i > 0; i--)
         {
             newRoute[counter] = _routeToPlayer[i];
+            Debug.Log(newRoute[counter].GetX() +", " + newRoute[counter].GetY());
             counter++;
-        }
-
-        Debug.Log(_routeToPlayer.Length);
-        _routeToPlayer = newRoute;
-        return _routeToPlayer;
+        }        
+        
+        return newRoute;
     }
 
 }
