@@ -16,6 +16,13 @@ public class Identifer : MonoBehaviour
     {
         _identity = identityTool;
         SetImage();
+        SetSortingLayer();
+    }
+
+    private void SetSortingLayer()
+    {
+        spriteRender.sortingLayerName = "Environment";
+        spriteRender.sortingOrder = 1;
     }
 
     private void SetImage()

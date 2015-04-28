@@ -59,9 +59,5 @@ public class InventoryRenderer : MonoBehaviour
     {
         ToolTip.SetActive(false);
     }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
 }

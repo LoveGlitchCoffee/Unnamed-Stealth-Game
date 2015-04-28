@@ -20,19 +20,15 @@ public class FindPlayer : MonoBehaviour
      * restore sight to 0 on z rotation, looks striaght again
      */
     IEnumerator RestoreVisual()
-    {
+    {        
+
+        Quaternion normalise = new Quaternion(0,0,0,1);        
         
         while (gameObject.transform.rotation.z != 0)
         {
-            if (gameObject.transform.rotation.z > 0)
-                RotateView(-StepLook);
-            else
-            {
-                RotateView(StepLook);
-            }
-            
+            gameObject.transform.rotation = Quaternion.RotateTowards(transform.rotation, normalise, StepLook);
             yield return null;
-        }        
+        }
         
         
     }
@@ -49,13 +45,14 @@ public class FindPlayer : MonoBehaviour
         float delayCounter;
         float delayTime = 3f;        
                 
+        Debug.Log(transform.rotation + " beginning rotation");
         while (turnTaken < turns && !GetComponent<PlayerDetection>().SeenPlayer)
         {                       
             delayCounter = 0;
 
             while (gameObject.transform.rotation.z < _scanAngle)
              {
-                
+                Debug.Log("look up");
                  RotateView(StepLook);
                  yield return 0;
              }
@@ -69,7 +66,8 @@ public class FindPlayer : MonoBehaviour
             }
 
              while (gameObject.transform.rotation.z > -_scanAngle)
-             {                 
+             {
+                 Debug.Log("look down");
                  RotateView(-StepLook);
                  yield return 0;
              }

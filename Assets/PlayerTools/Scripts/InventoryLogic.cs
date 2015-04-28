@@ -13,14 +13,13 @@ public class InventoryLogic : MonoBehaviour {
 
     void Start()
     {
-        AddItem(0);
-        //AddItem(1);
+        AddItem(1);        
     }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
+    public ToolDB ReturnToolDb()
+    {
+        return _toolDb;
+    }
 
     /**
      * Add a non-empty item which is in database
@@ -30,8 +29,9 @@ public class InventoryLogic : MonoBehaviour {
         for (int i = 0; i < _toolDb.ToolDatabase.Count; i++)
         {
             if (_toolDb.ToolDatabase[i].ItemId == id)
-            {
+            {                
                 Tool itemToAdd = _toolDb.ToolDatabase[i];
+                //Debug.Log("added " + itemToAdd.Name);
                 FindEmptySlotToPlace(itemToAdd);
                 break;
             }
@@ -43,10 +43,21 @@ public class InventoryLogic : MonoBehaviour {
         for (int i = 0; i < PlayerTools.Count; i++)
         {
             if (PlayerTools[i].Name == null)
-            {
+            {                
                 PlayerTools[i] = item;
+                transform.GetChild(i).GetComponent<ItemUI>().UpdateSlot();
                 break;
             }
+        }
+    }
+
+    public void RemoveItem(int indexOfDestoryed)
+    {
+        PlayerTools.RemoveAt(indexOfDestoryed);
+        for (int i = 0; i < PlayerTools.Count; i++)
+        {
+            if (PlayerTools[i].Name != null)
+                transform.GetChild(i).GetComponent<ItemUI>().UpdateSlot();
         }
     }
 }

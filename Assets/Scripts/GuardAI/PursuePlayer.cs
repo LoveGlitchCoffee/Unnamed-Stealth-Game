@@ -14,7 +14,8 @@ public class PursuePlayer : MonoBehaviour
 
     private Node[] _routeToPlayer;
     private Node _goal;
-    private bool _searching; 
+    private bool _searching;
+    private Node nodeStartSearch;
 
     /*
      * calculates the route to the player, using the map
@@ -41,6 +42,7 @@ public class PursuePlayer : MonoBehaviour
         newSearch._visited = new HashSet<Node>();
 
         Node start = gameObject.GetComponent<GuardAI>().ReturnNodeGuardAt();
+        nodeStartSearch = start;
         //Debug.Log("guard at " + start.GetX() + ", " + start.GetY());
               
         //Debug.Log("player last seen at " + _goal.GetX() + ", " + _goal.GetY());
@@ -67,7 +69,7 @@ public class PursuePlayer : MonoBehaviour
 
         } while (searching);
 
-        //Debug.Log("finsihed search");
+        Debug.Log("returning from search = " + returnFromSearch);
 
         //start again after return
 
@@ -81,13 +83,11 @@ public class PursuePlayer : MonoBehaviour
                 _postSearch.ResumePatrol = true;
             }
             else
-            {
-                //Debug.Log("cannot find player");
+            {            
                 _detector.SeenPlayer = false;
                 _postSearch.enabled = true;
                 _postSearch.VisualSearch();
             }
-
         }
 
         if (_postSearch.ResumePatrol)
@@ -109,7 +109,7 @@ public class PursuePlayer : MonoBehaviour
     {        
         while (!(transform.position.x == nextPosition.GetX()))
         {
-            Debug.Log("next position's x is: " + nextPosition.GetX());
+            //Debug.Log("next position's x is: " + nextPosition.GetX());
 
             if (nextPosition.GetY() > transform.position.y)
             {                                 
@@ -186,17 +186,18 @@ public class PursuePlayer : MonoBehaviour
 
     private Node[] ReverseRoute()
     {
-        //adding another node would be ideal
-        Node[] newRoute = new Node[_routeToPlayer.Length - 1];
+        
+        Node[] newRoute = new Node[_routeToPlayer.Length];
         int counter = 0;
         //Debug.Log("new route length will be " + newRoute.Length);
 
         for (int i = _routeToPlayer.Length - 1; i > 0; i--)
         {
             newRoute[counter] = _routeToPlayer[i];
-            Debug.Log(newRoute[counter].GetX() +", " + newRoute[counter].GetY());
+            //Debug.Log(newRoute[counter].GetX() +", " + newRoute[counter].GetY());
             counter++;
-        }        
+        }
+        newRoute[counter] = nodeStartSearch;
         
         return newRoute;
     }

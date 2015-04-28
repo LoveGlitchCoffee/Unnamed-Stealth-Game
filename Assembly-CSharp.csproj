@@ -51,7 +51,7 @@
      <Compile Include="Assets\PlayerTools\Scripts\InventoryLogic.cs" />
      <Compile Include="Assets\PlayerTools\Scripts\InventoryRenderer.cs" />
      <Compile Include="Assets\PlayerTools\Scripts\ItemUI.cs" />
-     <Compile Include="Assets\PlayerTools\Scripts\Lootable.cs" />
+     <Compile Include="Assets\PlayerTools\Scripts\PresetIdentity.cs" />
      <Compile Include="Assets\PlayerTools\Scripts\Tool.cs" />
      <Compile Include="Assets\PlayerTools\Scripts\ToolDB.cs" />
      <Compile Include="Assets\Scripts\GuardAI\Behaviours\CoinLover.cs" />
@@ -67,6 +67,7 @@
      <Compile Include="Assets\Scripts\Map\GraphOfMap.cs" />
      <Compile Include="Assets\Scripts\Map\ListExtensions.cs" />
      <Compile Include="Assets\Scripts\Map\Node.cs" />
+     <Compile Include="Assets\Scripts\PlayerScripts\Loot.cs" />
      <Compile Include="Assets\Scripts\PlayerScripts\Movement.cs" />
      <Compile Include="Assets\Scripts\PlayerScripts\PlayerMapRelation.cs" />
      <Compile Include="Assets\Scripts\PlayerScripts\PlayerNPCRelation.cs" />

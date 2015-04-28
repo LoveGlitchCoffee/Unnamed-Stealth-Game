@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -22,11 +21,17 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
 	void Start ()
 	{
-	    _toolInSlot = _inventory.PlayerTools[ItemSlotNumber];
+	    UpdateSlot();
 	}
+
+    public void UpdateSlot()
+    {
+        _toolInSlot = _inventory.PlayerTools[ItemSlotNumber];
+    }
 	
 	//put in update for now, will change later
 	void Update () {
+        
 	    if (_toolInSlot.ItemImage != null)
 	    {
 	        _toolImage.enabled = true;
@@ -34,7 +39,6 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 	    }
 	    else
 	    {
-
 	        _toolImage.enabled = false;
 	    }
 	}
