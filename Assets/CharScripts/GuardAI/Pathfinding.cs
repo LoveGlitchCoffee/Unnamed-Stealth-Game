@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PursuePlayer : MonoBehaviour
+public class Pathfinding : MonoBehaviour
 {
    
     private GameObject _gameMap;
@@ -41,7 +41,7 @@ public class PursuePlayer : MonoBehaviour
         newSearch._possiblePath = new Dictionary<Node, Node>();
         newSearch._visited = new HashSet<Node>();
 
-        Node start = gameObject.GetComponent<GuardAI>().ReturnNodeGuardAt();
+        Node start = gameObject.GetComponent<Patrol>().ReturnNodeGuardAt();
         nodeStartSearch = start;
         //Debug.Log("guard at " + start.GetX() + ", " + start.GetY());
               
@@ -95,7 +95,7 @@ public class PursuePlayer : MonoBehaviour
                 if (!(_player.GetComponent<PlayerNPCRelation>().dead))
                     GetComponent<Spritehandler>().FlipSprite();  
           
-                GetComponent<GuardAI>().enabled = true;
+                GetComponent<Patrol>().enabled = true;
                 _postSearch.ResumePatrol = false;
             }
         
@@ -182,6 +182,11 @@ public class PursuePlayer : MonoBehaviour
         _searching = true;
         SetSpeed(1f);
         StartCoroutine(NavigateToPlayer(_searching, true));        
+    }
+
+    public void ManualRouteSet(Node[] route)
+    {
+        _routeToPlayer = route;
     }
 
     private Node[] ReverseRoute()

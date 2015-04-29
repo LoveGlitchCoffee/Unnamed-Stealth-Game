@@ -57,7 +57,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
         _sightDistance = 5;
 
         _leftVision.Add(new Vector2(-0.2f, 0.5f));
-        _leftVision.Add(new Vector2(-5f, 2f));
+        _leftVision.Add(new Vector2(-5f, 1.6f));
         _leftVision.Add(new Vector2(-5f, -0.8f));
         _leftVision.Add(new Vector2(-0.2f, 0.4f));
 

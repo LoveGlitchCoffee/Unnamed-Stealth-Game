@@ -1,13 +1,13 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class GuardAI : MonoBehaviour {
+public class Patrol : MonoBehaviour {
 
     [HideInInspector] public bool GoingLeft;
     [HideInInspector] public bool OutOfPatrolArea;
 
     private PlayerDetection _playerDetection;
-    private PursuePlayer _pursuePlayer;
+    private Pathfinding _Pathfinding;
 
     private const string PatrolAreaTag = "PatrolRegion";
     private const string PlayerTag = "Player";
@@ -30,8 +30,8 @@ public class GuardAI : MonoBehaviour {
 
         _playerDetection = gameObject.GetComponentInChildren<PlayerDetection>();
         
-        _pursuePlayer = gameObject.GetComponent<PursuePlayer>();
-        _pursuePlayer.enabled = false;
+        _Pathfinding = gameObject.GetComponent<Pathfinding>();
+        _Pathfinding.enabled = false;
     }
 
     // Update is called once per frame

@@ -20,9 +20,10 @@ public class CoinLover : MonoBehaviour
         const float maxTime = 7f;
         float timer = 0f;
 
+        //could shorten if put them with interface
         GuardAI regularAi = gameObject.GetComponent<GuardAI>();
         PlayerDetection detector = transform.GetChild(0).GetComponent<PlayerDetection>();
-        LineRenderer visionCone = transform.GetChild(0).GetComponent<LineRenderer>();
+        LineRenderer visionCone = transform.GetChild(0).GetComponent<LineRenderer>();        
 
         regularAi.enabled = false;
         detector.enabled = false;

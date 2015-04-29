@@ -48,10 +48,10 @@
   <ItemGroup>
      <Compile Include="Assets\CharScripts\GuardAI\Behaviours\CoinLover.cs" />
      <Compile Include="Assets\CharScripts\GuardAI\FindPlayer.cs" />
-     <Compile Include="Assets\CharScripts\GuardAI\GuardAI.cs" />
      <Compile Include="Assets\CharScripts\GuardAI\IDetection.cs" />
+     <Compile Include="Assets\CharScripts\GuardAI\Pathfinding.cs" />
+     <Compile Include="Assets\CharScripts\GuardAI\Patrol.cs" />
      <Compile Include="Assets\CharScripts\GuardAI\PlayerDetection.cs" />
-     <Compile Include="Assets\CharScripts\GuardAI\PursuePlayer.cs" />
      <Compile Include="Assets\CharScripts\GuardAI\Spritehandler.cs" />
      <Compile Include="Assets\CharScripts\GuardAI\VisionConeRender.cs" />
      <Compile Include="Assets\CharScripts\Map\BFS.cs" />
@@ -65,6 +65,7 @@
      <Compile Include="Assets\CharScripts\PlayerScripts\PlayerMapRelation.cs" />
      <Compile Include="Assets\CharScripts\PlayerScripts\PlayerNPCRelation.cs" />
      <Compile Include="Assets\Environment\EnviScripts\Door.cs" />
+     <Compile Include="Assets\Environment\EnviScripts\FlickerLight.cs" />
      <Compile Include="Assets\Environment\EnviScripts\IInteractive.cs" />
      <Compile Include="Assets\PlayerTools\ToolsScripts\DragHandler.cs" />
      <Compile Include="Assets\PlayerTools\ToolsScripts\Identifer.cs" />
