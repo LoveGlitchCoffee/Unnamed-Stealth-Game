@@ -46,31 +46,34 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\PlayerTools\Scripts\DragHandler.cs" />
-     <Compile Include="Assets\PlayerTools\Scripts\Identifer.cs" />
-     <Compile Include="Assets\PlayerTools\Scripts\InventoryLogic.cs" />
-     <Compile Include="Assets\PlayerTools\Scripts\InventoryRenderer.cs" />
-     <Compile Include="Assets\PlayerTools\Scripts\ItemUI.cs" />
-     <Compile Include="Assets\PlayerTools\Scripts\PresetIdentity.cs" />
-     <Compile Include="Assets\PlayerTools\Scripts\Tool.cs" />
-     <Compile Include="Assets\PlayerTools\Scripts\ToolDB.cs" />
-     <Compile Include="Assets\Scripts\GuardAI\Behaviours\CoinLover.cs" />
-     <Compile Include="Assets\Scripts\GuardAI\FindPlayer.cs" />
-     <Compile Include="Assets\Scripts\GuardAI\GuardAI.cs" />
-     <Compile Include="Assets\Scripts\GuardAI\IDetection.cs" />
-     <Compile Include="Assets\Scripts\GuardAI\PlayerDetection.cs" />
-     <Compile Include="Assets\Scripts\GuardAI\PursuePlayer.cs" />
-     <Compile Include="Assets\Scripts\GuardAI\Spritehandler.cs" />
-     <Compile Include="Assets\Scripts\GuardAI\VisionConeRender.cs" />
-     <Compile Include="Assets\Scripts\Map\BFS.cs" />
-     <Compile Include="Assets\Scripts\Map\GenerateNodes.cs" />
-     <Compile Include="Assets\Scripts\Map\GraphOfMap.cs" />
-     <Compile Include="Assets\Scripts\Map\ListExtensions.cs" />
-     <Compile Include="Assets\Scripts\Map\Node.cs" />
-     <Compile Include="Assets\Scripts\PlayerScripts\Loot.cs" />
-     <Compile Include="Assets\Scripts\PlayerScripts\Movement.cs" />
-     <Compile Include="Assets\Scripts\PlayerScripts\PlayerMapRelation.cs" />
-     <Compile Include="Assets\Scripts\PlayerScripts\PlayerNPCRelation.cs" />
+     <Compile Include="Assets\CharScripts\GuardAI\Behaviours\CoinLover.cs" />
+     <Compile Include="Assets\CharScripts\GuardAI\FindPlayer.cs" />
+     <Compile Include="Assets\CharScripts\GuardAI\GuardAI.cs" />
+     <Compile Include="Assets\CharScripts\GuardAI\IDetection.cs" />
+     <Compile Include="Assets\CharScripts\GuardAI\PlayerDetection.cs" />
+     <Compile Include="Assets\CharScripts\GuardAI\PursuePlayer.cs" />
+     <Compile Include="Assets\CharScripts\GuardAI\Spritehandler.cs" />
+     <Compile Include="Assets\CharScripts\GuardAI\VisionConeRender.cs" />
+     <Compile Include="Assets\CharScripts\Map\BFS.cs" />
+     <Compile Include="Assets\CharScripts\Map\GenerateNodes.cs" />
+     <Compile Include="Assets\CharScripts\Map\GraphOfMap.cs" />
+     <Compile Include="Assets\CharScripts\Map\ListExtensions.cs" />
+     <Compile Include="Assets\CharScripts\Map\Node.cs" />
+     <Compile Include="Assets\CharScripts\PlayerScripts\Interact.cs" />
+     <Compile Include="Assets\CharScripts\PlayerScripts\Loot.cs" />
+     <Compile Include="Assets\CharScripts\PlayerScripts\Movement.cs" />
+     <Compile Include="Assets\CharScripts\PlayerScripts\PlayerMapRelation.cs" />
+     <Compile Include="Assets\CharScripts\PlayerScripts\PlayerNPCRelation.cs" />
+     <Compile Include="Assets\Environment\EnviScripts\Door.cs" />
+     <Compile Include="Assets\Environment\EnviScripts\IInteractive.cs" />
+     <Compile Include="Assets\PlayerTools\ToolsScripts\DragHandler.cs" />
+     <Compile Include="Assets\PlayerTools\ToolsScripts\Identifer.cs" />
+     <Compile Include="Assets\PlayerTools\ToolsScripts\InventoryLogic.cs" />
+     <Compile Include="Assets\PlayerTools\ToolsScripts\InventoryRenderer.cs" />
+     <Compile Include="Assets\PlayerTools\ToolsScripts\ItemUI.cs" />
+     <Compile Include="Assets\PlayerTools\ToolsScripts\PresetIdentity.cs" />
+     <Compile Include="Assets\PlayerTools\ToolsScripts\Tool.cs" />
+     <Compile Include="Assets\PlayerTools\ToolsScripts\ToolDB.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Game Dev/Unity5/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
