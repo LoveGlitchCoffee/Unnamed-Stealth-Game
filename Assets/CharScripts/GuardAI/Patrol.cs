@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
@@ -14,9 +15,7 @@ public class Patrol : MonoBehaviour {
 
     private GraphOfMap map;
 
-    private const float WalkSpeed = 1f;
-    private float _waitTime = 0;
-    private const float MaxWaitTime = 2f;
+    private bool _patrolling = true;
     
     private Node _nodeGuardAt;
 
@@ -24,8 +23,7 @@ public class Patrol : MonoBehaviour {
     {
         _playerDetection = gameObject.GetComponentInChildren<PlayerDetection>();
         _pathfinding = gameObject.GetComponent<Pathfinding>();
-        map = GameObject.FindGameObjectWithTag("Map").GetComponent<GenerateNodes>().ReturnGeneratedGraph();    
-        Coordinates = new List<float>();
+        map = GameObject.FindGameObjectWithTag("Map").GetComponent<GenerateNodes>().ReturnGeneratedGraph();            
     }
 
     /**
@@ -36,23 +34,62 @@ public class Patrol : MonoBehaviour {
     {        
         GoingLeft = false;
 
-        StartCoroutine(Patrolling());
+        StartCoroutine(Patrolling());        
     }
 
     IEnumerator Patrolling()
     {
         Node[] patrolRoute = AssignRoute();
         
-        _pathfinding.PatrolOnRoute(patrolRoute);
-        _pathfinding.ReverseRoute();
-        Debug.Log("route = " + patrolRoute);
-
-        yield return null;
+        while (_patrolling)
+        {                
+            yield return StartCoroutine(_pathfinding.PatrolOnRoute(patrolRoute));          
+            yield return StartCoroutine(Wait());
+            TurnAround();
+            patrolRoute = _pathfinding.ReverseRoute(patrolRoute);
+            //put checks in pathfind to interrupt patrol?
+        }
+                       
     }
 
+   
+    /**
+     * Waits for 5 seconds and turns around according to previous walking direction, then continue patrol
+     * changes vision cone direction as well
+     */
+    public void TurnAround()
+    {
+        GoingLeft = !GoingLeft;
+        GetComponent<Spritehandler>().FlipSprite();
+        _playerDetection.SetVisionCone(GoingLeft);
+    }
+
+
+    /**
+     * Wait 5 seconds
+     */
+    public IEnumerator Wait()
+    {
+        float currentTime = 0f;
+        float maxWaitTime = 10f;
+
+        GetComponent<Spritehandler>().GuardIdle = true;
+
+        while (currentTime < maxWaitTime)
+        {
+            currentTime += 0.1f;
+            yield return null;
+        }
+
+        GetComponent<Spritehandler>().GuardIdle = false;
+    }
+
+    /*
+     * for each coordinates, given in inspector, find the node in map that corresponds and assign them to the patrol route
+     */
     private Node[] AssignRoute()
     {
-        Node[] route = new Node[Coordinates.Count];
+        Node[] route = new Node[Coordinates.Count/2];
         int counter = 0;
 
         for (int j = 0; j < Coordinates.Count; j += 2)
@@ -64,6 +101,7 @@ public class Patrol : MonoBehaviour {
                 if (node.GetX() == Coordinates[j] && node.GetY() == Coordinates[j + 1])
                 {
                     route[counter] = node;
+                    //Debug.Log("node is " + node.GetX() + ", " + node.GetY());
                     counter++;
                 }
             }       
@@ -72,36 +110,6 @@ public class Patrol : MonoBehaviour {
         return route;
     }
 
-
-    /**
-     * Waits for 5 seconds and turns around according to previous walking direction, then continue patrol
-     * changes vision cone direction as well
-     */
-    private void TurnAround()
-    {
-        Wait();
-
-        if (_waitTime >= MaxWaitTime)
-        {
-            GoingLeft = !GoingLeft;
-            GetComponent<Spritehandler>().FlipSprite();
-            _waitTime = 0f;
-            //OutOfPatrolArea = false;
-            _playerDetection.SetVisionCone(GoingLeft);
-        }
-    }
-
-
-    /**
-     * Wait 5 seconds
-     */
-    private void Wait()
-    {
-        if (_waitTime < MaxWaitTime)
-        {
-            _waitTime += 1f * Time.deltaTime;
-        }
-    }
    
     
     /**

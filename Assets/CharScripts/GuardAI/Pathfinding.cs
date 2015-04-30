@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 public class Pathfinding : MonoBehaviour
@@ -9,12 +10,13 @@ public class Pathfinding : MonoBehaviour
     private FindPlayer _postSearch;
     private PlayerDetection _detector;
     private GameObject _player;
+    private Patrol _patrolBehav;
 
     private float _speed = 4f;
 
     private Node[] _routeToPlayer;
     private Node _goal;
-    private bool _searching;
+    private bool _travelling;
     private Node _nodeStartPursuit;
 
     /*
@@ -26,6 +28,7 @@ public class Pathfinding : MonoBehaviour
 	    _detector = transform.GetChild(0).GetComponent<PlayerDetection>();
 	    _postSearch = GetComponentInChildren<FindPlayer>();
 	    _player = GameObject.FindGameObjectWithTag("Player");
+	    _patrolBehav = GetComponent<Patrol>();
 	}
     
 
@@ -67,8 +70,7 @@ public class Pathfinding : MonoBehaviour
             searching = false;
 
         } while (searching);
-
-        Debug.Log("pursuing player = " + pursue);
+        
 
         if (pursue)
         {
@@ -173,9 +175,9 @@ public class Pathfinding : MonoBehaviour
     public void StartPursuit()
     {
         _routeToPlayer = CalculateRouteToDestination();       
-        _searching = true;
+        _travelling = true;
         //Debug.Log(_routeToPlayer.Length);
-        StartCoroutine(NavigateToGoal(_searching, true));            
+        StartCoroutine(NavigateToGoal(_travelling, true));            
     }
 
     /*
@@ -183,37 +185,38 @@ public class Pathfinding : MonoBehaviour
      */
     public void ReturnToPatrol()
     {
-        _routeToPlayer =  ReverseRoute();
-        _searching = true;
+        _routeToPlayer =  ReverseRoute(_routeToPlayer);
+        _travelling = true;
         SetSpeed(1f);
-        StartCoroutine(NavigateToGoal(_searching, false));        
+        StartCoroutine(NavigateToGoal(_travelling, false));        
     }
 
 
-    public void PatrolOnRoute(Node[] route)
+    public IEnumerator PatrolOnRoute(Node[] route)
     {
-        _routeToPlayer = route;
-        _searching = true;
-        SetSpeed(1f);
-        StartCoroutine(NavigateToGoal(_searching, false));
+        _routeToPlayer = route;        
+        _travelling = true;
+        SetSpeed(2f);
+
+        yield return StartCoroutine(NavigateToGoal(_travelling, false));        
     }
 
     /*
      * reverse the route that was taken in previous path finding, used only for return to patrol
      */
-    public Node[] ReverseRoute()
+    public Node[] ReverseRoute(Node[] routeToReverse)
     {        
-        Node[] newRoute = new Node[_routeToPlayer.Length];
+        Node[] newRoute = new Node[routeToReverse.Length];
         int counter = 0;
-        //Debug.Log("new route length will be " + newRoute.Length);
 
-        for (int i = _routeToPlayer.Length - 1; i > 0; i--)
+        Debug.Log("new route length will be " + newRoute.Length);
+
+        for (int i = _routeToPlayer.Length - 1; i > -1; i--)
         {
             newRoute[counter] = _routeToPlayer[i];
-            //Debug.Log(newRoute[counter].GetX() +", " + newRoute[counter].GetY());
+            Debug.Log(newRoute[counter].GetX() +", " + newRoute[counter].GetY());
             counter++;
         }
-        //newRoute[counter] = _nodeStartPursuit;
         
         return newRoute;
     }

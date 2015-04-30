@@ -9,8 +9,7 @@ public class FlickerLight : MonoBehaviour
 
     void Start()
     {
-        torchLight = gameObject.GetComponent<Light>();
-        Debug.Log(torchLight);
+        torchLight = gameObject.GetComponent<Light>();        
 
         StartCoroutine(Flicker());
     }
@@ -19,7 +18,7 @@ public class FlickerLight : MonoBehaviour
     {
         while (_canFlicker)
         {
-            torchLight.intensity = Random.Range(1.5f, 2.5f);
+            torchLight.intensity = Random.Range(1.3f, 2.3f);
             yield return new WaitForSeconds(0.08f);
         }
     }

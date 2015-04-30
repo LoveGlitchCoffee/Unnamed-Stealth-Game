@@ -106,7 +106,7 @@ public class GenerateNodes : MonoBehaviour
                 {
                     Debug.Log("successor " + node.GetSuccessors()[i].GetX() + ", " + node.GetSuccessors()[i].GetY());
                 }*/
-                Destroy(node.gameObject);
+                Destroy(node.GetComponent<CircleCollider2D>());
             }
         }	   
     }

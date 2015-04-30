@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngineInternal;
 
 public class Spritehandler : MonoBehaviour
 {
 
     private Patrol _Patrol;
-    private bool _guardIdle;
+    [HideInInspector] public bool GuardIdle { get; set; }
     private Animator _anim;
 
 	// Use this for initialization
@@ -16,14 +17,9 @@ public class Spritehandler : MonoBehaviour
 	}
 	
 
-	void Update ()
-	{
-	    //_guardIdle = _Patrol.OutOfPatrolArea;      
-	}
-
     void FixedUpdate()
     {        
-        _anim.SetBool("idle",_guardIdle);
+        _anim.SetBool("idle",GuardIdle);
     }
 
     public void FlipSprite()
