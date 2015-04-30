@@ -21,7 +21,7 @@ public class CoinLover : MonoBehaviour
         float timer = 0f;
 
         //could shorten if put them with interface
-        GuardAI regularAi = gameObject.GetComponent<GuardAI>();
+        Patrol regularAi = gameObject.GetComponent<Patrol>();
         PlayerDetection detector = transform.GetChild(0).GetComponent<PlayerDetection>();
         LineRenderer visionCone = transform.GetChild(0).GetComponent<LineRenderer>();        
 

@@ -7,8 +7,8 @@ using UnityEngine;
 public class PlayerDetection : MonoBehaviour, IDetection
 {
 
-    private PursuePlayer _pursue;
-    private GuardAI _regularAi;
+    private Pathfinding _pursue;
+    private Patrol _regularAi;
     private GameObject _player;
     private GameObject _gameMap;
 
@@ -49,8 +49,8 @@ public class PlayerDetection : MonoBehaviour, IDetection
 
 	    _detectLayerMask = _detectLiving | _detectEnvi;
 
-	    _pursue = gameObject.GetComponentInParent<PursuePlayer>();
-	    _regularAi = gameObject.GetComponentInParent<GuardAI>();
+	    _pursue = gameObject.GetComponentInParent<Pathfinding>();
+	    _regularAi = gameObject.GetComponentInParent<Patrol>();
 	    _player = GameObject.FindGameObjectWithTag(PlayerTag);
 	    _gameMap = GameObject.FindGameObjectWithTag("Map");
 
@@ -171,7 +171,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
 
 
         _pursue.enabled = true;
-        _pursue.StartSearch();
+        _pursue.StartPursuit();
     }
 
     /*

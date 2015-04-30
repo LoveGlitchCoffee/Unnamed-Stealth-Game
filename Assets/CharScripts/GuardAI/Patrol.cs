@@ -1,55 +1,77 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 public class Patrol : MonoBehaviour {
 
     [HideInInspector] public bool GoingLeft;
-    [HideInInspector] public bool OutOfPatrolArea;
+    public List<float> Coordinates;
 
     private PlayerDetection _playerDetection;
-    private Pathfinding _Pathfinding;
+    private Pathfinding _pathfinding;
 
-    private const string PatrolAreaTag = "PatrolRegion";
-    private const string PlayerTag = "Player";
+    private GraphOfMap map;
 
-    private const int WalkSpeed = 1;
+    private const float WalkSpeed = 1f;
     private float _waitTime = 0;
     private const float MaxWaitTime = 2f;
-
     
     private Node _nodeGuardAt;
 
+    void Awake()
+    {
+        _playerDetection = gameObject.GetComponentInChildren<PlayerDetection>();
+        _pathfinding = gameObject.GetComponent<Pathfinding>();
+        map = GameObject.FindGameObjectWithTag("Map").GetComponent<GenerateNodes>().ReturnGeneratedGraph();    
+        Coordinates = new List<float>();
+    }
+
     /**
-     * Guard Patrol pattern
+     * Guard Patrol along scripted route
      * Always in patrol region going left     
      */
     private void Start()
     {        
         GoingLeft = false;
-        OutOfPatrolArea = false;
 
-        _playerDetection = gameObject.GetComponentInChildren<PlayerDetection>();
-        
-        _Pathfinding = gameObject.GetComponent<Pathfinding>();
-        _Pathfinding.enabled = false;
+        StartCoroutine(Patrolling());
     }
 
-    // Update is called once per frame
-    /**
-     * Whilst in Patrol region, walks left and right
-     * once out of patrol region, turns around and continues patrol
-     */
-	void Update () {
+    IEnumerator Patrolling()
+    {
+        Node[] patrolRoute = AssignRoute();
         
-        if (!OutOfPatrolArea)
+        _pathfinding.PatrolOnRoute(patrolRoute);
+        _pathfinding.ReverseRoute();
+        Debug.Log("route = " + patrolRoute);
+
+        yield return null;
+    }
+
+    private Node[] AssignRoute()
+    {
+        Node[] route = new Node[Coordinates.Count];
+        int counter = 0;
+
+        for (int j = 0; j < Coordinates.Count; j += 2)
         {
-            gameObject.transform.Translate(GoingLeft ? new Vector2(-WalkSpeed * Time.deltaTime, 0) : new Vector2(WalkSpeed * Time.deltaTime, 0));
+            for (int i = 0; i < map.AbstractMap.Count; i++)
+            {
+                Node node = map.AbstractMap[i];
+                
+                if (node.GetX() == Coordinates[j] && node.GetY() == Coordinates[j + 1])
+                {
+                    route[counter] = node;
+                    counter++;
+                }
+            }       
         }
-        else
-        {
-            TurnAround();
-        }
-	}
+        
+        return route;
+    }
+
 
     /**
      * Waits for 5 seconds and turns around according to previous walking direction, then continue patrol
@@ -64,7 +86,7 @@ public class Patrol : MonoBehaviour {
             GoingLeft = !GoingLeft;
             GetComponent<Spritehandler>().FlipSprite();
             _waitTime = 0f;
-            OutOfPatrolArea = false;
+            //OutOfPatrolArea = false;
             _playerDetection.SetVisionCone(GoingLeft);
         }
     }
@@ -81,17 +103,6 @@ public class Patrol : MonoBehaviour {
         }
     }
    
-    /**
-     *If out of patrol, turn on flag
-     */
-    void OnTriggerExit2D(Collider2D col)
-    {
-        if (col.tag == PatrolAreaTag)
-        {
-            OutOfPatrolArea = true;
-        }
-
-    }
     
     /**
      * tracks which map node guard is currently at

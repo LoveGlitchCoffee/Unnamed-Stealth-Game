@@ -15,11 +15,10 @@ public class Pathfinding : MonoBehaviour
     private Node[] _routeToPlayer;
     private Node _goal;
     private bool _searching;
-    private Node nodeStartSearch;
+    private Node _nodeStartPursuit;
 
     /*
-     * calculates the route to the player, using the map
-     * then goes to the player's position WHEN PLAYER LAST SEEN
+     * calculates the route to a destination, using the map
      */
 	void Start ()
 	{	    
@@ -31,9 +30,9 @@ public class Pathfinding : MonoBehaviour
     
 
     /**
-     * Calculates route from guard to player, returning the route as an array
+     * Calculates route from guard current position to where it suppose to be, returning the route as an array
      */
-    private Node[] CalculateRouteToPlayer()
+    private Node[] CalculateRouteToDestination()
     {
      
         BFS newSearch = new BFS();
@@ -42,7 +41,7 @@ public class Pathfinding : MonoBehaviour
         newSearch._visited = new HashSet<Node>();
 
         Node start = gameObject.GetComponent<Patrol>().ReturnNodeGuardAt();
-        nodeStartSearch = start;
+        _nodeStartPursuit = start;
         //Debug.Log("guard at " + start.GetX() + ", " + start.GetY());
               
         //Debug.Log("player last seen at " + _goal.GetX() + ", " + _goal.GetY());
@@ -54,9 +53,9 @@ public class Pathfinding : MonoBehaviour
 
     /**
      * Go to each position in the route
-     * Should end up where player last seen, then do the post searching behaviour
+     * if pursuing player then will use FindPlayer component to search for player, otherwise just continue as was before
      */
-    IEnumerator NavigateToPlayer(bool searching, bool returnFromSearch)
+    IEnumerator NavigateToGoal(bool searching, bool pursue)
     {        
         do
         {
@@ -69,15 +68,13 @@ public class Pathfinding : MonoBehaviour
 
         } while (searching);
 
-        Debug.Log("returning from search = " + returnFromSearch);
+        Debug.Log("pursuing player = " + pursue);
 
-        //start again after return
-
-        if (!returnFromSearch)
+        if (pursue)
         {
             if (_player.GetComponent<PlayerNPCRelation>().dead)
             {
-                enabled = false;
+                //enabled = false;
                 gameObject.layer = 9;
                 transform.GetChild(0).GetComponent<VisionConeRender>().ActivateState(Color.grey);
                 _postSearch.ResumePatrol = true;
@@ -154,12 +151,17 @@ public class Pathfinding : MonoBehaviour
         }
     }
 
-
+    /*
+     * set speed to which guard moves while finding path
+     */
     public void SetSpeed(float speed)
     {
         _speed = speed;
     }
 
+    /*
+     * set goal of current path finding
+     */
     public void SetGoal(Node goal)
     {
         _goal = goal;
@@ -168,30 +170,39 @@ public class Pathfinding : MonoBehaviour
     /*
      * Starts a new search and navigation from current position to player's last seen position
      */
-    public void StartSearch()
+    public void StartPursuit()
     {
-        _routeToPlayer = CalculateRouteToPlayer();       
+        _routeToPlayer = CalculateRouteToDestination();       
         _searching = true;
         //Debug.Log(_routeToPlayer.Length);
-        StartCoroutine(NavigateToPlayer(_searching, false));            
+        StartCoroutine(NavigateToGoal(_searching, true));            
     }
 
+    /*
+     * reverses the route of pursuit and returns guard to where they were before pursuit
+     */
     public void ReturnToPatrol()
     {
         _routeToPlayer =  ReverseRoute();
         _searching = true;
         SetSpeed(1f);
-        StartCoroutine(NavigateToPlayer(_searching, true));        
+        StartCoroutine(NavigateToGoal(_searching, false));        
     }
 
-    public void ManualRouteSet(Node[] route)
+
+    public void PatrolOnRoute(Node[] route)
     {
         _routeToPlayer = route;
+        _searching = true;
+        SetSpeed(1f);
+        StartCoroutine(NavigateToGoal(_searching, false));
     }
 
-    private Node[] ReverseRoute()
-    {
-        
+    /*
+     * reverse the route that was taken in previous path finding, used only for return to patrol
+     */
+    public Node[] ReverseRoute()
+    {        
         Node[] newRoute = new Node[_routeToPlayer.Length];
         int counter = 0;
         //Debug.Log("new route length will be " + newRoute.Length);
@@ -202,7 +213,7 @@ public class Pathfinding : MonoBehaviour
             //Debug.Log(newRoute[counter].GetX() +", " + newRoute[counter].GetY());
             counter++;
         }
-        newRoute[counter] = nodeStartSearch;
+        //newRoute[counter] = _nodeStartPursuit;
         
         return newRoute;
     }

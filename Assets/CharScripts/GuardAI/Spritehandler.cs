@@ -4,21 +4,21 @@ using System.Collections;
 public class Spritehandler : MonoBehaviour
 {
 
-    private GuardAI _guardAi;
+    private Patrol _Patrol;
     private bool _guardIdle;
     private Animator _anim;
 
 	// Use this for initialization
 	void Awake ()
 	{
-	    _guardAi = GetComponent<GuardAI>();
+	    _Patrol = GetComponent<Patrol>();
 	    _anim = GetComponent<Animator>();
 	}
 	
 
 	void Update ()
 	{
-	    _guardIdle = _guardAi.OutOfPatrolArea;      
+	    //_guardIdle = _Patrol.OutOfPatrolArea;      
 	}
 
     void FixedUpdate()

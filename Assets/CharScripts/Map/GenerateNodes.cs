@@ -26,7 +26,7 @@ public class GenerateNodes : MonoBehaviour
 	void Awake ()
 	{
 	    _mapHeight = 3;
-	    _mapLength = 10;
+	    _mapLength = 9;
 
 	    _nodeSize = Node.GetComponent<CircleCollider2D>().radius * 2;
 	    const float nodeGap = 0.5f;
@@ -106,7 +106,7 @@ public class GenerateNodes : MonoBehaviour
                 {
                     Debug.Log("successor " + node.GetSuccessors()[i].GetX() + ", " + node.GetSuccessors()[i].GetY());
                 }*/
-                Destroy(node.GetComponent<CircleCollider2D>());
+                Destroy(node.gameObject);
             }
         }	   
     }

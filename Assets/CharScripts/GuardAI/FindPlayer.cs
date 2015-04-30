@@ -93,8 +93,8 @@ public class FindPlayer : MonoBehaviour
             gameObject.transform.parent.gameObject.layer = 9;
             GetComponent<VisionConeRender>().ActivateState(Color.grey);
             GetComponentInParent<Spritehandler>().FlipSprite();            
-            GetComponentInParent<PursuePlayer>().ReturnToPatrol();
-            GetComponentInParent<PursuePlayer>().enabled = false;
+            GetComponentInParent<Pathfinding>().ReturnToPatrol();
+            GetComponentInParent<Pathfinding>().enabled = false;
         }            
 
     }
