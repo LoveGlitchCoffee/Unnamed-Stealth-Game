@@ -7,8 +7,8 @@ using UnityEngine;
 public class PlayerDetection : MonoBehaviour, IDetection
 {
 
-    private Pathfinding _pursue;
-    private Patrol _regularAi;
+    private Pathfinding _pathFinder;
+    private Patrol _patrolBehav;
     private GameObject _player;
     private GameObject _gameMap;
 
@@ -36,10 +36,20 @@ public class PlayerDetection : MonoBehaviour, IDetection
     private Color _alarmed = Color.red;
     private Color _blind = Color.grey;
 
+    /*
+     * Set up script dependencies
+     */
+    void Awake()
+    {
+        _pathFinder = gameObject.GetComponentInParent<Pathfinding>();
+        _patrolBehav = gameObject.GetComponentInParent<Patrol>();
+        _player = GameObject.FindGameObjectWithTag(PlayerTag);
+        _gameMap = GameObject.FindGameObjectWithTag("Map");
+    }
 
-	// Use this for initialization
     /**
      * Ray cast only collides with player or environment that can block vision
+     * Ray cast distance will be 5 units
      * Vision cone is just reverse of one another
      */
 	void Start () {
@@ -49,13 +59,17 @@ public class PlayerDetection : MonoBehaviour, IDetection
 
 	    _detectLayerMask = _detectLiving | _detectEnvi;
 
-	    _pursue = gameObject.GetComponentInParent<Pathfinding>();
-	    _regularAi = gameObject.GetComponentInParent<Patrol>();
-	    _player = GameObject.FindGameObjectWithTag(PlayerTag);
-	    _gameMap = GameObject.FindGameObjectWithTag("Map");
+	    _sightDistance = 5;
 
-        _sightDistance = 5;
+	    SetUpVisionCone();        
+	}
 
+    /**
+     * Creates 4 points for vision cone shape, left and right are just reverse of each other
+     * Get the appropriate compoenent and assign them starting values
+     */
+    private void SetUpVisionCone()
+    {
         _leftVision.Add(new Vector2(-0.2f, 0.5f));
         _leftVision.Add(new Vector2(-5f, 1.6f));
         _leftVision.Add(new Vector2(-5f, -0.8f));
@@ -68,21 +82,22 @@ public class PlayerDetection : MonoBehaviour, IDetection
             _rightVision.Add(rightEye);
         }
 
-
         _visionCone = GetComponent<PolygonCollider2D>();
 	    _visionCone.points = _rightVision.ToArray();
 
 	    _coneRender = GetComponent<VisionConeRender>();        
         _coneRender.SetConeShape(_visionCone.points);
         _coneRender.ActivateState(_blind);
-	}
+    }
 	
-	// Update is called once per frame
+	/*
+     * Checks line of sight if player is in vision cone but not detected yet
+     */
 	void FixedUpdate ()
 	{
 	    if (_sensePlayer && !SeenPlayer)
 	    {
-	        if (_regularAi.GoingLeft)
+	        if (_patrolBehav.GoingLeft)
 	        {
 	            CheckLineOfSight(-0.5f);
 	        }
@@ -94,13 +109,12 @@ public class PlayerDetection : MonoBehaviour, IDetection
 			
 	}
 
+
     /**
      * Sets the vision cone to the direction guard walking
      */
     public void SetVisionCone(bool goingLeft)
-    {
-        
-       // _visionCone.points = goingLeft ? _leftVision.ToArray() : _rightVision.ToArray();
+    {            
         _coneRender.SetConeShape(_visionCone.points);
     }
 
@@ -124,7 +138,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
 
         if (detectPlayer.collider != null && detectPlayer.collider.tag == PlayerTag)
         {
-            _regularAi.enabled = false;
+            _patrolBehav.enabled = false;
             _sensePlayer = false;
             SeenPlayer = true;
             StartCoroutine(ReactToDetection(detectPlayer, direction));
@@ -155,23 +169,20 @@ public class PlayerDetection : MonoBehaviour, IDetection
         if (detectPlayer.collider != null && detectPlayer.collider.tag == PlayerTag)
         {            
             _coneRender.ActivateState(_alarmed);
-            _pursue.SetSpeed(4f);
-            _pursue.SetGoal(graph.nodeWith(_player.GetComponent<PlayerMapRelation>().ReturnNodePlayerAt()));
+            _pathFinder.SetSpeed(4f);
+            _pathFinder.SetGoal(graph.nodeWith(_player.GetComponent<PlayerMapRelation>().ReturnNodePlayerAt()));
         }
         else
         {            
-            _pursue.SetSpeed(1f);           
-            _pursue.SetGoal(CalculateNodeLastSeen(playerLastSeen, graph));
-            
+            _pathFinder.SetSpeed(1f);           
+            _pathFinder.SetGoal(CalculateNodeLastSeen(playerLastSeen, graph));            
         }
 
         Transform parentTransfrom = gameObject.transform.parent;
         GameObject guard = parentTransfrom.gameObject;
         guard.layer = 11;
-
-
-        _pursue.enabled = true;
-        _pursue.StartPursuit();
+                
+        _pathFinder.StartPursuit();
     }
 
     /*

@@ -92,9 +92,7 @@ public class FindPlayer : MonoBehaviour
             Debug.Log("resume patrol " + ResumePatrol);
             gameObject.transform.parent.gameObject.layer = 9;
             GetComponent<VisionConeRender>().ActivateState(Color.grey);
-            GetComponentInParent<Spritehandler>().FlipSprite();            
-            GetComponentInParent<Pathfinding>().ReturnToPatrol();
-            GetComponentInParent<Pathfinding>().enabled = false;
+            GetComponentInParent<Spritehandler>().FlipSprite();                        
         }            
 
     }

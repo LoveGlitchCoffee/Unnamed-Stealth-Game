@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 public class Patrol : MonoBehaviour {
 
@@ -11,14 +8,18 @@ public class Patrol : MonoBehaviour {
     public List<float> Coordinates;
 
     private PlayerDetection _playerDetection;
-    private Pathfinding _pathfinding;
+    private Pathfinding _pathfinding;    
 
     private GraphOfMap map;
 
+    public IEnumerator PatrolCoroutine;
     private bool _patrolling = true;
-    
+    private Node[] _patrolRoute;
     private Node _nodeGuardAt;
 
+    /*
+     * Sets up script dependencies
+     */
     void Awake()
     {
         _playerDetection = gameObject.GetComponentInChildren<PlayerDetection>();
@@ -27,34 +28,37 @@ public class Patrol : MonoBehaviour {
     }
 
     /**
+     * Assigns the coordinates in inspector to route
      * Guard Patrol along scripted route
-     * Always in patrol region going left     
+     * starts off facing right
      */
     private void Start()
-    {        
+    {
+        _patrolRoute = AssignRoute();
         GoingLeft = false;
-
-        StartCoroutine(Patrolling());        
+        PatrolCoroutine = Patrolling();
+        StartCoroutine(PatrolCoroutine);        
     }
 
-    IEnumerator Patrolling()
-    {
-        Node[] patrolRoute = AssignRoute();
-        
+    /*     
+     * Use pathfinding class to navigate along scripted route, without the search
+     * At the end of navigation, wait for several seconds before turning around
+     * After turning around, just reverse patrol route to 'patrol'
+     */
+     IEnumerator Patrolling()
+    {                
         while (_patrolling)
         {                
-            yield return StartCoroutine(_pathfinding.PatrolOnRoute(patrolRoute));          
+            yield return StartCoroutine(_pathfinding.PatrolOnRoute(_patrolRoute));          
             yield return StartCoroutine(Wait());
             TurnAround();
-            patrolRoute = _pathfinding.ReverseRoute(patrolRoute);
-            //put checks in pathfind to interrupt patrol?
-        }
-                       
+            _patrolRoute = _pathfinding.ReverseRoute(_patrolRoute);            
+        }                       
     }
 
    
     /**
-     * Waits for 5 seconds and turns around according to previous walking direction, then continue patrol
+     * Turn sprite around
      * changes vision cone direction as well
      */
     public void TurnAround()
@@ -67,8 +71,9 @@ public class Patrol : MonoBehaviour {
 
     /**
      * Wait 5 seconds
+     * Also set idle animation while waiting
      */
-    public IEnumerator Wait()
+    IEnumerator Wait()
     {
         float currentTime = 0f;
         float maxWaitTime = 10f;
@@ -83,6 +88,7 @@ public class Patrol : MonoBehaviour {
 
         GetComponent<Spritehandler>().GuardIdle = false;
     }
+
 
     /*
      * for each coordinates, given in inspector, find the node in map that corresponds and assign them to the patrol route
