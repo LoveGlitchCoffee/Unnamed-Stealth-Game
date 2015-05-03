@@ -10,10 +10,12 @@ public class FlickerLight : MonoBehaviour
     void Start()
     {
         torchLight = gameObject.GetComponent<Light>();        
-
         StartCoroutine(Flicker());
     }
 
+    /*
+     * Create a torch flickering effect for the attached light source
+     */
     IEnumerator Flicker()
     {
         while (_canFlicker)
@@ -22,6 +24,4 @@ public class FlickerLight : MonoBehaviour
             yield return new WaitForSeconds(0.08f);
         }
     }
-
-
 }

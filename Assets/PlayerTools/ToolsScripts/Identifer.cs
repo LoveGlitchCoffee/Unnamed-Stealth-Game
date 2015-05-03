@@ -7,11 +7,17 @@ public class Identifer : MonoBehaviour
     private Tool _identity;
     private SpriteRenderer spriteRender;
 
+    /*
+     * Embodies a player tool (lootable) in a game object
+     */
     void Awake()
     {
         spriteRender = gameObject.GetComponent<SpriteRenderer>();
     }
 
+    /*
+     * Sets the identiy and image of the game object to that of the passed tool
+     */
     public void SetIdentity(Tool identityTool)
     {
         _identity = identityTool;

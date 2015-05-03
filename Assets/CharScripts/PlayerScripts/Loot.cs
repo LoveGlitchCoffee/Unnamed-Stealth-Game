@@ -15,6 +15,9 @@ public class Loot : MonoBehaviour
         _inventory = GameObject.FindGameObjectWithTag("Inventory");
     }
 
+    /**
+     * Player will loot item in E is pressed
+     */
     void Update()
     {
 
@@ -24,6 +27,9 @@ public class Loot : MonoBehaviour
         }
     }
 
+    /*
+     * Adds the item into inventory and destroy it in the game world
+     */
     private void LootItem()
     {
         _inventory.GetComponent<InventoryLogic>().AddItem(_lootableId);
@@ -31,6 +37,9 @@ public class Loot : MonoBehaviour
         _canLoot = false;
     }
 
+    /*
+     * If collides with an lootable item, allow looting
+     */
     void OnTriggerEnter2D(Collider2D col)
     {
         if (col.tag == _interTag)
@@ -41,6 +50,7 @@ public class Loot : MonoBehaviour
         }
     }
 
+    
     void OnTriggerExit2D(Collider2D col)
     {
         if (col.tag == _interTag)

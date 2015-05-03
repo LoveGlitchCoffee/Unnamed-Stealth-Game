@@ -17,7 +17,9 @@ public class PlayerNPCRelation : MonoBehaviour
 	    _playerMovement = gameObject.GetComponent<Movement>();
 	}
 
-
+    /*
+     * If touch guard, player dies
+     */
     void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.tag == GuardTag)

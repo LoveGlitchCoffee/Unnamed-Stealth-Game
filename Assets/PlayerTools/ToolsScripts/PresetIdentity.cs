@@ -8,6 +8,10 @@ public class PresetIdentity : MonoBehaviour
     private Identifer _identifer;
     private GameObject _inventory;
 	
+    /*
+     * Used for items starting off outside inventory
+     * Presets their identity to item with index in database
+     */
 	void Start ()
 	{
         _inventory  = GameObject.FindGameObjectWithTag("Inventory");

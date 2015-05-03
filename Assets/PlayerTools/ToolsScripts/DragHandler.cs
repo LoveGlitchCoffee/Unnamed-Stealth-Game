@@ -20,6 +20,10 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         _inventory = _slotIn.transform.parent.GetComponent<InventoryLogic>();
     }
 
+    /*
+     * When start drag, Instantiate a (lootable) game object that embodies the dragged item
+     * Calculates where the item should appear in the game world according to the screen point
+     */
     public void OnBeginDrag(PointerEventData eventData)
     {
         _itemBeingDragged = gameObject.transform.parent.gameObject.GetComponent<ItemUI>().ReturnToolInSlot();
@@ -35,15 +39,20 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
     }
 
+    /*
+     * Whilst dragging, change the instatiated object's position in game world according to screen point on mouse
+     */
     public void OnDrag(PointerEventData eventData)
     {
         Vector3 itemPosition =
             Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z)); 
-        _physicalSpawn.transform.position = itemPosition;
-        //Debug.Log(_physicalSpawn.transform.position);
+        _physicalSpawn.transform.position = itemPosition;        
     }
 
-
+    /*
+     * When drag end, enable physics property of object so that it 'becomes part of game world'
+     * Remove the item from inventory
+     */
     public void OnEndDrag(PointerEventData eventData)
     {
         _physicalSpawn.GetComponent<BoxCollider2D>().enabled = true;

@@ -14,16 +14,21 @@ public class CoinLover : MonoBehaviour, IBehaviour
         _patrolBehav = GetComponent<Patrol>();
     }
 
+    /*
+     * If guard comes in contact with a coin on the ground. He stops all movement and detection
+     */
     void OnTriggerEnter2D(Collider2D col)
     {
         if (col.tag == lootTag && col.GetComponent<Identifer>().ReturnIdentity() == coinName)
-        {
-            Debug.Log("ohh a coin");
+        {       
             _pathFinding.StopAllCoroutines();
             StartCoroutine(AdmireCoin(col.gameObject));
         }
     }
 
+    /*
+     * All movement and detection is disabled for a set period of time
+     */
     IEnumerator AdmireCoin(GameObject coin)
     {
         const float maxTime = 7f;
@@ -41,8 +46,7 @@ public class CoinLover : MonoBehaviour, IBehaviour
         Destroy(coin);
 
         while (timer < maxTime)
-        {
-            Debug.Log("admiring time = " + timer);
+        {            
             timer+= 0.03f;
             yield return null;
         }

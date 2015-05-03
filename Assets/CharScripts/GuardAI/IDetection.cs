@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public interface IDetection
+﻿public interface IDetection
 {
      void CheckLineOfSight(float direction);
 }

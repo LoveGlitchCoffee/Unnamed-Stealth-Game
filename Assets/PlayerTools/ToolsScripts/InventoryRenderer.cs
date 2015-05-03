@@ -17,14 +17,16 @@ public class InventoryRenderer : MonoBehaviour
 
     void Awake()
     {
-        _iLogic = GetComponent<InventoryLogic>();
-       // _toolTip = GameObject.FindGameObjectWithTag("ToolTip");
+        _iLogic = GetComponent<InventoryLogic>();       
     }
 	
 	void Start () {
 	    RenderInventory();
 	}
 
+    /*
+     * Render the inventory slots in correct positions
+     */
     public void RenderInventory()
     {
         int itemSlotNumber = 0;
@@ -45,19 +47,5 @@ public class InventoryRenderer : MonoBehaviour
         }
     }
 
-    /**
-     * have to do separate because can't set enabled of gameobject
-     */
-    public void ActivateToolTip(Vector2 position, Tool tool, string description)
-    {
-        ToolTip.SetActive(true);
-        ToolTip.GetComponent<RectTransform>().localPosition = new Vector3(position.x, gameObject.GetComponent<RectTransform>().localPosition.y);
-        ToolTip.transform.GetChild(0).GetComponent<Text>().text = description;
-    }
-
-    public void DisableToolTip()
-    {
-        ToolTip.SetActive(false);
-    }
 
 }

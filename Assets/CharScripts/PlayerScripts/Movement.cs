@@ -25,7 +25,7 @@ public class Movement : MonoBehaviour {
     private LayerMask _detectGround;
     private LayerMask _jumpLayerMask;
     
-    // Use this for initialization
+    
 	void Awake ()
 	{
 	    _anim = gameObject.GetComponent<Animator>();
@@ -36,7 +36,10 @@ public class Movement : MonoBehaviour {
 	    _jumpLayerMask = _detectEnvi | _detectGround;
 	}
 	
-	// Update is called once per frame
+	/* 
+     * For every frame, checks if player is on ground and if the running button was held or not
+     * If player is on ground, set jump to true for frame
+     */
 	void Update ()
 	{
 
@@ -57,6 +60,10 @@ public class Movement : MonoBehaviour {
 	    }
 	}
 
+    /*
+     * Moves player according to button pressed (Input Mng), and change sprite accordingly
+     * Also jumps if jump flag is true for last frame
+     */
     void FixedUpdate()
     {
         float axisPress = Input.GetAxisRaw("Horizontal");
@@ -90,13 +97,15 @@ public class Movement : MonoBehaviour {
         
     }
 
+    /*
+     * Flips sprite
+     */
     private void Flip()
     {
             _goingRight = !_goingRight;
             Vector3 localScale = gameObject.transform.localScale;
             localScale.x *= -1;
             gameObject.transform.localScale = localScale;
-
     }
     
 }

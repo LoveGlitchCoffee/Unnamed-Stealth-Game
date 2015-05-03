@@ -1,30 +1,25 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 public class VisionConeRender : MonoBehaviour
 {
 
     private LineRenderer _visionCone;
-
  
     private Color _far = Color.clear;
-   
 
-	// Use this for initialization
+    /*
+     * Manipulates the Line Renderer compoenent to achive visual vision cone
+     */
 	void Start ()
 	{
 	    _visionCone = GetComponent<LineRenderer>();
 	    _far.a = 0.45f;
-
 	}
 	
 
     /*
      * Sets the vision cone's near and far position and width according to abstract player detection
-     * current width is being set continuosly, refactor to set once
+     * current width is being set continuosly
      */
     public void SetConeShape(Vector2[] visionField)
     {
@@ -39,6 +34,9 @@ public class VisionConeRender : MonoBehaviour
         _visionCone.SetWidth(nearUp.y - nearDown.y,farUp.y - farDown.y );
     }    
 
+    /*
+     * Changes the colour of the vision cone to indicate a different state
+     */
     public void ActivateState(Color state)
     {
         _visionCone.SetColors(state,_far);

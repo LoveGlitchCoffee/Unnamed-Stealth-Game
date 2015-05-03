@@ -9,6 +9,9 @@ public class FindPlayer : MonoBehaviour
     private const float StepLook = 1;
     public bool ResumePatrol;
     
+    /*
+     * Starts a new visual search for player
+     */
     public IEnumerator VisualSearch()
     {        
         StopAllCoroutines();
@@ -22,16 +25,15 @@ public class FindPlayer : MonoBehaviour
     IEnumerator RestoreVisual()
     {        
 
-        Quaternion normalise = new Quaternion(0,0,0,1);        
-        
+        Quaternion normalise = new Quaternion(0,0,0,1);
+
         while (gameObject.transform.rotation.z != 0)
         {
             gameObject.transform.rotation = Quaternion.RotateTowards(transform.rotation, normalise, StepLook);
             yield return null;
         }
-        
-        
     }
+
 
     /*
      * look up , wait for a couple of seconds then look down to find the player
@@ -95,6 +97,8 @@ public class FindPlayer : MonoBehaviour
 
     }
 
+    /*Roates view in specified step each time
+     */
     private void RotateView(float stepLook)
     {
         gameObject.transform.Rotate(new Vector3(0, 0, stepLook));

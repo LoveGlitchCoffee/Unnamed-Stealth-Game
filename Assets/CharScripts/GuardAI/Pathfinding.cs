@@ -44,7 +44,7 @@ public class Pathfinding : MonoBehaviour
         Node start = gameObject.GetComponent<Patrol>().ReturnNodeGuardAt();        
         //Debug.Log("guard at " + start.GetX() + ", " + start.GetY());
               
-        //Debug.Log("player last seen at " + _goal.GetX() + ", " + _goal.GetY());
+        Debug.Log("player last seen at " + _goal.GetX() + ", " + _goal.GetY());
 
         return newSearch.FindRouteFrom(start, _goal);
     }
@@ -83,11 +83,11 @@ public class Pathfinding : MonoBehaviour
      */
     public IEnumerator FinishPatrol()
     {        
-        SetGoal(_patrolBehav.ReturnNodeInRouteAt(_patrolBehav.ReturnPatrolRouteLength() - 1));
-        Debug.Log("goal is " + _goal.GetX() + ", " + _goal.GetY());
+        SetGoal(_patrolBehav.ReturnNodeInRouteAt(_patrolBehav.ReturnPatrolRouteLength() - 1));        
         _routeToGoal = CalculateRouteToDestination();        
         yield return StartCoroutine(NavigateToGoal(true));        
     }
+
 
     /*
      *moves guard to the next step in the route returned from search
@@ -98,7 +98,7 @@ public class Pathfinding : MonoBehaviour
         {
            // Debug.Log("next position's x is: " + nextPosition.GetX());
 
-            if (nextPosition.GetY() != transform.position.y)
+            if (nextPosition.GetY() > transform.position.y)
             {                                 
                 yield return StartCoroutine(JumpToPlatform(transform.position, nextPosition.gameObject.transform.position));                         
             }
@@ -110,6 +110,7 @@ public class Pathfinding : MonoBehaviour
             
         }        
     }
+
 
     /*
      * Moves guard to platform by lerping but y position + sin(y) so larger proportion to x and creates curve
@@ -169,26 +170,33 @@ public class Pathfinding : MonoBehaviour
      */
     public IEnumerator StartPursuit()
     {
-        Debug.Log("start pursuit");
+        
         StopAllCoroutines();
         _routeToGoal = CalculateRouteToDestination();       
         _travelling = true;        
         yield return StartCoroutine(NavigateToGoal(_travelling));
-        
-        Debug.Log("finsihed pursuit");
+                
+        yield return StartCoroutine(PostPursuit());
+    }
 
-         if (_player.GetComponent<PlayerNPCRelation>().dead)
-            {                
-                gameObject.layer = 9;                
-                transform.GetChild(0).GetComponent<VisionConeRender>().ActivateState(Color.grey);
-                _postSearch.ResumePatrol = true;
-            }
-            else
-            {            
-                _detector.SeenPlayer = false;
-                _postSearch.enabled = true;
-                yield return StartCoroutine(_postSearch.VisualSearch());                
-            }
+    /*
+     * For certain conditions after finishing a pursuit performs the according action
+     * If player is dead or not seen after visual search, return to patrol
+     */
+    private IEnumerator PostPursuit()
+    {
+        if (_player.GetComponent<PlayerNPCRelation>().dead)
+        {
+            gameObject.layer = 9;
+            transform.GetChild(0).GetComponent<VisionConeRender>().ActivateState(Color.grey);
+            _postSearch.ResumePatrol = true;
+        }
+        else
+        {
+            _detector.SeenPlayer = false;
+            _postSearch.enabled = true;
+            yield return StartCoroutine(_postSearch.VisualSearch());
+        }
 
         if (_postSearch.ResumePatrol)
         {
@@ -197,8 +205,8 @@ public class Pathfinding : MonoBehaviour
             yield return StartCoroutine(FinishPatrol());
             yield return StartCoroutine(_patrolBehav.Wait());
 
-            ResumePatrolStabaliser();            
-            
+            ResumePatrolStabaliser();
+
             _patrolBehav.enabled = true;
             StartCoroutine(_patrolBehav.Patrolling());
         }

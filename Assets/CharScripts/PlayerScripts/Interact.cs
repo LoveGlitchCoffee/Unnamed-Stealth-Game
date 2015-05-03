@@ -15,6 +15,9 @@ public class Interact : MonoBehaviour
         _inventory = GameObject.FindGameObjectWithTag("Inventory").GetComponent<InventoryLogic>();
     }
 
+    /*
+     * If player interacts with an interact-able object, performs the object's purpose
+     */
     void Update()
     {
         if (_canInteract && Input.GetKeyDown(engage))
@@ -22,10 +25,11 @@ public class Interact : MonoBehaviour
             Debug.Log("interact");
             _interactObj.PerformPurpose(_inventory);
         }
-
     }
     
-
+    /*
+     * Allows interaction under circumstance that collider's object has an interactable script
+     */
     void OnTriggerStay2D(Collider2D col) // find a more fficient way
     {
         if (col.tag == interactTag)
@@ -36,6 +40,9 @@ public class Interact : MonoBehaviour
         }
     }
 
+    /*
+     * Disables interaction if leaves object
+     */
     void OnTriggerExit2D(Collider2D col)
     {
         if (col.tag == interactTag)

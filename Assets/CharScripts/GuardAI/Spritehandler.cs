@@ -9,19 +9,24 @@ public class Spritehandler : MonoBehaviour
     [HideInInspector] public bool GuardIdle { get; set; }
     private Animator _anim;
 
-	// Use this for initialization
+	
 	void Awake ()
 	{
 	    _Patrol = GetComponent<Patrol>();
 	    _anim = GetComponent<Animator>();
 	}
 	
-
+    /*
+     * Changes guard animation to idle accordingly
+     */
     void FixedUpdate()
     {        
         _anim.SetBool("idle",GuardIdle);
     }
 
+    /*
+     * Flips the sprite
+     */
     public void FlipSprite()
     {        
         Vector3 localScale = gameObject.transform.localScale;

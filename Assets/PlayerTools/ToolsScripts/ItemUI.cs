@@ -26,6 +26,9 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler//, IPointerExitHandler
 	    UpdateSlot();
 	}
 
+    /*
+     * Updates the data in the slot if a change has been made in inventory logic
+     */
     public void UpdateSlot()
     {
         _toolInSlot = _inventory.PlayerTools[ItemSlotNumber];
@@ -45,20 +48,17 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler//, IPointerExitHandler
 	    }
 	}
 
+    /*
+     * Fill description box with tool's descripton
+     */
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (_toolInSlot.Name != null)
-        {
-            //_invenRender.ActivateToolTip(gameObject.GetComponent<RectTransform>().localPosition, _inventory.PlayerTools[ItemSlotNumber], _inventory.PlayerTools[ItemSlotNumber].ItemDescription);
+        {            
             _descriptionBox.text = _toolInSlot.ItemDescription;
         }
     }
-
-    /*public void OnPointerExit(PointerEventData eventData)
-    {
-        if (_toolInSlot.Name != null)
-        _invenRender.DisableToolTip();
-    }*/
+   
 
     public Tool ReturnToolInSlot()
     {
