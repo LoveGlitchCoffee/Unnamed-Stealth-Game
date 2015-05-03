@@ -3,10 +3,7 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour {
 
-    private const KeyCode GoLeft = KeyCode.A;
-    private const KeyCode GoRight = KeyCode.D;
-    
-  
+
     private Animator _anim;
     private const float MoveForce = 150f;
     private float _speed = 1f;
@@ -21,19 +18,29 @@ public class Movement : MonoBehaviour {
 
     private Rigidbody2D _playerRb;
     public Transform GroundCheck;
+
+    private const int _enviMask = 10;
+    private const int _groundMask = 15;
+    private LayerMask _detectEnvi;
+    private LayerMask _detectGround;
+    private LayerMask _jumpLayerMask;
     
     // Use this for initialization
 	void Awake ()
 	{
 	    _anim = gameObject.GetComponent<Animator>();
 	    _playerRb = gameObject.GetComponent<Rigidbody2D>();
+	    _detectEnvi = 1 << _enviMask;
+	    _detectGround = 1 << _groundMask;
+
+	    _jumpLayerMask = _detectEnvi | _detectGround;
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
 
-	    _onGround = Physics2D.Linecast(gameObject.transform.position, GroundCheck.position, 1 << LayerMask.NameToLayer("Environment"));
+	    _onGround = Physics2D.Linecast(gameObject.transform.position, GroundCheck.position, _jumpLayerMask);
         
 	    if (Input.GetKeyDown(KeyCode.Space) && _onGround)
 	    {

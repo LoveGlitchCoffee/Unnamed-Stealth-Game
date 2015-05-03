@@ -11,10 +11,13 @@ public class Node : MonoBehaviour, IComparable<Node>
 
     private GameObject _gameMap;
 
-    bool _justSpawned = true;
+    bool _addedRising = false;
+
+    private LayerMask _enviLayer;
 
 	void Start () {	    
 	    _gameMap = GameObject.FindGameObjectWithTag("Map");
+	    _enviLayer = 1 << 10;
 	}
 	
 
@@ -81,45 +84,74 @@ public class Node : MonoBehaviour, IComparable<Node>
 
     /**
      * If this node is the position of a rising platform, add the node above it as its horizontal sucecssor's successor
+     * If the node is in the position of a platform, add the successors to noed above to allow movement across it.
      */
     void OnTriggerStay2D(Collider2D col)
     {
-        float nodeDistance = GetComponentInParent<GenerateNodes>().NodeDistance;   
+        float nodeDistance = GetComponentInParent<NodeGenerator>().NodeDistance;
+        GraphOfMap graph = _gameMap.GetComponent<NodeGenerator>().ReturnGeneratedGraph();
     
-        if (col.gameObject.layer == 10 && col.gameObject.tag == "RisingPlatform" && _justSpawned)
+        if (col.gameObject.layer == 10 && col.gameObject.tag == "RisingPlatform" && !_addedRising)
         {            
             //Debug.Log("node is " + GetX() + ", " + GetY());
-            Node platformNode = null;
-            GraphOfMap graph = _gameMap.GetComponent<GenerateNodes>().ReturnGeneratedGraph();
+            Node risingNode = FindPlatformNode(nodeDistance,ref graph);
+            
+            AddSuccessorForRising(risingNode,ref graph, nodeDistance);
 
-            for (int i = 0; i < graph.ReturnGraph().Count; i++)
+            _addedRising = false;                
+        }
+
+        if (col.gameObject.layer == 10 && col.gameObject.tag == "Platform")
+        {
+            Node platformNode = FindPlatformNode(nodeDistance, ref graph);
+
+            platformNode.AddNeighbour(nodeDistance, ref graph);
+            platformNode.AddNeighbour(-nodeDistance, ref graph);
+        }
+        
+    }
+
+    /**
+     * Finds the node that is above the current node
+     */
+    private Node FindPlatformNode(float nodeDistance, ref GraphOfMap graph)
+    {
+        Node platformNode = null;        
+
+        for (int i = 0; i < graph.ReturnGraph().Count; i++)
+        {
+            Node node = graph.ReturnGraph().ElementAt(i);
+
+            if (node.GetX() == this.GetX() &&
+                node.GetY() == this.GetY() + nodeDistance)
+            {                
+                platformNode = node;
+                return platformNode;
+            }
+        }
+
+        return platformNode;
+    }
+
+    /*
+     * Creates a jumping route
+     * Neighbours of the current node become sucessor of the passed node (which should have higher Y coordinates)
+     * Also add successors the other way
+     */
+    private void AddSuccessorForRising(Node platformNode, ref GraphOfMap graph, float nodeDistance)
+    {
+        for (int j = 0; j < graph.ReturnGraph().Count; j++)
+        {
+            Node node = graph.ReturnGraph().ElementAt(j);
+
+            if ((node.GetX() == this.GetX() - nodeDistance || node.GetX() == this.GetX() + nodeDistance) && node.GetY() == this.GetY() && !node.gameObject.GetComponent<Collider2D>().IsTouchingLayers(_enviLayer))
             {
-                Node node = graph.ReturnGraph().ElementAt(i);
+                node.AddSuccessor(platformNode, ref graph);
+                platformNode.AddSuccessor(node, ref graph);
 
-                if (node.GetX() == this.GetX() &&
-                    node.GetY() == this.GetY() + nodeDistance)
-                {
-                    platformNode = node;
-                }
+                DeleteSuccessor(node, ref graph);
+                node.DeleteSuccessor(this, ref graph);
             }
-            
-           for (int j = 0; j < graph.ReturnGraph().Count; j++)
-           {
-               Node node = graph.ReturnGraph().ElementAt(j);
-
-               if ((node.GetX() == this.GetX() - nodeDistance || node.GetX() == this.GetX() + nodeDistance) && node.GetY() == this.GetY())
-                {                    
-                    node.AddSuccessor(platformNode, ref graph);
-                    platformNode.AddSuccessor(node, ref graph);
-
-                    DeleteSuccessor(node, ref graph);
-                    node.DeleteSuccessor(this, ref graph);
-                }
-            }
-
-            
-            
-            _justSpawned = false;
         }
     }
 

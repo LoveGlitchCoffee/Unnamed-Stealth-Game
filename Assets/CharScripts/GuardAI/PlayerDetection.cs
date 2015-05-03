@@ -154,7 +154,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
         float baffledTime = 0f;
         _coneRender.ActivateState(_suspicion);
         RaycastHit2D detectPlayer = new RaycastHit2D();
-        GraphOfMap graph = _gameMap.GetComponent<GenerateNodes>().ReturnGeneratedGraph();
+        GraphOfMap graph = _gameMap.GetComponent<NodeGenerator>().ReturnGeneratedGraph();
 
         while (baffledTime < 0.5f)
         {
@@ -182,7 +182,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
         GameObject guard = parentTransfrom.gameObject;
         guard.layer = 11;
                 
-        _pathFinder.StartPursuit();
+        StartCoroutine(_pathFinder.StartPursuit());
     }
 
     /*

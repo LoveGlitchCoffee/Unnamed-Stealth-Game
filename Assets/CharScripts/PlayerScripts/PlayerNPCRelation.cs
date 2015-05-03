@@ -16,11 +16,7 @@ public class PlayerNPCRelation : MonoBehaviour
 	    _anim = gameObject.GetComponent<Animator>();
 	    _playerMovement = gameObject.GetComponent<Movement>();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
 
     void OnTriggerEnter2D(Collider2D col)
     {
@@ -29,6 +25,7 @@ public class PlayerNPCRelation : MonoBehaviour
             _anim.SetBool("dead",true);
             _playerMovement.enabled = false;
             dead = true;
+            gameObject.layer = 9;
         }
     }
 }

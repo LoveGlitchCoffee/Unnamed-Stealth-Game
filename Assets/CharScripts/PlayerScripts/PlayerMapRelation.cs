@@ -14,10 +14,6 @@ public class PlayerMapRelation : MonoBehaviour
 	    _gameMap = GameObject.FindGameObjectWithTag("Map");
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
     /**
      * tracks the node the player is currently at
@@ -26,7 +22,7 @@ public class PlayerMapRelation : MonoBehaviour
     {
         if (col.gameObject.layer == 12)
         {
-            _nodeAt = _gameMap.GetComponent<GenerateNodes>().ReturnGeneratedGraph().nodeWith(col.gameObject.GetComponent<Node>());                 
+            _nodeAt = _gameMap.GetComponent<NodeGenerator>().ReturnGeneratedGraph().nodeWith(col.gameObject.GetComponent<Node>());                 
         }
     }
 
@@ -36,5 +32,10 @@ public class PlayerMapRelation : MonoBehaviour
     public Node ReturnNodePlayerAt()
     {        
         return _nodeAt;
+    }
+
+    public void SetNodeManually(Node node)
+    {
+        _nodeAt = node;
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
 
 public class Pathfinding : MonoBehaviour
@@ -14,10 +13,9 @@ public class Pathfinding : MonoBehaviour
 
     private float _speed = 4f;
 
-    private Node[] _routeToPlayer;
+    private Node[] _routeToGoal;
     private Node _goal;
-    private bool _travelling;
-    private Node _nodeStartPursuit;
+    private bool _travelling;    
 
     /*
      * calculates the route to a destination, using the map
@@ -33,7 +31,7 @@ public class Pathfinding : MonoBehaviour
     
 
     /**
-     * Calculates route from guard current position to where it suppose to be, returning the route as an array
+     * Calculates route from guard current position to where its suppose to be, returning the route as an array
      */
     private Node[] CalculateRouteToDestination()
     {
@@ -43,12 +41,10 @@ public class Pathfinding : MonoBehaviour
         newSearch._possiblePath = new Dictionary<Node, Node>();
         newSearch._visited = new HashSet<Node>();
 
-        Node start = gameObject.GetComponent<Patrol>().ReturnNodeGuardAt();
-        _nodeStartPursuit = start;
+        Node start = gameObject.GetComponent<Patrol>().ReturnNodeGuardAt();        
         //Debug.Log("guard at " + start.GetX() + ", " + start.GetY());
               
         //Debug.Log("player last seen at " + _goal.GetX() + ", " + _goal.GetY());
-
 
         return newSearch.FindRouteFrom(start, _goal);
     }
@@ -56,52 +52,43 @@ public class Pathfinding : MonoBehaviour
 
     /**
      * Go to each position in the route
-     * if pursuing player then will use FindPlayer component to search for player, otherwise just continue as was before
+     * if pursuing the player, guard then will use FindPlayer component to search for player
+     * otherwise continue as it was on patrol
      */
-    IEnumerator NavigateToGoal(bool searching, bool pursue)
-    {        
+    IEnumerator NavigateToGoal(bool travelling)
+    {
+        /*for (int i = 0; i < _routeToGoal.Length; i++)
+        {
+            Node node = _routeToGoal[i];
+            Debug.Log(node.GetX() + ", " + node.GetY());
+        }*/
+
         do
         {
-            for (int i = 0; i < _routeToPlayer.Length; i++)
+            for (int i = 0; i < _routeToGoal.Length; i++)
             {                              
-                yield return StartCoroutine(MoveToNextPosition(_routeToPlayer[i]));                
+                yield return StartCoroutine(MoveToNextPosition(_routeToGoal[i]));                
             }
 
-            searching = false;
+            travelling = false;
 
-        } while (searching);
-        
+        } while (travelling);
 
-        if (pursue)
-        {
-            if (_player.GetComponent<PlayerNPCRelation>().dead)
-            {                
-                gameObject.layer = 9;
-                transform.GetChild(0).GetComponent<VisionConeRender>().ActivateState(Color.grey);
-                _postSearch.ResumePatrol = true;
-            }
-            else
-            {            
-                _detector.SeenPlayer = false;
-                _postSearch.enabled = true;
-                _postSearch.VisualSearch();
-            }
-        }
-
-        if (_postSearch.ResumePatrol)
-            {
-                if (!(_player.GetComponent<PlayerNPCRelation>().dead))
-                    GetComponent<Spritehandler>().FlipSprite();  
-          
-                GetComponent<Patrol>().enabled = true;
-                _postSearch.ResumePatrol = false;
-                
-                StartCoroutine(GetComponent<Patrol>().PatrolCoroutine);                
-            }
-        
-        
     }
-    
+
+    /*
+     * behaviour if does not find player
+     * Guard finished the previously patrolled route 
+     * search for route to the end point and patrols
+     */
+    public IEnumerator FinishPatrol()
+    {        
+        SetGoal(_patrolBehav.ReturnNodeInRouteAt(_patrolBehav.ReturnPatrolRouteLength() - 1));
+        Debug.Log("goal is " + _goal.GetX() + ", " + _goal.GetY());
+        _routeToGoal = CalculateRouteToDestination();        
+        yield return StartCoroutine(NavigateToGoal(true));        
+    }
+
     /*
      *moves guard to the next step in the route returned from search
      */     
@@ -109,9 +96,9 @@ public class Pathfinding : MonoBehaviour
     {        
         while (!(transform.position.x == nextPosition.GetX()))
         {
-            Debug.Log("next position's x is: " + nextPosition.GetX());
+           // Debug.Log("next position's x is: " + nextPosition.GetX());
 
-            if (nextPosition.GetY() > transform.position.y)
+            if (nextPosition.GetY() != transform.position.y)
             {                                 
                 yield return StartCoroutine(JumpToPlatform(transform.position, nextPosition.gameObject.transform.position));                         
             }
@@ -130,28 +117,32 @@ public class Pathfinding : MonoBehaviour
     IEnumerator JumpToPlatform(Vector2 startPosition, Vector2 platformPosition)
     {
         Vector2 bendPosition = Vector2.up;
-        float timeToJump = 1.5f;
+        float timeToJump = 1.15f;
         float timeStamp = Time.time;
         
 
         while (Time.time - timeStamp < timeToJump)
-        {            
-            transform.position = Vector2.MoveTowards(transform.position, platformPosition, (Time.time - timeStamp)/(timeToJump));
-            
-            //bug is when make jump, y suddenly decrease
+        {
+            //Debug.Log("time passed " + (Time.time - timeStamp));
 
-            //Debug.Log("fraction of tiem jumped " + Mathf.Clamp01(Time.time - timeStamp) / timeToJump);
-            //Debug.Log("sin of angle " + (transform.position.y + bendPosition.y * Mathf.Sin(Mathf.Clamp01((Time.time - timeStamp)/timeToJump)*Mathf.PI)));
+            transform.position = Vector2.MoveTowards(transform.position, platformPosition, ((Time.time - timeStamp)/(timeToJump))/1.25f);
+            
+            /*Debug.Log("old y position " + transform.position.y);
+            Debug.Log("add on " + (bendPosition.y * Mathf.Sin(Mathf.Clamp01((Time.time - timeStamp)/timeToJump)*Mathf.PI)));*/
+            
             float newY = transform.position.y + bendPosition.y * Mathf.Sin(Mathf.Clamp01((Time.time - timeStamp)/timeToJump)*Mathf.PI);            
             float newX = transform.position.x + bendPosition.x * Mathf.Sin(Mathf.Clamp01((Time.time - timeStamp) / timeToJump) * Mathf.PI);
             
             //Debug.Log("new y position " + newY);
 
             if (transform.position.y != platformPosition.y)
-                transform.position = new Vector2(newX, newY * 0.8f);           
-            
+                transform.position = new Vector2(newX, newY * 0.75f);
+
+                           
             yield return 0;
         }
+
+        //Debug.Log("finish jump");
     }
 
     /*
@@ -170,58 +161,90 @@ public class Pathfinding : MonoBehaviour
         _goal = goal;
     }
 
+
     /*
      * Stops all current actions, patrol etc
-     * Starts a new search and navigation from current position to player's last seen position
+     * Starts a new search, and navigation action, from current position to player's last seen position
+     * 
      */
-    public void StartPursuit()
+    public IEnumerator StartPursuit()
     {
+        Debug.Log("start pursuit");
         StopAllCoroutines();
-
-        _routeToPlayer = CalculateRouteToDestination();       
+        _routeToGoal = CalculateRouteToDestination();       
         _travelling = true;        
-        StartCoroutine(NavigateToGoal(_travelling, true));            
+        yield return StartCoroutine(NavigateToGoal(_travelling));
+        
+        Debug.Log("finsihed pursuit");
+
+         if (_player.GetComponent<PlayerNPCRelation>().dead)
+            {                
+                gameObject.layer = 9;                
+                transform.GetChild(0).GetComponent<VisionConeRender>().ActivateState(Color.grey);
+                _postSearch.ResumePatrol = true;
+            }
+            else
+            {            
+                _detector.SeenPlayer = false;
+                _postSearch.enabled = true;
+                yield return StartCoroutine(_postSearch.VisualSearch());                
+            }
+
+        if (_postSearch.ResumePatrol)
+        {
+            Debug.Log("returning to patrol");
+            SetSpeed(1.5f);
+            yield return StartCoroutine(FinishPatrol());
+            yield return StartCoroutine(_patrolBehav.Wait());
+
+            ResumePatrolStabaliser();            
+            
+            _patrolBehav.enabled = true;
+            StartCoroutine(_patrolBehav.Patrolling());
+        }
     }
 
     /*
-     * reverses the route of pursuit and returns guard to where they were before pursuit
-     
-    public void ReturnToPatrol()
+     * Behaviours required so that returning to patrol looks normal
+     * Without this, guard could do moon-walk
+     */
+    public void ResumePatrolStabaliser()
     {
-        _routeToPlayer =  ReverseRoute(_routeToPlayer);
-        _travelling = true;
-        SetSpeed(1f);
-        StartCoroutine(NavigateToGoal(_travelling, false));        
-    }*/
+        _patrolBehav.TurnAround();
+        _patrolBehav.ReversePatrolRoute();
+    }
 
-
+    /*
+     * Guard will navigate through the passed route.
+     */
     public IEnumerator PatrolOnRoute(Node[] route)
     {
-        _routeToPlayer = route;        
+        _routeToGoal = route;        
         _travelling = true;
-        SetSpeed(2f);
+        SetSpeed(1.5f);
 
-        yield return StartCoroutine(NavigateToGoal(_travelling, false));        
+        yield return StartCoroutine(NavigateToGoal(_travelling));        
     }
 
     /*
-     * reverse the route that was taken in previous path finding, used only for return to patrol
+     * reverse the route that was taken in previous path finding
      */
     public Node[] ReverseRoute(Node[] routeToReverse)
     {        
         Node[] newRoute = new Node[routeToReverse.Length];
         int counter = 0;
 
-        Debug.Log("new route length will be " + newRoute.Length);
+        //Debug.Log("new route length will be " + newRoute.Length);
 
-        for (int i = _routeToPlayer.Length - 1; i > -1; i--)
+        for (int i = routeToReverse.Length - 1; i > -1; i--)
         {
-            newRoute[counter] = _routeToPlayer[i];
-            //Debug.Log(newRoute[counter].GetX() +", " + newRoute[counter].GetY());
+            newRoute[counter] = routeToReverse[i];
+          //  Debug.Log("new route " + newRoute[counter].GetX() +", " + newRoute[counter].GetY());
             counter++;
         }
         
         return newRoute;
     }
+
 
 }

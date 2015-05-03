@@ -2,7 +2,7 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class ItemUI : MonoBehaviour, IPointerEnterHandler//, IPointerExitHandler
 {
 
     private Image _toolImage;
@@ -11,12 +11,14 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private InventoryLogic _inventory;
     private InventoryRenderer _invenRender;
     private Tool _toolInSlot;
+    private Text _descriptionBox;
 
     void Awake()
     {
         _toolImage = gameObject.transform.GetChild(0).GetComponent<Image>();
         _inventory = GameObject.FindGameObjectWithTag("Inventory").GetComponent<InventoryLogic>();
         _invenRender = GameObject.FindGameObjectWithTag("Inventory").GetComponent<InventoryRenderer>();
+        _descriptionBox = GameObject.FindGameObjectWithTag("DescriptionBox").GetComponent<Text>();
     }
 
 	void Start ()
@@ -47,15 +49,16 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         if (_toolInSlot.Name != null)
         {
-            _invenRender.ActivateToolTip(gameObject.GetComponent<RectTransform>().localPosition, _inventory.PlayerTools[ItemSlotNumber], _inventory.PlayerTools[ItemSlotNumber].ItemDescription);
+            //_invenRender.ActivateToolTip(gameObject.GetComponent<RectTransform>().localPosition, _inventory.PlayerTools[ItemSlotNumber], _inventory.PlayerTools[ItemSlotNumber].ItemDescription);
+            _descriptionBox.text = _toolInSlot.ItemDescription;
         }
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    /*public void OnPointerExit(PointerEventData eventData)
     {
         if (_toolInSlot.Name != null)
         _invenRender.DisableToolTip();
-    }
+    }*/
 
     public Tool ReturnToolInSlot()
     {

@@ -39,8 +39,7 @@ public class Interact : MonoBehaviour
     void OnTriggerExit2D(Collider2D col)
     {
         if (col.tag == interactTag)
-        {
-            Debug.Log("exit");
+        {            
             _canInteract = false;
             _interactObj = null;
         }

@@ -24,7 +24,7 @@ public class Patrol : MonoBehaviour {
     {
         _playerDetection = gameObject.GetComponentInChildren<PlayerDetection>();
         _pathfinding = gameObject.GetComponent<Pathfinding>();
-        map = GameObject.FindGameObjectWithTag("Map").GetComponent<GenerateNodes>().ReturnGeneratedGraph();            
+        map = GameObject.FindGameObjectWithTag("Map").GetComponent<NodeGenerator>().ReturnGeneratedGraph();            
     }
 
     /**
@@ -45,18 +45,22 @@ public class Patrol : MonoBehaviour {
      * At the end of navigation, wait for several seconds before turning around
      * After turning around, just reverse patrol route to 'patrol'
      */
-     IEnumerator Patrolling()
+     public IEnumerator Patrolling()
     {                
         while (_patrolling)
-        {                
-            yield return StartCoroutine(_pathfinding.PatrolOnRoute(_patrolRoute));          
+        {            
+            yield return StartCoroutine(_pathfinding.PatrolOnRoute(_patrolRoute));                 
             yield return StartCoroutine(Wait());
-            TurnAround();
-            _patrolRoute = _pathfinding.ReverseRoute(_patrolRoute);            
+            TurnAround();    
+            ReversePatrolRoute();
         }                       
     }
 
-   
+    public void ReversePatrolRoute()
+    {
+        _patrolRoute = _pathfinding.ReverseRoute(_patrolRoute);            
+    }
+
     /**
      * Turn sprite around
      * changes vision cone direction as well
@@ -73,7 +77,7 @@ public class Patrol : MonoBehaviour {
      * Wait 5 seconds
      * Also set idle animation while waiting
      */
-    IEnumerator Wait()
+    public IEnumerator Wait()
     {
         float currentTime = 0f;
         float maxWaitTime = 10f;
@@ -127,7 +131,7 @@ public class Patrol : MonoBehaviour {
         {            
             _nodeGuardAt =
                 GameObject.FindGameObjectWithTag("Map")
-                    .GetComponent<GenerateNodes>()
+                    .GetComponent<NodeGenerator>()
                     .ReturnGeneratedGraph()
                     .nodeWith(col.GetComponent<Node>());
 
@@ -141,6 +145,21 @@ public class Patrol : MonoBehaviour {
     public Node ReturnNodeGuardAt()
     {        
         return _nodeGuardAt;
+    }
+
+    public void SetNodeAtManually(Node node)
+    {
+        _nodeGuardAt = node;
+    }
+
+    public Node ReturnNodeInRouteAt(int index)
+    {
+        return _patrolRoute[index];
+    }
+
+    public int ReturnPatrolRouteLength()
+    {
+        return _patrolRoute.Length;
     }
    
 

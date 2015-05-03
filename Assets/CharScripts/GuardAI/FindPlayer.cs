@@ -9,10 +9,10 @@ public class FindPlayer : MonoBehaviour
     private const float StepLook = 1;
     public bool ResumePatrol;
     
-    public void VisualSearch()
-    {
-        Debug.Log("begin search");
-        StartCoroutine(VisualScan());        
+    public IEnumerator VisualSearch()
+    {        
+        StopAllCoroutines();
+        yield return StartCoroutine(VisualScan());        
         enabled = false;
     }
 
@@ -44,15 +44,14 @@ public class FindPlayer : MonoBehaviour
         int turnTaken = 0;
         float delayCounter;
         float delayTime = 3f;        
-                
-        Debug.Log(transform.rotation + " beginning rotation");
+                        
         while (turnTaken < turns && !GetComponent<PlayerDetection>().SeenPlayer)
         {                       
             delayCounter = 0;
 
             while (gameObject.transform.rotation.z < _scanAngle)
              {
-                Debug.Log("look up");
+                //Debug.Log("look up");
                  RotateView(StepLook);
                  yield return 0;
              }
@@ -67,7 +66,7 @@ public class FindPlayer : MonoBehaviour
 
              while (gameObject.transform.rotation.z > -_scanAngle)
              {
-                 Debug.Log("look down");
+                 //Debug.Log("look down");
                  RotateView(-StepLook);
                  yield return 0;
              }
@@ -82,21 +81,19 @@ public class FindPlayer : MonoBehaviour
 
             turnTaken++;            
         }
-
-        Debug.Log("restoring visuals");
+        
         StartCoroutine(RestoreVisual());
 
+        
         if (!GetComponent<PlayerDetection>().SeenPlayer)
         {            
             ResumePatrol = true;
-            Debug.Log("resume patrol " + ResumePatrol);
+            Debug.Log("finish looking");
             gameObject.transform.parent.gameObject.layer = 9;
-            GetComponent<VisionConeRender>().ActivateState(Color.grey);
-            GetComponentInParent<Spritehandler>().FlipSprite();                        
+            GetComponent<VisionConeRender>().ActivateState(Color.grey);            
         }            
 
     }
-
 
     private void RotateView(float stepLook)
     {
