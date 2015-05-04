@@ -2,7 +2,7 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class GuardDescriptor : MonoBehaviour, IPointerEnterHandler {
+public class GuardDescriptor : MonoBehaviour {
 
     private Text _descriptionBox;
     private IBehaviour _behaviour;
@@ -10,13 +10,11 @@ public class GuardDescriptor : MonoBehaviour, IPointerEnterHandler {
     void Start()
     {
         _descriptionBox = GameObject.FindGameObjectWithTag("DescriptionBox").GetComponent<Text>();
-        _behaviour = GetComponent<IBehaviour>();
-        Debug.Log("descriptor workin");
+        _behaviour = GetComponent<IBehaviour>();        
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    void OnMouseDown()
     {
-        Debug.Log("in the zone");
         _descriptionBox.text = _behaviour.ReturnBehaviourDescription();
     }
 }

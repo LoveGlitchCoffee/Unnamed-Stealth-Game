@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mail;
 using UnityEngine;
 
 public class PlayerDetection : MonoBehaviour, IDetection
@@ -217,18 +216,23 @@ public class PlayerDetection : MonoBehaviour, IDetection
     {
         Vector2 pointLastSeen = playerLastSeen.point;
         Node alternateNode = null;
+        Debug.Log("point last seen " + pointLastSeen);
 
+        Debug.Log(" map has " +_gameMap.transform.childCount + " nodes");
         for (int i = 0; i < _gameMap.transform.childCount; i++)
         {            
             Collider2D nodeCollider = _gameMap.transform.GetChild(i).GetComponent<CircleCollider2D>();
             
-                if (nodeCollider != null && nodeCollider.OverlapPoint(pointLastSeen))
+            if (nodeCollider != null)
+            {
+                if (nodeCollider.OverlapPoint(pointLastSeen))
                     return graph.nodeWith(nodeCollider.gameObject.GetComponent<Node>());
 
-                if (nodeCollider != null &&
-                    !(nodeCollider.gameObject.transform.position.x > pointLastSeen.x) &&
-                    !(nodeCollider.gameObject.transform.position.y > pointLastSeen.y))
-                    alternateNode = nodeCollider.gameObject.GetComponent<Node>();            
+                Vector2 nodePosition = nodeCollider.transform.position;
+                if (!(nodePosition.x > pointLastSeen.x) && !(nodePosition.y > pointLastSeen.y))
+                     alternateNode = nodeCollider.gameObject.GetComponent<Node>();
+            }
+                
         }
 
         return alternateNode;
