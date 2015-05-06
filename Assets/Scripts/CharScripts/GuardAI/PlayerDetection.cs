@@ -129,7 +129,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
 
     /**
      * Ray cast towards player if within vision cone
-     * If ray cast hits player, i.e. no obstacles between them, then enable guard's pursue behaviour, turning off patrol behaviour
+     * If ray cast hits player, i.e. no obstacles between them, then enable guard's pursue behaviour, turning off patrol behaviour     
      */
     public void CheckLineOfSight(float direction)
 	{
@@ -221,35 +221,65 @@ public class PlayerDetection : MonoBehaviour, IDetection
         Node alternateNode = null;
         //Debug.Log("point last seen " + pointLastSeen);
 
-        
-        for (int i = 0; i < _gameMap.transform.childCount; i++)
-        {            
-            Collider2D nodeCollider = _gameMap.transform.GetChild(i).GetComponent<CircleCollider2D>();
-            
-            if (nodeCollider != null)
-            {
-                if (nodeCollider.OverlapPoint(pointLastSeen))
-                    return graph.nodeWith(nodeCollider.gameObject.GetComponent<Node>());
+        alternateNode = CheckIfOverlapPoint(pointLastSeen, alternateNode, graph);        
 
-                Vector2 nodePosition = nodeCollider.transform.position;
-                if (_patrolBehav.GoingLeft)
+        if (alternateNode == null)
+        {
+            Debug.Log("point last seen " + pointLastSeen.x + ", " + pointLastSeen.y);            
+
+            if (_patrolBehav.GoingLeft)
+            {                
+                for (int i = 0; i < _gameMap.transform.childCount; i++)
                 {
-                    if (!(nodePosition.x > pointLastSeen.x) && !(nodePosition.y > pointLastSeen.y))
-                        alternateNode = nodeCollider.gameObject.GetComponent<Node>();    
+                    CircleCollider2D nodeCollider = _gameMap.transform.GetChild(i).GetComponent<CircleCollider2D>();
+
+                    if (nodeCollider != null)
+                    {
+                        Vector2 nodePosition = nodeCollider.transform.position;                        
+
+                        if (!(nodePosition.x > pointLastSeen.x) && !(nodePosition.y > pointLastSeen.y))
+                            alternateNode = nodeCollider.gameObject.GetComponent<Node>();
+                    }                    
                 }
-                else
-                {
-                   if (!(nodePosition.x < pointLastSeen.x) && !(nodePosition.y > pointLastSeen.y))
-                       alternateNode = nodeCollider.gameObject.GetComponent<Node>(); 
-                }
-                
             }
+            else if (!_patrolBehav.GoingLeft)
+            {                
                 
-        }
+                for (int i = _gameMap.transform.childCount - 1; i > -1; i--)
+                {
+                    CircleCollider2D nodeCollider = _gameMap.transform.GetChild(i).GetComponent<CircleCollider2D>();
 
+                    if (nodeCollider != null)
+                    {
+                        Vector2 nodePosition = nodeCollider.transform.position;                        
+
+                        if (!(nodePosition.x < pointLastSeen.x) && !(nodePosition.y > pointLastSeen.y))
+                            alternateNode = nodeCollider.gameObject.GetComponent<Node>();
+                    }
+                }
+            
+            }    
+        }
+        
         return alternateNode;
     }
-    
+
+    private Node CheckIfOverlapPoint(Vector2 pointLastSeen, Node alternate, GraphOfMap graph)
+    {
+            for (int i = 0; i < _gameMap.transform.childCount; i++)
+            {
+                Collider2D nodeCollider = _gameMap.transform.GetChild(i).GetComponent<CircleCollider2D>();
+
+                if (nodeCollider != null)
+                {
+                    if (nodeCollider.OverlapPoint(pointLastSeen))
+                        return graph.nodeWith(nodeCollider.gameObject.GetComponent<Node>());
+                }
+            }
+
+        return alternate;
+    }
+
 
     /**
      * If vision cone collides with player, cast ray cast

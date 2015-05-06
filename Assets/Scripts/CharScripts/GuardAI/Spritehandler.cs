@@ -8,12 +8,14 @@ public class Spritehandler : MonoBehaviour
     private Patrol _Patrol;
     [HideInInspector] public bool GuardIdle { get; set; }
     private Animator _anim;
+    [HideInInspector] public bool SpriteLeft { get; set; }
 
 	
 	void Awake ()
 	{
 	    _Patrol = GetComponent<Patrol>();
 	    _anim = GetComponent<Animator>();
+	    SpriteLeft = false;
 	}
 	
     /*
@@ -32,5 +34,6 @@ public class Spritehandler : MonoBehaviour
         Vector3 localScale = gameObject.transform.localScale;
         localScale.x *= -1;
         gameObject.transform.localScale = localScale;
+        SpriteLeft = !SpriteLeft;
     }
 }

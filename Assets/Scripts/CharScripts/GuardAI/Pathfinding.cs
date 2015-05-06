@@ -10,6 +10,7 @@ public class Pathfinding : MonoBehaviour
     private PlayerDetection _detector;
     private GameObject _player;
     private Patrol _patrolBehav;
+    private Spritehandler _spriteHand;
 
     private float _speed = 4f;
 
@@ -27,6 +28,7 @@ public class Pathfinding : MonoBehaviour
 	    _postSearch = GetComponentInChildren<FindPlayer>();
 	    _player = GameObject.FindGameObjectWithTag("Player");
 	    _patrolBehav = GetComponent<Patrol>();
+	    _spriteHand = GetComponent<Spritehandler>();
 	}
     
 
@@ -75,19 +77,7 @@ public class Pathfinding : MonoBehaviour
         } while (travelling);
 
     }
-
-    /*
-     * behaviour if does not find player
-     * Guard finished the previously patrolled route 
-     * search for route to the end point and patrols
-     */
-    public IEnumerator FinishPatrol()
-    {        
-        SetGoal(_patrolBehav.ReturnNodeInRouteAt(_patrolBehav.ReturnPatrolRouteLength() - 1));        
-        _routeToGoal = CalculateRouteToDestination();        
-        yield return StartCoroutine(NavigateToGoal(true));        
-    }
-
+   
 
     /*
      *moves guard to the next step in the route returned from search
@@ -104,6 +94,18 @@ public class Pathfinding : MonoBehaviour
             }
             else
             {
+                if (nextPosition.GetX() > transform.position.x && _spriteHand.SpriteLeft)
+                {
+                    _patrolBehav.GoingLeft = false;
+                    _spriteHand.FlipSprite();
+                }
+
+                else if (nextPosition.GetX() < transform.position.x && !_spriteHand.SpriteLeft)
+                {
+                    _patrolBehav.GoingLeft = true;
+                    _spriteHand.FlipSprite();
+                }
+
                 transform.position = Vector2.MoveTowards(transform.position, nextPosition.gameObject.transform.position, _speed * Time.deltaTime);
                 yield return 0;
             }
@@ -170,7 +172,7 @@ public class Pathfinding : MonoBehaviour
      */
     public IEnumerator StartPursuit()
     {
-        Debug.Log("starting new pursuit");
+        //Debug.Log("starting new pursuit");
         StopAllCoroutines();
         _routeToGoal = CalculateRouteToDestination();       
         _travelling = true;        
@@ -200,8 +202,8 @@ public class Pathfinding : MonoBehaviour
 
         if (_postSearch.ResumePatrol)
         {
-            Debug.Log("returning to patrol");
-            SetSpeed(1.5f);
+            //Debug.Log("returning to patrol");
+            SetSpeed(2f);
             yield return StartCoroutine(FinishPatrol());
             yield return StartCoroutine(_patrolBehav.Wait());
 
@@ -210,6 +212,18 @@ public class Pathfinding : MonoBehaviour
             _patrolBehav.enabled = true;
             StartCoroutine(_patrolBehav.Patrolling());
         }
+    }
+
+    /*
+     * behaviour if does not find player
+     * Guard finished the previously patrolled route 
+     * search for route to the end point and patrols
+     */
+    public IEnumerator FinishPatrol()
+    {        
+        SetGoal(_patrolBehav.ReturnNodeInRouteAt(_patrolBehav.ReturnPatrolRouteLength() - 1));        
+        _routeToGoal = CalculateRouteToDestination();        
+        yield return StartCoroutine(NavigateToGoal(true));
     }
 
     /*
@@ -229,7 +243,7 @@ public class Pathfinding : MonoBehaviour
     {
         _routeToGoal = route;        
         _travelling = true;
-        SetSpeed(1.5f);
+        SetSpeed(2f);
 
         yield return StartCoroutine(NavigateToGoal(_travelling));        
     }

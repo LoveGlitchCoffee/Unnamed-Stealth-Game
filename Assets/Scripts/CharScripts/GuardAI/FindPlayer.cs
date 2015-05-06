@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Text;
 using UnityEngine;
 
 public class FindPlayer : MonoBehaviour
@@ -14,8 +13,7 @@ public class FindPlayer : MonoBehaviour
      */
     public IEnumerator VisualSearch()
     {        
-        StopAllCoroutines();
-        Debug.Log("starts visual");
+        StopAllCoroutines();        
         yield return StartCoroutine(VisualScan());        
         enabled = false;
     }
@@ -26,7 +24,7 @@ public class FindPlayer : MonoBehaviour
     IEnumerator RestoreVisual()
     {        
 
-        Quaternion normalise = new Quaternion(0,0,0,1);
+        Quaternion normalise = new Quaternion(0,0,0,1);        
 
         while (gameObject.transform.rotation.z != 0)
         {
@@ -44,45 +42,43 @@ public class FindPlayer : MonoBehaviour
     IEnumerator VisualScan()
     {       
         
-        const int turns = 2;
+        const int turns = 4;
         int turnTaken = 0;
         float delayCounter;
-        float delayTime = 3f;        
-                        
+        float delayTime = 3f;
+        bool lookedUp = false;
+
+
         while (turnTaken < turns && !GetComponent<PlayerDetection>().SeenPlayer)
-        {                       
+        {            
             delayCounter = 0;
 
-            while (gameObject.transform.rotation.z < _scanAngle)
-             {
-                //Debug.Log("look up");
-                 RotateView(StepLook);
-                 yield return 0;
-             }
+            if (!lookedUp)
+            {
+                while (gameObject.transform.rotation.z < _scanAngle)
+                {
+                   RotateView(StepLook);
+                   yield return 0;
+                }                
+            }
+            else
+            {
+                while (gameObject.transform.rotation.z > -_scanAngle)
+                {
+                   RotateView(-StepLook);
+                   yield return 0;
+                }                
+            }
 
+            lookedUp = !lookedUp;
+
+
+            while (delayCounter < delayTime)
+            {                
+                delayCounter += 0.2f;
+                yield return 0;
+            }
             
-            while (delayCounter < delayTime)
-            {
-                
-                delayCounter += 0.2f;
-                yield return 0;
-            }
-
-             while (gameObject.transform.rotation.z > -_scanAngle)
-             {
-                 //Debug.Log("look down");
-                 RotateView(-StepLook);
-                 yield return 0;
-             }
-
-            delayCounter = 0f;
-
-            while (delayCounter < delayTime)
-            {
-                delayCounter += 0.2f;
-                yield return 0;
-            }
-
             turnTaken++;            
         }
         
