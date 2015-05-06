@@ -35,6 +35,8 @@ public class PlayerDetection : MonoBehaviour, IDetection
     private Color _alarmed = Color.red;
     private Color _blind = Color.grey;
 
+    private RaycastHit2D detectPlayer;
+
     /*
      * Set up script dependencies
      */
@@ -139,7 +141,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
         {
             _patrolBehav.enabled = false;
             _sensePlayer = false;
-            SeenPlayer = true;
+            SeenPlayer = true;            
             StartCoroutine(ReactToDetection(detectPlayer, direction));
         }
 	}
@@ -152,10 +154,10 @@ public class PlayerDetection : MonoBehaviour, IDetection
     {
         
         _coneRender.ActivateState(_suspicion);
-        RaycastHit2D detectPlayer = new RaycastHit2D();
+        detectPlayer = new RaycastHit2D();
         GraphOfMap graph = _gameMap.GetComponent<NodeGenerator>().ReturnGeneratedGraph();
 
-        yield return StartCoroutine(Baffled(direction));
+        yield return StartCoroutine(Baffled(direction));        
 
         SetNavigationState(playerLastSeen, detectPlayer, graph);
 
@@ -167,9 +169,31 @@ public class PlayerDetection : MonoBehaviour, IDetection
     }
 
     /*
-     * Depending on whether guard still detects player or not after baffling
-     * Guard will set either suspicion or alarmed state for the pursuit (travel to last seen position)
+     * Simulate being baffled
+     * guard stops and enter suspicion state for 0.5 seconds
+     * If guard still see player after baffled, enter alarmed pursuit     
      */
+    private IEnumerator Baffled(float direction)
+    {
+        float baffledTime = 0f;        
+
+        while (baffledTime < 0.5f)
+        {
+            _lineOfSight =
+                new Ray2D(new Vector2(gameObject.transform.position.x + direction, gameObject.transform.position.y + 0.4f),
+                    CalculateDirection());
+            detectPlayer = Physics2D.Raycast(_lineOfSight.origin, _lineOfSight.direction, _sightDistance, _detectLayerMask);
+            Debug.DrawLine(_lineOfSight.origin, detectPlayer.point);
+
+            baffledTime += 1f*Time.deltaTime;
+            yield return null;
+        }
+    }
+    
+    /*
+         * Depending on whether guard still detects player or not after baffling
+         * Guard will set either suspicion or alarmed state for the pursuit (travel to last seen position)
+         */
     private void SetNavigationState(RaycastHit2D playerLastSeen, RaycastHit2D detectPlayer, GraphOfMap graph)
     {
         if (detectPlayer.collider != null && detectPlayer.collider.tag == PlayerTag)
@@ -185,40 +209,19 @@ public class PlayerDetection : MonoBehaviour, IDetection
         }
     }
 
-    /*
-     * Simulate being baffled
-     * guard stops and enter suspicion state for 0.5 seconds
-     * If guard still see player after baffled, enter alarmed pursuit     
-     */
-    private IEnumerator Baffled(float direction)
-    {
-        float baffledTime = 0f;
-        RaycastHit2D detectPlayer;
-
-        while (baffledTime < 0.5f)
-        {
-            _lineOfSight =
-                new Ray2D(new Vector2(gameObject.transform.position.x + direction, gameObject.transform.position.y + 0.4f),
-                    CalculateDirection());
-            detectPlayer = Physics2D.Raycast(_lineOfSight.origin, _lineOfSight.direction, _sightDistance, _detectLayerMask);
-            Debug.DrawLine(_lineOfSight.origin, detectPlayer.point);
-
-            baffledTime += 1f*Time.deltaTime;
-            yield return null;
-        }
-    }
+   
 
     /*
      * Calculates the node player last seen (checks which collider overlaps point of last seen
-     * if last seen is outside collider, calculate closest point (left most only)
+     * if last seen is outside collider, calculate closest point
      */
     private Node CalculateNodeLastSeen(RaycastHit2D playerLastSeen, GraphOfMap graph)
     {
         Vector2 pointLastSeen = playerLastSeen.point;
         Node alternateNode = null;
-        Debug.Log("point last seen " + pointLastSeen);
+        //Debug.Log("point last seen " + pointLastSeen);
 
-        Debug.Log(" map has " +_gameMap.transform.childCount + " nodes");
+        
         for (int i = 0; i < _gameMap.transform.childCount; i++)
         {            
             Collider2D nodeCollider = _gameMap.transform.GetChild(i).GetComponent<CircleCollider2D>();
@@ -229,8 +232,17 @@ public class PlayerDetection : MonoBehaviour, IDetection
                     return graph.nodeWith(nodeCollider.gameObject.GetComponent<Node>());
 
                 Vector2 nodePosition = nodeCollider.transform.position;
-                if (!(nodePosition.x > pointLastSeen.x) && !(nodePosition.y > pointLastSeen.y))
-                     alternateNode = nodeCollider.gameObject.GetComponent<Node>();
+                if (_patrolBehav.GoingLeft)
+                {
+                    if (!(nodePosition.x > pointLastSeen.x) && !(nodePosition.y > pointLastSeen.y))
+                        alternateNode = nodeCollider.gameObject.GetComponent<Node>();    
+                }
+                else
+                {
+                   if (!(nodePosition.x < pointLastSeen.x) && !(nodePosition.y > pointLastSeen.y))
+                       alternateNode = nodeCollider.gameObject.GetComponent<Node>(); 
+                }
+                
             }
                 
         }

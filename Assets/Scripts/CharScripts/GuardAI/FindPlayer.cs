@@ -15,6 +15,7 @@ public class FindPlayer : MonoBehaviour
     public IEnumerator VisualSearch()
     {        
         StopAllCoroutines();
+        Debug.Log("starts visual");
         yield return StartCoroutine(VisualScan());        
         enabled = false;
     }
@@ -38,6 +39,7 @@ public class FindPlayer : MonoBehaviour
     /*
      * look up , wait for a couple of seconds then look down to find the player
      * method is just to rotate the detector object on the z axis in euler angles
+     * could split for more flexible and smooth visual
      */
     IEnumerator VisualScan()
     {       
@@ -90,7 +92,7 @@ public class FindPlayer : MonoBehaviour
         if (!GetComponent<PlayerDetection>().SeenPlayer)
         {            
             ResumePatrol = true;
-            Debug.Log("finish looking");
+            //Debug.Log("finish looking");
             gameObject.transform.parent.gameObject.layer = 9;
             GetComponent<VisionConeRender>().ActivateState(Color.grey);            
         }            

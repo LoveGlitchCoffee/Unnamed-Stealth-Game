@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class InventoryLogic : MonoBehaviour {
 
@@ -10,11 +9,7 @@ public class InventoryLogic : MonoBehaviour {
 	void Awake () {
 	    _toolDb = new ToolDB();   
 	}
-
-    void Start()
-    {
-        AddItem(1);        
-    }
+    
 
     public ToolDB ReturnToolDb()
     {

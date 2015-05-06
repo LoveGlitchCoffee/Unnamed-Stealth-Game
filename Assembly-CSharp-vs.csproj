@@ -77,6 +77,7 @@
      <Compile Include="Assets\Scripts\ToolsScripts\PresetIdentity.cs" />
      <Compile Include="Assets\Scripts\ToolsScripts\Tool.cs" />
      <Compile Include="Assets\Scripts\ToolsScripts\ToolDB.cs" />
+     <Compile Include="Assets\Scripts\TutorialScripts\TutorialVoice.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>E:/Development/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

@@ -44,7 +44,7 @@ public class Pathfinding : MonoBehaviour
         Node start = gameObject.GetComponent<Patrol>().ReturnNodeGuardAt();        
         //Debug.Log("guard at " + start.GetX() + ", " + start.GetY());
               
-        Debug.Log("player last seen at " + _goal.GetX() + ", " + _goal.GetY());
+        //Debug.Log("player last seen at " + _goal.GetX() + ", " + _goal.GetY());
 
         return newSearch.FindRouteFrom(start, _goal);
     }
@@ -170,7 +170,7 @@ public class Pathfinding : MonoBehaviour
      */
     public IEnumerator StartPursuit()
     {
-        
+        Debug.Log("starting new pursuit");
         StopAllCoroutines();
         _routeToGoal = CalculateRouteToDestination();       
         _travelling = true;        

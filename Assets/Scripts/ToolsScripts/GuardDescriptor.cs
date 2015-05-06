@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class GuardDescriptor : MonoBehaviour {
@@ -15,6 +14,9 @@ public class GuardDescriptor : MonoBehaviour {
 
     void OnMouseDown()
     {
+        if (!enabled)
+            return;
+
         _descriptionBox.text = _behaviour.ReturnBehaviourDescription();
     }
 }

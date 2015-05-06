@@ -5,9 +5,9 @@ public class Movement : MonoBehaviour {
 
 
     private Animator _anim;
-    private const float MoveForce = 150f;
+    private const float MoveForce = 270f;
     private float _speed = 1f;
-    private const float JumpSpeed = 650f;
+    private const float JumpSpeed = 700f;
     private const float OriginalSpeed = 0.7f;
     private const float MaxRunSpeed = 2f;
 
