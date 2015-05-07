@@ -175,7 +175,8 @@ public class Pathfinding : MonoBehaviour
         //Debug.Log("starting new pursuit");
         StopAllCoroutines();
         _routeToGoal = CalculateRouteToDestination();       
-        _travelling = true;        
+        _travelling = true;   
+        
         yield return StartCoroutine(NavigateToGoal(_travelling));
                 
         yield return StartCoroutine(PostPursuit());

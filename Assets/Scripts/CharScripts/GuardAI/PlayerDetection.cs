@@ -19,6 +19,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
     private LayerMask _detectLayerMask;
 
     private const string PlayerTag = "Player";
+    private const float EyeDistance = 0.4f;
 
     private List<Vector2> _leftVision = new List<Vector2>();
     private List<Vector2> _rightVision = new List<Vector2>();
@@ -74,7 +75,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
         _leftVision.Add(new Vector2(-0.2f, 0.5f));
         _leftVision.Add(new Vector2(-5f, 1.6f));
         _leftVision.Add(new Vector2(-5f, -0.8f));
-        _leftVision.Add(new Vector2(-0.2f, 0.4f));
+        _leftVision.Add(new Vector2(-0.2f, EyeDistance));
 
 
         for (int i = 0; i < 4; i++)
@@ -133,7 +134,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
      */
     public void CheckLineOfSight(float direction)
 	{
-        _lineOfSight = new Ray2D(new Vector2(gameObject.transform.position.x + direction, gameObject.transform.position.y + 0.4f), CalculateDirection());
+        _lineOfSight = new Ray2D(new Vector2(gameObject.transform.position.x + direction, gameObject.transform.position.y + EyeDistance), CalculateDirection());
         RaycastHit2D detectPlayer = Physics2D.Raycast(_lineOfSight.origin, _lineOfSight.direction, _sightDistance, _detectLayerMask); // distance is x distance                               
         Debug.DrawLine(_lineOfSight.origin, detectPlayer.point);
 
@@ -180,7 +181,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
         while (baffledTime < 0.5f)
         {
             _lineOfSight =
-                new Ray2D(new Vector2(gameObject.transform.position.x + direction, gameObject.transform.position.y + 0.4f),
+                new Ray2D(new Vector2(gameObject.transform.position.x + direction, gameObject.transform.position.y + EyeDistance),
                     CalculateDirection());
             detectPlayer = Physics2D.Raycast(_lineOfSight.origin, _lineOfSight.direction, _sightDistance, _detectLayerMask);
             Debug.DrawLine(_lineOfSight.origin, detectPlayer.point);
@@ -287,7 +288,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
     void OnTriggerStay2D(Collider2D col)
     {
         if (col.gameObject.tag == PlayerTag && !SeenPlayer)
-        {                    
+        {                                
             _sensePlayer = true;
         }
     }
