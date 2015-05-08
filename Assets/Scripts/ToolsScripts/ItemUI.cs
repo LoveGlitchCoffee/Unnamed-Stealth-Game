@@ -11,7 +11,7 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler//, IPointerExitHandler
     private InventoryLogic _inventory;
     private InventoryRenderer _invenRender;
     private Tool _toolInSlot;
-    private Text _descriptionBox;
+    private Text _descriptionBox;    
 
     void Awake()
     {

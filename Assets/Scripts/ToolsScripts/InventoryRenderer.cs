@@ -11,8 +11,7 @@ public class InventoryRenderer : MonoBehaviour
 
     public GameObject InventorySpace;    
     private InventoryLogic _iLogic;
-
-    public GameObject ToolTip;
+    
     private const int GapBetweenSlots = 40;
 
     void Awake()

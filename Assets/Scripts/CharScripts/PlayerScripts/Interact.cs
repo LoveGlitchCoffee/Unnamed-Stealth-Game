@@ -21,8 +21,7 @@ public class Interact : MonoBehaviour
     void Update()
     {
         if (_canInteract && Input.GetKeyDown(engage))
-        {
-            Debug.Log("interact");
+        {            
             _interactObj.PerformPurpose(_inventory);
         }
     }
