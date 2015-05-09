@@ -68,6 +68,7 @@
      <Compile Include="Assets\Scripts\EnviScripts\Door.cs" />
      <Compile Include="Assets\Scripts\EnviScripts\FlickerLight.cs" />
      <Compile Include="Assets\Scripts\EnviScripts\IInteractive.cs" />
+     <Compile Include="Assets\Scripts\EnviScripts\ShineEffect.cs" />
      <Compile Include="Assets\Scripts\ToolsScripts\DragHandler.cs" />
      <Compile Include="Assets\Scripts\ToolsScripts\GuardDescriptor.cs" />
      <Compile Include="Assets\Scripts\ToolsScripts\Identifer.cs" />
