@@ -17,6 +17,6 @@ public class InteractTutorial : MonoBehaviour {
         {
             StartCoroutine(_tutorial.WriteNarration(Tutorial));
             enabled = false;
-        }
+        }        
     }
 }
