@@ -7,6 +7,7 @@ public class PlayerNPCRelation : MonoBehaviour
     private const string GuardTag = "Guard";
     private Animator _anim;
     private Movement _playerMovement;
+    private Fading _fadeRestart;
 
     [HideInInspector] public bool dead { get; set; }
 
@@ -15,6 +16,7 @@ public class PlayerNPCRelation : MonoBehaviour
 	{
 	    _anim = gameObject.GetComponent<Animator>();
 	    _playerMovement = gameObject.GetComponent<Movement>();
+	    _fadeRestart = GameObject.FindGameObjectWithTag("SceneFade").GetComponent<Fading>();
 	}
 
     /*
@@ -28,6 +30,8 @@ public class PlayerNPCRelation : MonoBehaviour
             _playerMovement.enabled = false;
             dead = true;
             gameObject.layer = 9;
+            StartCoroutine(_fadeRestart.Restart());
         }
     }
+   
 }

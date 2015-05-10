@@ -5,8 +5,8 @@ public class ShineEffect : MonoBehaviour
 {
 
     private Light _shineLight;
-    private float normalLighting = 0.5f;
-    private float highLighting = 4f;
+    private float normalLighting = 0f;
+    private float highLighting = 3f;
 
     void Awake()
     {

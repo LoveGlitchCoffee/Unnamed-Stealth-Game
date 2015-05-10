@@ -13,6 +13,7 @@ public class VisionConeRender : MonoBehaviour
 	void Start ()
 	{
 	    _visionCone = GetComponent<LineRenderer>();
+	    _visionCone.sortingLayerName = "Detector";
 	    _far.a = 0.45f;
 	}
 	

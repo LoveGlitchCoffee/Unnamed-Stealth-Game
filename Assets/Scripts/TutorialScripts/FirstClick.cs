@@ -4,29 +4,18 @@ using System.Collections;
 public class FirstClick : MonoBehaviour
 {
 
-    private TutorialVoice tutorial;
+    private TutorialVoice _tutorial;
     private GameObject _player;
-    private GameObject coin;
-    private GameObject[] lootables;
-    private Identifer[] identities;
+    private GameObject _coin;
+    private CommonTutorialFunctions _tutFunc;
 
 	void Start ()
 	{
-	    tutorial = GameObject.FindGameObjectWithTag("DescriptionBox").GetComponent<TutorialVoice>();
-        _player = GameObject.FindGameObjectWithTag("Player");
+	    _tutorial = GameObject.FindGameObjectWithTag("DescriptionBox").GetComponent<TutorialVoice>();
+        _player = GameObject.FindGameObjectWithTag("Player");	 
 
-	    lootables = GameObject.FindGameObjectsWithTag("Lootable");
-        identities = new Identifer[lootables.Length];
-        
-	    for (int i = 0; i < lootables.Length; i++)
-	    {
-	        identities[i] = lootables[i].GetComponent<Identifer>();
-
-	        if (identities[i].ReturnIdentity() == "coin")
-	            coin = identities[i].gameObject;
-	    }
-
-        
+        _tutFunc = new CommonTutorialFunctions();
+	    _coin = _tutFunc.GetLootables("coin");
 	}
 
     void OnMouseDown()
@@ -34,7 +23,7 @@ public class FirstClick : MonoBehaviour
         if (!enabled)
             return;
 
-        tutorial.StopAllCoroutines();
+        _tutorial.StopAllCoroutines();
         StartCoroutine(WaitToRead());                
         enabled = false;
     }
@@ -50,11 +39,11 @@ public class FirstClick : MonoBehaviour
             yield return null;
         }
 
-        yield return StartCoroutine(tutorial.WriteNarration("Lucky you with a coin under your blanket, feed his greed"));
-        coin.transform.GetChild(0).GetComponent<Light>().enabled = true;
-        yield return StartCoroutine(tutorial.WriteNarration("Go to your bed and pick up the coin"));
+        yield return StartCoroutine(_tutorial.WriteNarration("Lucky you with a coin under your blanket, feed his greed"));
+        _coin.transform.GetChild(0).GetComponent<Light>().enabled = true;
+        yield return StartCoroutine(_tutorial.WriteNarration("Go to your bed and pick up the coin"));
         _player.GetComponent<Movement>().enabled = true;
-        yield return StartCoroutine(tutorial.WriteNarration("W,A,S,D to move, Space to jump, and hold Shift to run"));        
+        yield return StartCoroutine(_tutorial.WriteNarration("W,A,S,D to move, Space to jump, and hold Shift to run"));        
     }
 
 
