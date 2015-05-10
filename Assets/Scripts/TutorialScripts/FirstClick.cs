@@ -39,6 +39,8 @@ public class FirstClick : MonoBehaviour
             yield return null;
         }
 
+        _tutorial.TutorialCursorSwitch();
+
         yield return StartCoroutine(_tutorial.WriteNarration("Lucky you with a coin under your blanket, feed his greed"));
         _coin.transform.GetChild(0).GetComponent<Light>().enabled = true;
         yield return StartCoroutine(_tutorial.WriteNarration("Go to your bed and pick up the coin"));

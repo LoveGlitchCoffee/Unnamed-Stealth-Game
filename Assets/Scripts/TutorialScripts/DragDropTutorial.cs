@@ -41,7 +41,6 @@ public class DragDropTutorial : MonoBehaviour
         _key.transform.GetChild(0).GetComponent<Light>().enabled = true;
         yield return StartCoroutine(_tutorial.WriteNarration("Now get the key, don't let the guard see you"));
         yield return StartCoroutine(_tutorial.WriteNarration("Drag and Drop the coin near the guard when you need to"));
-        
-        _tutorial.TutorialCursorSwitch();
+                
     }
 }
