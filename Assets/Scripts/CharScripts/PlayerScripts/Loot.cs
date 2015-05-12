@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class Loot : MonoBehaviour
 {
@@ -23,18 +24,35 @@ public class Loot : MonoBehaviour
 
         if (_canLoot && Input.GetKeyDown(_loot))
         {
-            LootItem();
+            StartCoroutine(LootItem());
         }
     }
 
     /*
      * Adds the item into inventory and destroy it in the game world
      */
-    private void LootItem()
+    private IEnumerator LootItem()
+    {
+        _destroyable.GetComponent<Identifer>().PlaySound();                
+        yield return StartCoroutine(WaitForSoundPlay(_destroyable.GetComponent<AudioSource>()));
+
+        TransferToInvetory();
+    }
+
+    private void TransferToInvetory()
     {
         _inventory.GetComponent<InventoryLogic>().AddItem(_lootableId);
         Destroy(_destroyable);
         _canLoot = false;
+    }
+
+
+    private IEnumerator WaitForSoundPlay(AudioSource _audioSource)
+    {
+        while (_audioSource.isPlaying)
+        {
+            yield return null;
+        }
     }
 
     /*

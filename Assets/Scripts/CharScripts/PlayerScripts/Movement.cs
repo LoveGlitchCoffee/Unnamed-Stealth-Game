@@ -18,6 +18,7 @@ public class Movement : MonoBehaviour {
 
     private Rigidbody2D _playerRb;
     public Transform GroundCheck;
+    private PlayerSoundHandler _soundHandler;
 
     private const int _enviMask = 10;
     private const int _groundMask = 15;
@@ -34,6 +35,9 @@ public class Movement : MonoBehaviour {
 	    _detectGround = 1 << _groundMask;
 
 	    _jumpLayerMask = _detectEnvi | _detectGround;
+
+	    _soundHandler = GetComponent<PlayerSoundHandler>();
+        _soundHandler.SetRunningSound();
 	}
 	
 	/* 
@@ -47,7 +51,7 @@ public class Movement : MonoBehaviour {
         
 	    if (Input.GetKeyDown(KeyCode.Space) && _onGround)
 	    {
-	        _jump = true;
+	        _jump = true;            
 	    }
 
 	    if (Input.GetKeyDown(KeyCode.LeftShift))
@@ -58,6 +62,7 @@ public class Movement : MonoBehaviour {
 	    {
 	        _speed = OriginalSpeed;
 	    }
+        
 	}
 
     /*
@@ -68,7 +73,17 @@ public class Movement : MonoBehaviour {
     {
         float axisPress = Input.GetAxisRaw("Horizontal");
 
-        _anim.SetFloat("Speed", Math.Abs(axisPress));
+        _anim.SetFloat("Speed", Math.Abs(axisPress));        
+
+        if (_onGround)
+        {
+            _anim.SetBool("jumped",false);
+
+            if (axisPress != 0)
+                _soundHandler.PlayRunningSound();
+        }
+            
+        
 
         if (axisPress*_playerRb.velocity.x < _speed)
         {
@@ -92,7 +107,9 @@ public class Movement : MonoBehaviour {
         if (_jump)
         {
             _playerRb.AddForce(new Vector2(0, JumpSpeed));
-            _jump = false;
+            StartCoroutine(_soundHandler.PlayJumpSound()); 
+            _anim.SetBool("jumped",true);  
+            _jump = false;            
         }
         
     }

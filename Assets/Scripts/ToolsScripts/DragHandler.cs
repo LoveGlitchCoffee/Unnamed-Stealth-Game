@@ -7,17 +7,17 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     private Tool _itemBeingDragged;
     private Vector3 _startPosition;
-    public GameObject InteractiveObj;
-    private GameObject _physicalSpawn;
+    public GameObject InteractiveObj;    
     private InventoryLogic _inventory;
-    private GameObject _slotIn;
-
+    private GameObject  _slotIn, _physicalSpawn;
     private Vector3 screenPoint, offset;
+    private DragSoundHandler _soundHandler;
 
     void Start()
     {
         _slotIn = transform.parent.gameObject;
         _inventory = _slotIn.transform.parent.GetComponent<InventoryLogic>();
+        _soundHandler = GetComponent<DragSoundHandler>();
     }
 
     /*
@@ -32,9 +32,16 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         /*offset = (gameObject.transform.position -
                   Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z))); */ //for 3d
 
+        SetUpPhysicalSpawn();
+
+        _soundHandler.PlayDragSound();
+    }
+
+    private void SetUpPhysicalSpawn()
+    {
         _physicalSpawn = Instantiate(InteractiveObj);
         _physicalSpawn.GetComponent<Identifer>().SetIdentity(_itemBeingDragged);
-        _physicalSpawn.layer = 14;        
+        _physicalSpawn.layer = 14;
         _physicalSpawn.transform.position =
             Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
     }
@@ -55,10 +62,25 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
      */
     public void OnEndDrag(PointerEventData eventData)
     {
+        SetPhysicalProperties();
+
+        StartCoroutine(_soundHandler.SetSoundProperties(_physicalSpawn));
+
+        RemoveFromInventory();
+    }
+
+    private void RemoveFromInventory()
+    {
+        int indexOfDestoryed = _slotIn.GetComponent<ItemUI>().ItemSlotNumber;
+        _inventory.RemoveItem(indexOfDestoryed);
+    }
+    
+
+
+    private void SetPhysicalProperties()
+    {
         _physicalSpawn.GetComponent<BoxCollider2D>().enabled = true;
         _physicalSpawn.GetComponent<CircleCollider2D>().enabled = true;
         _physicalSpawn.GetComponent<Rigidbody2D>().isKinematic = false;
-        int indexOfDestoryed = _slotIn.GetComponent<ItemUI>().ItemSlotNumber;
-        _inventory.RemoveItem(indexOfDestoryed);
     }
 }

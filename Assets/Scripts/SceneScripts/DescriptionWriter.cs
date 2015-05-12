@@ -6,16 +6,19 @@ public class DescriptionWriter : MonoBehaviour
 {
 
     private Text _descriptionBox;
+    private AudioSource _scribbles;
 
     void Awake()
     {
         _descriptionBox = transform.GetChild(0).GetComponent<Text>();
+        _scribbles = GetComponent<AudioSource>();
     }
 
     public IEnumerator WriteNarration(string narration)
     {
         _descriptionBox.text = "";
         int letterCount = 0;        
+        _scribbles.Play();
 
         while (letterCount < narration.Length)
         {            

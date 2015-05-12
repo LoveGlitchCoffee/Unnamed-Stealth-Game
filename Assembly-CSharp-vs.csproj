@@ -49,6 +49,7 @@
      <Compile Include="Assets\Scripts\CharScripts\GuardAI\Behaviours\CoinLover.cs" />
      <Compile Include="Assets\Scripts\CharScripts\GuardAI\Behaviours\IBehaviour.cs" />
      <Compile Include="Assets\Scripts\CharScripts\GuardAI\FindPlayer.cs" />
+     <Compile Include="Assets\Scripts\CharScripts\GuardAI\GuardSoundHandler.cs" />
      <Compile Include="Assets\Scripts\CharScripts\GuardAI\IDetection.cs" />
      <Compile Include="Assets\Scripts\CharScripts\GuardAI\Pathfinding.cs" />
      <Compile Include="Assets\Scripts\CharScripts\GuardAI\Patrol.cs" />
@@ -65,6 +66,7 @@
      <Compile Include="Assets\Scripts\CharScripts\PlayerScripts\Movement.cs" />
      <Compile Include="Assets\Scripts\CharScripts\PlayerScripts\PlayerMapRelation.cs" />
      <Compile Include="Assets\Scripts\CharScripts\PlayerScripts\PlayerNPCRelation.cs" />
+     <Compile Include="Assets\Scripts\CharScripts\PlayerScripts\PlayerSoundHandler.cs" />
      <Compile Include="Assets\Scripts\EnviScripts\Door.cs" />
      <Compile Include="Assets\Scripts\EnviScripts\FlickerLight.cs" />
      <Compile Include="Assets\Scripts\EnviScripts\IInteractive.cs" />
@@ -73,6 +75,7 @@
      <Compile Include="Assets\Scripts\SceneScripts\DescriptionWriter.cs" />
      <Compile Include="Assets\Scripts\SceneScripts\Fading.cs" />
      <Compile Include="Assets\Scripts\ToolsScripts\DragHandler.cs" />
+     <Compile Include="Assets\Scripts\ToolsScripts\DragSoundHandler.cs" />
      <Compile Include="Assets\Scripts\ToolsScripts\GuardDescriptor.cs" />
      <Compile Include="Assets\Scripts\ToolsScripts\Identifer.cs" />
      <Compile Include="Assets\Scripts\ToolsScripts\InventoryLogic.cs" />

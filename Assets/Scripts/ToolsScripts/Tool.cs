@@ -8,6 +8,8 @@ public class Tool
     public Sprite ItemImage;
     public ItemType itemType;
     public string ItemDescription;
+    public AudioClip PickUpSound;
+    public AudioClip DropSound;
 
     public enum ItemType
     {
@@ -22,7 +24,9 @@ public class Tool
 		this.Name = name;
 		this.itemType = itemType;
 		this.ItemImage = Resources.Load<Sprite>(""+name);
-       this.ItemDescription = description;
+        this.ItemDescription = description;
+        PickUpSound = Resources.Load<AudioClip>(name + "PickUp");
+        DropSound = Resources.Load<AudioClip>(name + "Drop");
 	}
 
 	public Tool()

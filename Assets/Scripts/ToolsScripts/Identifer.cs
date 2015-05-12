@@ -4,14 +4,16 @@ public class Identifer : MonoBehaviour
 {
 
     private Tool _identity;
-    private SpriteRenderer spriteRender;
+    private SpriteRenderer _spriteRender;
+    private AudioSource _audio;
 
     /*
      * Embodies a player tool (lootable) in a game object
      */
     void Awake()
     {
-        spriteRender = gameObject.GetComponent<SpriteRenderer>();
+        _spriteRender = gameObject.GetComponent<SpriteRenderer>();
+        _audio = GetComponent<AudioSource>();
     }
 
     /*
@@ -21,8 +23,30 @@ public class Identifer : MonoBehaviour
     {
         _identity = identityTool;
         SetImage();
+        SetPickUpSound();
         SetSortingLayer();
     }
+
+    public void SetPickUpSound()
+    {
+        _audio.clip = _identity.PickUpSound;        
+    }
+
+    public void SetDropSound()
+    {
+        _audio.clip = _identity.DropSound;        
+    }
+
+    public AudioClip ReturnSound()
+    {
+        return _audio.clip;
+    }
+
+    public void PlaySound()
+    {
+        _audio.Play();
+    }
+    
 
     public string ReturnIdentity()
     {
@@ -31,13 +55,13 @@ public class Identifer : MonoBehaviour
 
     private void SetSortingLayer()
     {
-        spriteRender.sortingLayerName = "Environment";
-        spriteRender.sortingOrder = 1;
+        _spriteRender.sortingLayerName = "Environment";
+        _spriteRender.sortingOrder = 1;
     }
 
     private void SetImage()
     {
-        spriteRender.sprite = _identity.ItemImage;
+        _spriteRender.sprite = _identity.ItemImage;
     }
 
     public Tool GetIdentity()
