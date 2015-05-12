@@ -1,15 +1,12 @@
 ﻿using System.Collections;
-using System.Diagnostics;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class TutorialVoice : MonoBehaviour
 {
-
-    private Text _descriptionBox;
+    
     private string[] _narration = new string[3];
     private bool _instructing = true;
-    
+    private DescriptionWriter _writer;
 
 	void Start ()
 	{
@@ -17,7 +14,8 @@ public class TutorialVoice : MonoBehaviour
         _narration[1] = "Steal the key, listen to my voice";	    
         _narration[2] = "Click on the guard, I will tell you his sin";
 
-	    _descriptionBox = GetComponent<Text>();	    
+	    _writer = GetComponentInParent<DescriptionWriter>();
+
 	    StartCoroutine(WriteTutorial());
 	}
 
@@ -34,8 +32,8 @@ public class TutorialVoice : MonoBehaviour
                 _instructing = false;
             }
             else
-            {               
-                yield return StartCoroutine(WriteNarration(_narration[narrationCount]));
+            {                     
+                yield return StartCoroutine(_writer.WriteNarration(_narration[narrationCount]));
                 narrationCount++;            
             }                        
         }
@@ -45,22 +43,7 @@ public class TutorialVoice : MonoBehaviour
 
     }
 
-    public IEnumerator WriteNarration(string narration)
-    {
-        _descriptionBox.text = "";
-        int letterCount = 0;        
-
-        while (letterCount < narration.Length)
-        {
-            _descriptionBox.text += narration[letterCount];
-            letterCount++;
-            yield return new WaitForSeconds(0.04f);
-        }
-        
-        yield return new WaitForSeconds(2f);
-    }
-
-
+    
 
     public void TutorialCursorSwitch()
     {

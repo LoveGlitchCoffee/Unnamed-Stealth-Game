@@ -6,6 +6,7 @@ public class DragDropTutorial : MonoBehaviour
 
     private InventoryLogic _inventory;
     private Tool _firstCoin;
+    private DescriptionWriter _writer;
     private TutorialVoice _tutorial;
 
     private GameObject _key;
@@ -15,6 +16,7 @@ public class DragDropTutorial : MonoBehaviour
 	{
 	    _inventory = GameObject.FindGameObjectWithTag("Inventory").GetComponent<InventoryLogic>();
 	    _firstCoin = _inventory.ReturnToolDb().ToolDatabase[1];
+	    _writer = GetComponentInParent<DescriptionWriter>();
 	    _tutorial = GetComponent<TutorialVoice>();
 
         _tutFunc = new CommonTutorialFunctions();
@@ -33,14 +35,14 @@ public class DragDropTutorial : MonoBehaviour
 
     private IEnumerator DragAndDropTutorial()
     {
-        _tutorial.StopAllCoroutines();
-        
-        _tutorial.TutorialCursorSwitch();
-
-        yield return StartCoroutine(_tutorial.WriteNarration("You have it? Good"));
+        _writer.StopAllCoroutines();
+                
+        yield return StartCoroutine(_writer.WriteNarration("You have it? Good"));
         _key.transform.GetChild(0).GetComponent<Light>().enabled = true;
-        yield return StartCoroutine(_tutorial.WriteNarration("Now get the key, don't let the guard see you"));
-        yield return StartCoroutine(_tutorial.WriteNarration("Drag and Drop the coin near the guard when you need to"));
+        yield return StartCoroutine(_writer.WriteNarration("Now get the key, don't let the guard see you"));
+        yield return StartCoroutine(_writer.WriteNarration("Drag and Drop the coin near the guard when you need to"));
+
+        _tutorial.TutorialCursorSwitch();
                 
     }
 }

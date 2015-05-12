@@ -8,12 +8,14 @@ public class Fading : MonoBehaviour
     private CanvasGroup _fader;
     private Animator _anim;
     private GameObject _restart;
+    private DescriptionWriter _writer;
 
     void Awake()
     {
         _fader = GetComponent<CanvasGroup>();
         _anim = GetComponent<Animator>();
         _restart = transform.GetChild(0).gameObject;
+        _writer = GameObject.FindGameObjectWithTag("DescriptionBox").GetComponentInParent<DescriptionWriter>();
     }
 
     public void FadeOut()
@@ -30,6 +32,7 @@ public class Fading : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         FadeOut();
+        StartCoroutine(_writer.WriteNarration("No wonder you were caught in the first place"));
         yield return new WaitForSeconds(1.5f);
         _restart.SetActive(true);
     }
