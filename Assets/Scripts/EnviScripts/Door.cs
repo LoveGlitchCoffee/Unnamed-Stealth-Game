@@ -4,7 +4,13 @@ using System.Collections;
 public class Door : MonoBehaviour, IInteractive
 {
     private int keyIndex = 0;
-    
+    private Fading _fader;
+
+    void Awake()
+    {
+        _fader = GameObject.FindGameObjectWithTag("SceneFade").GetComponent<Fading>();
+    }
+
     /*
      * Doors purpose is to load next scene, only if player's inventory has a key
      */
@@ -14,26 +20,9 @@ public class Door : MonoBehaviour, IInteractive
 
         if (inventory.PlayerTools.Contains(key))
         {            
-            StartCoroutine(FadeToNextLevel());
+            _fader.ToNextLevel();
         }                   
     }
-
-    /*
-     * Currently doesn't fade
-     */
-    IEnumerator FadeToNextLevel()
-    {
-        float fadeTime = 1f;
-        float currentTime = 0f;
         
-        while (currentTime < fadeTime)
-        {
-                    
-            currentTime += 0.1f;
-            yield return null;
-        }
-
-        Application.LoadLevel(1);
-    }
 
 }

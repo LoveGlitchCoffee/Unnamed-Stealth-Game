@@ -8,6 +8,7 @@ public class PlayerNPCRelation : MonoBehaviour
     private Animator _anim;
     private Movement _playerMovement;
     private Fading _fadeRestart;
+    private Rigidbody2D _rbody;
 
     [HideInInspector] public bool dead { get; set; }
 
@@ -17,6 +18,7 @@ public class PlayerNPCRelation : MonoBehaviour
 	    _anim = gameObject.GetComponent<Animator>();
 	    _playerMovement = gameObject.GetComponent<Movement>();
 	    _fadeRestart = GameObject.FindGameObjectWithTag("SceneFade").GetComponent<Fading>();
+	    _rbody = GetComponent<Rigidbody2D>();
 	}
 
     /*
@@ -28,6 +30,7 @@ public class PlayerNPCRelation : MonoBehaviour
         {                                   
             _anim.SetBool("dead",true);
             _playerMovement.enabled = false;
+            _rbody.isKinematic = false;
             dead = true;
             gameObject.layer = 9;
             StartCoroutine(_fadeRestart.Restart());
