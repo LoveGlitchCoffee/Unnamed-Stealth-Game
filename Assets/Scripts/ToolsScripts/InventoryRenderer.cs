@@ -16,11 +16,11 @@ public class InventoryRenderer : MonoBehaviour
 
     void Awake()
     {
-        _iLogic = GetComponent<InventoryLogic>();       
+        _iLogic = GetComponent<InventoryLogic>();        
     }
 	
 	void Start () {
-	    RenderInventory();
+        RenderInventory();
 	}
 
     /*

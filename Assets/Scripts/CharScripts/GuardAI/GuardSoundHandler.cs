@@ -12,9 +12,12 @@ public class GuardSoundHandler : MonoBehaviour
 	}
 	
 	
-    public void SelectSound()
+    public void PlaySound(string soundName, float volume)
     {
-        _audioSource.clip = Resources.Load<AudioClip>("Select");
+        _audioSource.clip = Resources.Load<AudioClip>(soundName);
+        _audioSource.volume = volume;
         _audioSource.Play();
     }
+
+    
 }

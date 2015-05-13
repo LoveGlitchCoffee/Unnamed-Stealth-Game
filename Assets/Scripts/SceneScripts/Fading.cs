@@ -39,6 +39,6 @@ public class Fading : MonoBehaviour
 
     public void ResetScene()
     {
-        Application.LoadLevel(0);
+        Application.LoadLevel(1);
     }
 }

@@ -21,7 +21,7 @@ public class FlickerLight : MonoBehaviour
         while (_canFlicker)
         {
             torchLight.intensity = Random.Range(1.3f, 2.3f);
-            yield return new WaitForSeconds(0.08f);
+            yield return new WaitForSeconds(0.12f);
         }
     }
 }

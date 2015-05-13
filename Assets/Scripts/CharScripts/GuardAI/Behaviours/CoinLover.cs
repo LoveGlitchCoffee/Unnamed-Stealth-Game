@@ -7,11 +7,13 @@ public class CoinLover : MonoBehaviour, IBehaviour
     private const string coinName = "coin";
     private Pathfinding _pathFinding;
     private Patrol _patrolBehav;
+    private GuardSoundHandler _soundHandler;
 
     void Awake()
     {
         _pathFinding = GetComponent<Pathfinding>();
         _patrolBehav = GetComponent<Patrol>();
+        _soundHandler = GetComponent<GuardSoundHandler>();
     }
 
     /*
@@ -44,12 +46,14 @@ public class CoinLover : MonoBehaviour, IBehaviour
         visionCone.enabled = false;
 
         Destroy(coin);
+        _soundHandler.PlaySound("Confused", 0.5f);
 
         while (timer < maxTime)
         {            
             timer+= 0.03f;
             yield return null;
         }
+
 
         yield return StartCoroutine(_pathFinding.FinishPatrol());
         yield return StartCoroutine(_patrolBehav.Wait());

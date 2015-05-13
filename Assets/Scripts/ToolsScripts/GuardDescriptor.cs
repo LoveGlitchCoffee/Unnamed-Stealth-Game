@@ -20,6 +20,6 @@ public class GuardDescriptor : MonoBehaviour {
             return;
 
         _descriptionBox.text = _behaviour.ReturnBehaviourDescription();
-        _soundHandler.SelectSound();
+        _soundHandler.PlaySound("Select", 0.8f);
     }
 }

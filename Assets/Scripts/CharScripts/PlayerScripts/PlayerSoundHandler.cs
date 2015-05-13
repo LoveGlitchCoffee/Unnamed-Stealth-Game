@@ -20,8 +20,7 @@ public class PlayerSoundHandler : MonoBehaviour
     public IEnumerator PlayJumpSound()
     {
         _audioSource.clip = Resources.Load<AudioClip>("Jump");        
-        _audioSource.Play();
-        Debug.Log(_audioSource.clip);
+        _audioSource.Play();        
 
         while (_audioSource.isPlaying)
         {

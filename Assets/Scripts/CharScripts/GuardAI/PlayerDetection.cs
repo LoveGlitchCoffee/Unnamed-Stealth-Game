@@ -8,6 +8,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
 
     private Pathfinding _pathFinder;
     private Patrol _patrolBehav;
+    private GuardSoundHandler _soundHandler;
     private GameObject _player;
     private GameObject _gameMap;
 
@@ -47,6 +48,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
         _patrolBehav = gameObject.GetComponentInParent<Patrol>();
         _player = GameObject.FindGameObjectWithTag(PlayerTag);
         _gameMap = GameObject.FindGameObjectWithTag("Map");
+        _soundHandler = GetComponentInParent<GuardSoundHandler>();
     }
 
     /**
@@ -160,7 +162,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
 
         yield return StartCoroutine(Baffled(direction));        
 
-        SetNavigationState(playerLastSeen, detectPlayer, graph);
+        SetNavigationState(playerLastSeen, detectPlayer, graph);        
 
         Transform parentTransfrom = gameObject.transform.parent;
         GameObject guard = parentTransfrom.gameObject;
@@ -200,6 +202,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
         if (detectPlayer.collider != null && detectPlayer.collider.tag == PlayerTag)
         {
             _coneRender.ActivateState(_alarmed);
+            _soundHandler.PlaySound("Alarmed", 0.75f);
             _pathFinder.SetSpeed(4f);
             _pathFinder.SetGoal(CalculateNodeLastSeen(playerLastSeen, graph)); // last seen when detect, not after baffled
         }
@@ -226,7 +229,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
 
         if (alternateNode == null)
         {
-            Debug.Log("point last seen " + pointLastSeen.x + ", " + pointLastSeen.y);            
+            //Debug.Log("point last seen " + pointLastSeen.x + ", " + pointLastSeen.y);            
 
             if (_patrolBehav.GoingLeft)
             {                
