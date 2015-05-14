@@ -163,10 +163,6 @@ public class PlayerDetection : MonoBehaviour, IDetection
         yield return StartCoroutine(Baffled(direction));        
 
         SetNavigationState(playerLastSeen, detectPlayer, graph);        
-
-        Transform parentTransfrom = gameObject.transform.parent;
-        GameObject guard = parentTransfrom.gameObject;
-        guard.layer = 11;
                 
         StartCoroutine(_pathFinder.StartPursuit());
     }
@@ -199,18 +195,23 @@ public class PlayerDetection : MonoBehaviour, IDetection
          */
     private void SetNavigationState(RaycastHit2D playerLastSeen, RaycastHit2D detectPlayer, GraphOfMap graph)
     {
+        Node nodeLastSeen = CalculateNodeLastSeen(playerLastSeen, graph);
+
         if (detectPlayer.collider != null && detectPlayer.collider.tag == PlayerTag)
         {
             _coneRender.ActivateState(_alarmed);
             _soundHandler.PlaySound("Alarmed", 0.75f);
             _pathFinder.SetSpeed(4f);
-            _pathFinder.SetGoal(CalculateNodeLastSeen(playerLastSeen, graph)); // last seen when detect, not after baffled
+            _pathFinder.SetGoal(nodeLastSeen); // last seen when detect, not after baffled
         }
         else
         {
             _pathFinder.SetSpeed(1f);
-            _pathFinder.SetGoal(CalculateNodeLastSeen(playerLastSeen, graph));
+            _pathFinder.SetGoal(nodeLastSeen);
         }
+
+        if (nodeLastSeen.GetY() > _patrolBehav.ReturnNodeGuardAt().GetY())
+            transform.parent.gameObject.layer = 11;
     }
 
    
@@ -292,7 +293,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
     {
         if (col.gameObject.tag == PlayerTag && !SeenPlayer)
         {                                
-            _sensePlayer = true;
+            _sensePlayer = true;            
         }
     }
 

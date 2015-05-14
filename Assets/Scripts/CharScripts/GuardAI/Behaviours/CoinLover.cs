@@ -8,12 +8,16 @@ public class CoinLover : MonoBehaviour, IBehaviour
     private Pathfinding _pathFinding;
     private Patrol _patrolBehav;
     private GuardSoundHandler _soundHandler;
+    private PlayerDetection _detector;
+    private LineRenderer _visionCone;
 
     void Awake()
     {
         _pathFinding = GetComponent<Pathfinding>();
         _patrolBehav = GetComponent<Patrol>();
         _soundHandler = GetComponent<GuardSoundHandler>();
+         _detector = transform.GetChild(0).GetComponent<PlayerDetection>();
+        _visionCone = transform.GetChild(0).GetComponent<LineRenderer>();
     }
 
     /*
@@ -35,16 +39,12 @@ public class CoinLover : MonoBehaviour, IBehaviour
     {
         const float maxTime = 7f;
         float timer = 0f;
+                
+        _patrolBehav.enabled = false;
+        _detector.enabled = false;
+        _visionCone.enabled = false;
 
-        //could shorten if put them with interface
-        Patrol regularAi = gameObject.GetComponent<Patrol>();
-        PlayerDetection detector = transform.GetChild(0).GetComponent<PlayerDetection>();
-        LineRenderer visionCone = transform.GetChild(0).GetComponent<LineRenderer>();        
-
-        regularAi.enabled = false;
-        detector.enabled = false;
-        visionCone.enabled = false;
-
+        Debug.Log("got coin");
         Destroy(coin);
         _soundHandler.PlaySound("Confused", 0.5f);
 
@@ -54,15 +54,13 @@ public class CoinLover : MonoBehaviour, IBehaviour
             yield return null;
         }
 
-
-        yield return StartCoroutine(_pathFinding.FinishPatrol());
+        _visionCone.enabled = true;
+        _detector.enabled = true;        
+        yield return StartCoroutine(_pathFinding.FinishPatrol());                
         yield return StartCoroutine(_patrolBehav.Wait());
-        _pathFinding.ResumePatrolStabaliser();
-
-        regularAi.enabled = true;       
-        StartCoroutine(_patrolBehav.Patrolling());
-        detector.enabled = true;
-        visionCone.enabled = true;
+        _pathFinding.ResumePatrolStabaliser();        
+        _patrolBehav.enabled = true;       
+        StartCoroutine(_patrolBehav.Patrolling());         
     }
 
 

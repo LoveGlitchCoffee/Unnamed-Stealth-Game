@@ -47,8 +47,7 @@ public class FindPlayer : MonoBehaviour
         float delayCounter;
         float delayTime = 3f;
         bool lookedUp = false;
-
-
+        
         while (turnTaken < turns && !GetComponent<PlayerDetection>().SeenPlayer)
         {            
             delayCounter = 0;
@@ -87,10 +86,7 @@ public class FindPlayer : MonoBehaviour
         
         if (!GetComponent<PlayerDetection>().SeenPlayer)
         {            
-            ResumePatrol = true;
-            //Debug.Log("finish looking");
-            gameObject.transform.parent.gameObject.layer = 9;
-            GetComponent<VisionConeRender>().ActivateState(Color.grey);            
+            ResumePatrol = true;                        
         }            
 
     }
