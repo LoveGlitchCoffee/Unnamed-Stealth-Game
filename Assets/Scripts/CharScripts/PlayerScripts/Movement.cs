@@ -18,8 +18,8 @@ public class Movement : MonoBehaviour {
 
     private Rigidbody2D _playerRb;
     public Transform GroundCheck;
-    private PlayerSoundHandler _soundHandler;
-    private FlipLerp _flipLerp;
+    private PlayerSoundHandler _soundHandler;    
+    private MoveLead _leadMovement;
 
     private const int _enviMask = 10;
     private const int _groundMask = 15;
@@ -30,9 +30,10 @@ public class Movement : MonoBehaviour {
     
 	void Awake ()
 	{
-	    _flipLerp = transform.GetChild(1).GetComponent<FlipLerp>();
+	    //_flipLerp = transform.GetChild(1).GetComponent<FlipLerp>();
 	    _anim = gameObject.GetComponent<Animator>();
 	    _playerRb = gameObject.GetComponent<Rigidbody2D>();
+	    _leadMovement = GameObject.FindGameObjectWithTag("CameraLead").GetComponent<MoveLead>();
 	    _detectEnvi = 1 << _enviMask;
 	    _detectGround = 1 << _groundMask;
 
@@ -98,14 +99,12 @@ public class Movement : MonoBehaviour {
         }
 
         if (axisPress < 0 && _goingRight)
-        {            
-            Flip();
-            StartCoroutine(_flipLerp.LerpLead(-1));
+        {                     
+            Flip();            
         }
         else if (axisPress > 0 && !_goingRight)
-        {
-            Flip();
-            StartCoroutine(_flipLerp.LerpLead(1));
+        {                        
+            Flip();            
         }
 
         if (_jump)
@@ -123,6 +122,7 @@ public class Movement : MonoBehaviour {
      */
     private void Flip()
     {
+            _leadMovement.SetDirection();
             _goingRight = !_goingRight;
             Vector3 localScale = gameObject.transform.localScale;
             localScale.x *= -1;
