@@ -46,6 +46,8 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\CameraLerp.cs" />
+     <Compile Include="Assets\FlipLerp.cs" />
      <Compile Include="Assets\Scripts\CharScripts\GuardAI\Behaviours\CoinLover.cs" />
      <Compile Include="Assets\Scripts\CharScripts\GuardAI\Behaviours\IBehaviour.cs" />
      <Compile Include="Assets\Scripts\CharScripts\GuardAI\FindPlayer.cs" />

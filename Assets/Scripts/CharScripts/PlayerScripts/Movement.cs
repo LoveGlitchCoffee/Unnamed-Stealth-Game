@@ -8,8 +8,8 @@ public class Movement : MonoBehaviour {
     private const float MoveForce = 270f;
     private float _speed = 1f;
     private const float JumpSpeed = 780f;
-    private const float OriginalSpeed = 0.7f;
-    private const float MaxRunSpeed = 2f;
+    private const float OriginalSpeed = 1f;
+    private const float MaxRunSpeed = 3f;
 
     private bool _onGround = true;
     private bool _jump = true;
@@ -19,6 +19,7 @@ public class Movement : MonoBehaviour {
     private Rigidbody2D _playerRb;
     public Transform GroundCheck;
     private PlayerSoundHandler _soundHandler;
+    private FlipLerp _flipLerp;
 
     private const int _enviMask = 10;
     private const int _groundMask = 15;
@@ -29,6 +30,7 @@ public class Movement : MonoBehaviour {
     
 	void Awake ()
 	{
+	    _flipLerp = transform.GetChild(1).GetComponent<FlipLerp>();
 	    _anim = gameObject.GetComponent<Animator>();
 	    _playerRb = gameObject.GetComponent<Rigidbody2D>();
 	    _detectEnvi = 1 << _enviMask;
@@ -98,10 +100,12 @@ public class Movement : MonoBehaviour {
         if (axisPress < 0 && _goingRight)
         {            
             Flip();
+            StartCoroutine(_flipLerp.LerpLead(-1));
         }
         else if (axisPress > 0 && !_goingRight)
         {
             Flip();
+            StartCoroutine(_flipLerp.LerpLead(1));
         }
 
         if (_jump)
