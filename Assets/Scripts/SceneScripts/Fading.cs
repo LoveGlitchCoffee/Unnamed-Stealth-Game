@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Fading : MonoBehaviour
 {
@@ -33,6 +32,7 @@ public class Fading : MonoBehaviour
         yield return StartCoroutine(_writer.WriteNarration("No wonder you were caught in the first place"));
         yield return new WaitForSeconds(1.5f);
         FadeOut();
+        GetComponent<CanvasGroup>().blocksRaycasts = true;
         _restart.SetActive(true);
     }
 

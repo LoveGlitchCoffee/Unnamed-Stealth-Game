@@ -8,12 +8,13 @@ public class DragSoundHandler : MonoBehaviour {
         physicalSpawn.GetComponent<Identifer>().SetDropSound();
         physicalSpawn.GetComponent<Identifer>().PlaySound();
 
-        while (physicalSpawn.GetComponent<AudioSource>().isPlaying)
+        while (physicalSpawn !=null && physicalSpawn.GetComponent<AudioSource>().isPlaying) // bug stop play
         {
             yield return null;
         }
 
-        physicalSpawn.GetComponent<Identifer>().SetPickUpSound();
+        if (physicalSpawn != null)
+            physicalSpawn.GetComponent<Identifer>().SetPickUpSound();
     }
 
 

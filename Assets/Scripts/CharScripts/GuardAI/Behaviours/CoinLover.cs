@@ -28,6 +28,7 @@ public class CoinLover : MonoBehaviour, IBehaviour
         if (col.tag == lootTag && col.GetComponent<Identifer>().ReturnIdentity() == coinName)
         {       
             _pathFinding.StopAllCoroutines();
+            _detector.StopAllCoroutines();            
             StartCoroutine(AdmireCoin(col.gameObject));
         }
     }

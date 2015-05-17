@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class MoveLead : MonoBehaviour
 {
@@ -18,7 +17,7 @@ public class MoveLead : MonoBehaviour
 	
 	
 	void Update () {
-	    transform.position = Vector3.Lerp(transform.position, new Vector3(_playerPosition.position.x + DistanceFromPlayerX,_playerPosition.position.y + DistanceFromPlayerY),Time.deltaTime*2.5f);
+	    transform.position = Vector3.Lerp(transform.position, new Vector3(_playerPosition.position.x + DistanceFromPlayerX,_playerPosition.position.y + DistanceFromPlayerY),Time.deltaTime*3f);
 	}
 
     public void SetDirection()

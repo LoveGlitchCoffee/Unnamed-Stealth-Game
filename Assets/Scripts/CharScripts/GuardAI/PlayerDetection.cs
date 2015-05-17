@@ -139,6 +139,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
         _lineOfSight = new Ray2D(new Vector2(gameObject.transform.position.x + direction, gameObject.transform.position.y + EyeDistance), CalculateDirection());
         RaycastHit2D detectPlayer = Physics2D.Raycast(_lineOfSight.origin, _lineOfSight.direction, _sightDistance, _detectLayerMask); // distance is x distance                               
         Debug.DrawLine(_lineOfSight.origin, detectPlayer.point);
+        Debug.Log("checking line ");
 
         if (detectPlayer.collider != null && detectPlayer.collider.tag == PlayerTag)
         {
@@ -199,6 +200,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
 
         if (detectPlayer.collider != null && detectPlayer.collider.tag == PlayerTag)
         {
+            Debug.Log("pursue");
             _coneRender.ActivateState(_alarmed);
             _soundHandler.PlaySound("Alarmed", 0.75f);
             _pathFinder.SetSpeed(4f);
