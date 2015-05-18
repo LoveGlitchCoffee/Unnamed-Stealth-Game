@@ -8,7 +8,8 @@ public class MoveLead : MonoBehaviour
     private const float DistanceFromPlayerY = 1f;
     private Transform _playerPosition;
     private Movement _playerMovement;
-    private bool showing = false;
+    private bool _showing = false;
+    private bool _contactWall = false;
 
 	void Start ()
 	{
@@ -20,8 +21,8 @@ public class MoveLead : MonoBehaviour
 	
 	void Update () {
 
-        if (!showing)
-	        transform.position = Vector3.Lerp(transform.position, new Vector3(_playerPosition.position.x + DistanceFromPlayerX,_playerPosition.position.y + DistanceFromPlayerY),Time.deltaTime*3f);
+        if (!_showing && !_contactWall)
+	        transform.position = Vector3.Lerp(transform.position, new Vector3(_playerPosition.position.x + DistanceFromPlayerX,_playerPosition.position.y + DistanceFromPlayerY),Time.deltaTime*5f);
 	}
 
     public void SetDirection()
@@ -31,15 +32,21 @@ public class MoveLead : MonoBehaviour
 
     public IEnumerator MoveToPosition(GameObject objectToMoveTo)
     {        
-        while (objectToMoveTo != null && transform.position != objectToMoveTo.transform.position)
+        while (objectToMoveTo != null && transform.position != objectToMoveTo.transform.position && _showing)
         {            
-            transform.position = Vector3.Lerp(transform.position, objectToMoveTo.transform.position, Time.deltaTime * 2f);
+            transform.position = Vector3.Lerp(transform.position, objectToMoveTo.transform.position, Time.deltaTime * 3f);
             yield return null;
         }
     }
 
     public void IsShowing(bool showing)
-    {
-        this.showing = showing;        
+    {        
+        this._showing = showing;        
     }
+
+    void OnCollisionEnter2D()
+    {    
+        _contactWall = true;
+    }
+
 }

@@ -9,7 +9,7 @@ public class Movement : MonoBehaviour {
     private float _speed = 1f;
     private const float JumpSpeed = 780f;
     private const float OriginalSpeed = 1f;
-    private const float MaxRunSpeed = 3f;
+    private const float MaxRunSpeed = 4f;
 
     private bool _onGround = true;
     private bool _jump = true;

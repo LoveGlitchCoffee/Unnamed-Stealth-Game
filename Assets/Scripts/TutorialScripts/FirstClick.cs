@@ -50,9 +50,9 @@ public class FirstClick : MonoBehaviour
         _coin.GetComponent<CircleCollider2D>().enabled = true;
         _player.GetComponent<Loot>().enabled = true;
         _player.GetComponent<Interact>().enabled = true;
-        yield return StartCoroutine(_leadMover.MoveToPosition(_coin));
+        StartCoroutine(_leadMover.MoveToPosition(_coin));
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(3f);
         _leadMover.IsShowing(false);
     }
 

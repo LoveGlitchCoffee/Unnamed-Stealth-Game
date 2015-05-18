@@ -39,19 +39,19 @@ public class DragDropTutorial : MonoBehaviour
 
     private IEnumerator DragAndDropTutorial()
     {
-        _firstClick.StopAllCoroutines();
-        _leadMover.IsShowing(true);
-
+        _firstClick.StopAllCoroutines();        
         StartCoroutine(_writer.WriteNarration(""));
-
+        _leadMover.IsShowing(true);
         _key.transform.GetChild(0).GetComponent<Light>().enabled = true;
 
         StartCoroutine(_writer.WriteNarration("Now get the key, don't let the guard see you"));        
         StartCoroutine(_leadMover.MoveToPosition(_key));
+        
         yield return new WaitForSeconds(3f);
         StartCoroutine(_writer.WriteNarration("Drag and Drop the coin near the guard when you need to"));
 
         yield return new WaitForSeconds(1f);
+        
         _leadMover.StopAllCoroutines();
         _leadMover.IsShowing(false);                              
     }
