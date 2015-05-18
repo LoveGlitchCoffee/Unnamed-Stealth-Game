@@ -16,6 +16,7 @@ public class DescriptionWriter : MonoBehaviour
 
     public IEnumerator WriteNarration(string narration)
     {
+        StopAllCoroutines();
         _descriptionBox.text = "";
         int letterCount = 0;        
         _scribbles.Play();

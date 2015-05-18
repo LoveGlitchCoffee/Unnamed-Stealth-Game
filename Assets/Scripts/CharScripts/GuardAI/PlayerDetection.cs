@@ -138,8 +138,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
 	{
         _lineOfSight = new Ray2D(new Vector2(gameObject.transform.position.x + direction, gameObject.transform.position.y + EyeDistance), CalculateDirection());
         RaycastHit2D detectPlayer = Physics2D.Raycast(_lineOfSight.origin, _lineOfSight.direction, _sightDistance, _detectLayerMask); // distance is x distance                               
-        Debug.DrawLine(_lineOfSight.origin, detectPlayer.point);
-        Debug.Log("checking line ");
+        Debug.DrawLine(_lineOfSight.origin, detectPlayer.point);        
 
         if (detectPlayer.collider != null && detectPlayer.collider.tag == PlayerTag)
         {

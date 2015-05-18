@@ -90,7 +90,6 @@
      <Compile Include="Assets\Scripts\TutorialScripts\CommonTutorialFunctions.cs" />
      <Compile Include="Assets\Scripts\TutorialScripts\DragDropTutorial.cs" />
      <Compile Include="Assets\Scripts\TutorialScripts\FirstClick.cs" />
-     <Compile Include="Assets\Scripts\TutorialScripts\FirstLoot.cs" />
      <Compile Include="Assets\Scripts\TutorialScripts\InteractTutorial.cs" />
      <Compile Include="Assets\Scripts\TutorialScripts\TutorialVoice.cs" />
  <Reference Include="UnityEngine.UI">

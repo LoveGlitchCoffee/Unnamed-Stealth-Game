@@ -7,19 +7,30 @@ public class TutorialVoice : MonoBehaviour
     private string[] _narration = new string[3];
     private bool _instructing = true;
     private DescriptionWriter _writer;
+    private GameObject _guard;
+    private MoveLead _leadMover;
 
 	void Start ()
 	{
-        _narration[0] = "We must leave";
-        _narration[1] = "Steal the key, listen to my voice";	    
-        _narration[2] = "Click on the guard, I will tell you his sin";
+	    _guard = GameObject.FindGameObjectWithTag("Guard");
+	    _leadMover = GameObject.FindGameObjectWithTag("CameraLead").GetComponent<MoveLead>();
+        _writer = GetComponentInParent<DescriptionWriter>();
 
-	    _writer = GetComponentInParent<DescriptionWriter>();
-
-	    StartCoroutine(WriteTutorial());
+	    //StartCoroutine(WriteTutorial());
+	    StartCoroutine(ShowGuard());
 	}
 
-    private IEnumerator WriteTutorial()
+    private IEnumerator ShowGuard()
+    {        
+        yield return new WaitForSeconds(1f);
+
+        _leadMover.IsShowing(true);
+        StartCoroutine(_leadMover.MoveToPosition(_guard));
+        StartCoroutine(_writer.WriteNarration("Click on the guard, use his weakness"));
+    }
+
+
+    /*private IEnumerator WriteTutorial()
     {
         int narrationCount = 0;
         
@@ -39,9 +50,7 @@ public class TutorialVoice : MonoBehaviour
         }
         
         TutorialCursorSwitch();
-
-
-    }
+    }*/
 
     
 

@@ -11,6 +11,8 @@ public class DragDropTutorial : MonoBehaviour
 
     private GameObject _key;
     private CommonTutorialFunctions _tutFunc;
+    private MoveLead _leadMover;
+    private FirstClick _firstClick;
 
 	void Start ()
 	{
@@ -18,6 +20,8 @@ public class DragDropTutorial : MonoBehaviour
 	    _firstCoin = _inventory.ReturnToolDb().ToolDatabase[1];
 	    _writer = GetComponentInParent<DescriptionWriter>();
 	    _tutorial = GetComponent<TutorialVoice>();
+	    _leadMover = GameObject.FindGameObjectWithTag("CameraLead").GetComponent<MoveLead>();
+	    _firstClick = GameObject.FindGameObjectWithTag("Guard").GetComponent<FirstClick>();
 
         _tutFunc = new CommonTutorialFunctions();
 	    _key = _tutFunc.GetLootables("key");
@@ -35,14 +39,20 @@ public class DragDropTutorial : MonoBehaviour
 
     private IEnumerator DragAndDropTutorial()
     {
-        _writer.StopAllCoroutines();
-                
-        yield return StartCoroutine(_writer.WriteNarration("You have it? Good"));
-        _key.transform.GetChild(0).GetComponent<Light>().enabled = true;
-        yield return StartCoroutine(_writer.WriteNarration("Now get the key, don't let the guard see you"));
-        yield return StartCoroutine(_writer.WriteNarration("Drag and Drop the coin near the guard when you need to"));
+        _firstClick.StopAllCoroutines();
+        _leadMover.IsShowing(true);
 
-        _tutorial.TutorialCursorSwitch();
-                
+        StartCoroutine(_writer.WriteNarration(""));
+
+        _key.transform.GetChild(0).GetComponent<Light>().enabled = true;
+
+        StartCoroutine(_writer.WriteNarration("Now get the key, don't let the guard see you"));        
+        StartCoroutine(_leadMover.MoveToPosition(_key));
+        yield return new WaitForSeconds(3f);
+        StartCoroutine(_writer.WriteNarration("Drag and Drop the coin near the guard when you need to"));
+
+        yield return new WaitForSeconds(1f);
+        _leadMover.StopAllCoroutines();
+        _leadMover.IsShowing(false);                              
     }
 }
