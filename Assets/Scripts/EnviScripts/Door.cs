@@ -4,11 +4,11 @@ using System.Collections;
 public class Door : MonoBehaviour, IInteractive
 {
     private int keyIndex = 0;
-    private Fading _fader;
+    private SceneHandler _sceneHandler;
 
     void Awake()
     {
-        _fader = GameObject.FindGameObjectWithTag("SceneFade").GetComponent<Fading>();
+        _sceneHandler = GameObject.FindGameObjectWithTag("SceneFade").GetComponent<SceneHandler>();
     }
 
     /*
@@ -20,7 +20,7 @@ public class Door : MonoBehaviour, IInteractive
 
         if (inventory.PlayerTools.Contains(key))
         {            
-            _fader.ToNextLevel();
+            _sceneHandler.ToNextLevel();
         }                   
     }
         

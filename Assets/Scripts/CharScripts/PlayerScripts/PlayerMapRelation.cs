@@ -6,22 +6,26 @@ public class PlayerMapRelation : MonoBehaviour
 
     private Node _nodeAt;
     private GameObject _gameMap;
-
-	// Use this for initialization
+	
 	void Start ()
 	{
 	    _nodeAt = null;
-	    _gameMap = GameObject.FindGameObjectWithTag("Map");
+	    GetNewMap();
 	}
+
+    public void GetNewMap()
+    {
+        _gameMap = GameObject.FindGameObjectWithTag("Map");        
+    }
 	
 
     /**
      * tracks the node the player is currently at
      */
     void OnTriggerStay2D(Collider2D col)
-    {
-        if (col.gameObject.layer == 12)
-        {
+    {        
+        if (col.gameObject.layer == 12 && _gameMap != null)
+        {            
             _nodeAt = _gameMap.GetComponent<NodeGenerator>().ReturnGeneratedGraph().nodeWith(col.gameObject.GetComponent<Node>());                 
         }
     }

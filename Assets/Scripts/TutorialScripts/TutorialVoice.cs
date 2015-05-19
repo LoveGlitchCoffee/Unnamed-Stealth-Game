@@ -23,7 +23,7 @@ public class TutorialVoice : MonoBehaviour
 
     private IEnumerator ShowGuard()
     {        
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(0f); //initiall 3 sconds, for test purpose
 
         _leadMover.IsShowing(true);
         StartCoroutine(_leadMover.MoveToPosition(_guard));

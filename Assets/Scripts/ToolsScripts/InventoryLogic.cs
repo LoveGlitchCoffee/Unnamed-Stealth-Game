@@ -7,10 +7,14 @@ public class InventoryLogic : MonoBehaviour {
     private ToolDB _toolDb;
 
 	void Awake () {
-	    _toolDb = new ToolDB();   
+	    _toolDb = new ToolDB();        
 	}
-    
 
+    void Start()
+    {                
+        AddItem(0);
+    }
+    
     public ToolDB ReturnToolDb()
     {
         return _toolDb;
@@ -25,8 +29,7 @@ public class InventoryLogic : MonoBehaviour {
         {
             if (_toolDb.ToolDatabase[i].ItemId == id)
             {                
-                Tool itemToAdd = _toolDb.ToolDatabase[i];
-                //Debug.Log("added " + itemToAdd.Name);
+                Tool itemToAdd = _toolDb.ToolDatabase[i];                
                 FindEmptySlotToPlace(itemToAdd);
                 break;
             }

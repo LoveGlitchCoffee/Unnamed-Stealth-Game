@@ -7,7 +7,7 @@ public class PlayerNPCRelation : MonoBehaviour
     private const string GuardTag = "Guard";
     private Animator _anim;
     private Movement _playerMovement;
-    private Fading _fadeRestart;
+    private SceneHandler _sceneHandler;
     private Rigidbody2D _rbody;
 
     [HideInInspector] public bool dead { get; set; }
@@ -17,7 +17,7 @@ public class PlayerNPCRelation : MonoBehaviour
 	{
 	    _anim = gameObject.GetComponent<Animator>();
 	    _playerMovement = gameObject.GetComponent<Movement>();
-	    _fadeRestart = GameObject.FindGameObjectWithTag("SceneFade").GetComponent<Fading>();
+	    _sceneHandler = GameObject.FindGameObjectWithTag("SceneFade").GetComponent<SceneHandler>();
 	    _rbody = GetComponent<Rigidbody2D>();
 	}
 
@@ -34,7 +34,7 @@ public class PlayerNPCRelation : MonoBehaviour
             GetComponent<CircleCollider2D>().enabled = false;
             dead = true;
             gameObject.layer = 9;
-            StartCoroutine(_fadeRestart.Restart());
+            StartCoroutine(_sceneHandler.Restart());
         }
     }
    

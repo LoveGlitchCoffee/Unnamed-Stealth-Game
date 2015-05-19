@@ -16,8 +16,8 @@ public class NodeGenerator : MonoBehaviour
     public int StartX;
     public int StartY;
 
-    private int _mapLength;
-    private int _mapHeight;    
+    public int MapLength;
+    public int MapHeight;    
 
     private GraphOfMap _graph;
 	
@@ -27,8 +27,6 @@ public class NodeGenerator : MonoBehaviour
      */
 	void Awake ()
 	{
-	    _mapHeight = 3;
-	    _mapLength = 9;
 
 	    _nodeSize = Node.GetComponent<CircleCollider2D>().radius * 2;
 	    const float nodeGap = 0.5f;
@@ -57,9 +55,9 @@ public class NodeGenerator : MonoBehaviour
      */
     private void GenerateNodes()
     {
-        for (int i = StartX; i < _mapLength; i++)
+        for (int i = StartX; i < MapLength; i++)
         {
-            for (int j = StartY; j < _mapHeight; j++)
+            for (int j = StartY; j < MapHeight; j++)
             {
                 GameObject newPos =
                     (GameObject) Instantiate(Node, new Vector2(i*(NodeDistance), j*(NodeDistance)), Node.transform.rotation);
