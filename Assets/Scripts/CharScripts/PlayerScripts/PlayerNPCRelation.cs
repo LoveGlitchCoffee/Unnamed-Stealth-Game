@@ -31,6 +31,7 @@ public class PlayerNPCRelation : MonoBehaviour
             _anim.SetBool("dead",true);
             _playerMovement.enabled = false;
             _rbody.isKinematic = false;
+            GetComponent<CircleCollider2D>().enabled = false;
             dead = true;
             gameObject.layer = 9;
             StartCoroutine(_fadeRestart.Restart());

@@ -209,6 +209,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
         {
             _pathFinder.SetSpeed(1f);
             _pathFinder.SetGoal(nodeLastSeen);
+            SeenPlayer = false; //so still chase
         }
 
         if (nodeLastSeen.GetY() > _patrolBehav.ReturnNodeGuardAt().GetY())

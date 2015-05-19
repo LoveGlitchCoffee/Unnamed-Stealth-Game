@@ -53,6 +53,7 @@ public class FirstClick : MonoBehaviour
         StartCoroutine(_leadMover.MoveToPosition(_coin));
 
         yield return new WaitForSeconds(3f);
+        _leadMover.ZoomCamerasOut();
         _leadMover.IsShowing(false);
     }
 

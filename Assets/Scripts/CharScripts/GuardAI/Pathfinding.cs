@@ -195,12 +195,7 @@ public class Pathfinding : MonoBehaviour
      */
     private IEnumerator PostPursuit()
     {
-        if (_player.GetComponent<PlayerNPCRelation>().dead)
-        {            
-            
-            
-        }
-        else
+        if (!_player.GetComponent<PlayerNPCRelation>().dead)        
         {
             _detector.SeenPlayer = false;     
             _postSearch.enabled = true;

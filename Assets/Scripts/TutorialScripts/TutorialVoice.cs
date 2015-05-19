@@ -16,17 +16,18 @@ public class TutorialVoice : MonoBehaviour
 	    _leadMover = GameObject.FindGameObjectWithTag("CameraLead").GetComponent<MoveLead>();
         _writer = GetComponentInParent<DescriptionWriter>();
 
-	    //StartCoroutine(WriteTutorial());
+	    //StartCoroutine(WriteTutorial());	    
 	    StartCoroutine(ShowGuard());
 	}
 
+
     private IEnumerator ShowGuard()
     {        
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(3f);
 
         _leadMover.IsShowing(true);
         StartCoroutine(_leadMover.MoveToPosition(_guard));
-        StartCoroutine(_writer.WriteNarration("Click on the guard, use his weakness"));
+        StartCoroutine(_writer.WriteNarration("Click on the guard, I will tell you his sin"));
     }
 
 

@@ -48,6 +48,7 @@ public class DragDropTutorial : MonoBehaviour
         StartCoroutine(_leadMover.MoveToPosition(_key));
         
         yield return new WaitForSeconds(3f);
+        _leadMover.ZoomCamerasOut();
         StartCoroutine(_writer.WriteNarration("Drag and Drop the coin near the guard when you need to"));
 
         yield return new WaitForSeconds(1f);

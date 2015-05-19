@@ -98,14 +98,12 @@ public class Movement : MonoBehaviour {
             _playerRb.velocity = new Vector2(Math.Sign(_playerRb.velocity.x) * _speed, _playerRb.velocity.y);
         }
 
-        if (axisPress < 0 && _goingRight)
+        if (axisPress < 0 && _goingRight || axisPress > 0 && !_goingRight)
         {                     
-            Flip();            
-        }
-        else if (axisPress > 0 && !_goingRight)
-        {                        
-            Flip();            
-        }
+            Flip();
+            if (_leadMovement.ContactWall)
+                _leadMovement.ContactWall = false;
+        }        
 
         if (_jump)
         {
