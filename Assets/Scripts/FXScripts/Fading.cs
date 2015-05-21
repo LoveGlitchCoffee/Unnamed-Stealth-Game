@@ -25,8 +25,7 @@ public class Fading : MonoBehaviour
     public IEnumerator FadeToNextLevel(float numberOfSeconds,int currentLevel, GameObject player, GameObject cameraLead)
     {
         yield return new WaitForSeconds(numberOfSeconds);
-        player.GetComponent<PlayerMapRelation>().SetNodeManually(null);
-        Debug.Log("changed player place to null");
+        player.GetComponent<PlayerMapRelation>().SetNodeManually(null);        
 
         Application.LoadLevel(currentLevel + 1);
         player.GetComponent<PlayerMapRelation>().GetNewMap();        

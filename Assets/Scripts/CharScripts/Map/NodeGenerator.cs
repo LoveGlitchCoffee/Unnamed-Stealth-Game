@@ -55,9 +55,10 @@ public class NodeGenerator : MonoBehaviour
      */
     private void GenerateNodes()
     {
-        for (int i = StartX; i < MapLength; i++)
+
+        for (int j = StartY; j < MapHeight; j++)        
         {
-            for (int j = StartY; j < MapHeight; j++)
+            for (int i = StartX; i < MapLength; i++)
             {
                 GameObject newPos =
                     (GameObject) Instantiate(Node, new Vector2(i*(NodeDistance), j*(NodeDistance)), Node.transform.rotation);
@@ -65,7 +66,7 @@ public class NodeGenerator : MonoBehaviour
                 newPos.layer = 12;
 
                 newPos.AddComponent<Node>();
-                newPos.GetComponent<Node>().SetUpNode(ref _graph);
+                newPos.GetComponent<Node>().SetUpNode(ref _graph);                                
             }
         }
 
@@ -76,8 +77,10 @@ public class NodeGenerator : MonoBehaviour
             if (node.GetY() < NodeDistance)
             {
                 //Debug.Log("node is " + node.GetX() + ", " + node.GetY());
+                //Debug.Log("node first " + (node.GetX() - NodeDistance));
+                //Debug.Log("node second " + (node.GetX() + NodeDistance));
                 node.AddNeighbour(-NodeDistance, ref _graph);
-                node.AddNeighbour(NodeDistance, ref _graph);
+                node.AddNeighbour(NodeDistance, ref _graph);               
             }
         }
 

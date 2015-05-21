@@ -1,0 +1,355 @@
+fileFormatVersion: 2
+guid: 5004ae2bae433d54ca0fdf4e1ef1ea72
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: gothicKnight 1_0
+    21300002: gothicKnight 1_1
+    21300004: gothicKnight 1_2
+    21300006: gothicKnight 1_3
+    21300008: gothicKnight 1_4
+    21300010: gothicKnight 1_5
+    21300012: gothicKnight 1_6
+    21300014: gothicKnight 1_7
+    21300016: gothicKnight 1_8
+    21300018: gothicKnight 1_9
+    21300020: gothicKnight 1_10
+    21300022: gothicKnight 1_11
+    21300024: gothicKnight 1_12
+    21300026: gothicKnight 1_13
+    21300028: gothicKnight 1_14
+    21300030: gothicKnight 1_15
+    21300032: gothicKnight 1_16
+    21300034: gothicKnight 1_17
+    21300036: gothicKnight 1_18
+    21300038: gothicKnight 1_19
+    21300040: gothicKnight 1_20
+    21300042: gothicKnight 1_21
+    21300044: gothicKnight 1_22
+    21300046: gothicKnight 1_23
+    21300048: gothicKnight 1_24
+    21300050: gothicKnight 1_25
+    21300052: gothicKnight 1_26
+    21300054: gothicKnight 1_27
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 1024
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: gothicKnight 1_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1158
+        width: 101
+        height: 165
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gothicKnight 1_1
+      rect:
+        serializedVersion: 2
+        x: 248
+        y: 1161
+        width: 103
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gothicKnight 1_2
+      rect:
+        serializedVersion: 2
+        x: 493
+        y: 1171
+        width: 103
+        height: 154
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gothicKnight 1_3
+      rect:
+        serializedVersion: 2
+        x: 765
+        y: 1172
+        width: 103
+        height: 152
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gothicKnight 1_4
+      rect:
+        serializedVersion: 2
+        x: 1022
+        y: 1161
+        width: 102
+        height: 162
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gothicKnight 1_5
+      rect:
+        serializedVersion: 2
+        x: 1234
+        y: 1160
+        width: 101
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gothicKnight 1_6
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 833
+        width: 103
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gothicKnight 1_7
+      rect:
+        serializedVersion: 2
+        x: 266
+        y: 836
+        width: 103
+        height: 166
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gothicKnight 1_8
+      rect:
+        serializedVersion: 2
+        x: 513
+        y: 847
+        width: 102
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gothicKnight 1_9
+      rect:
+        serializedVersion: 2
+        x: 785
+        y: 848
+        width: 102
+        height: 152
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gothicKnight 1_10
+      rect:
+        serializedVersion: 2
+        x: 1040
+        y: 836
+        width: 103
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gothicKnight 1_11
+      rect:
+        serializedVersion: 2
+        x: 1252
+        y: 835
+        width: 103
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gothicKnight 1_12
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 573
+        width: 86
+        height: 171
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gothicKnight 1_13
+      rect:
+        serializedVersion: 2
+        x: 299
+        y: 560
+        width: 92
+        height: 173
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gothicKnight 1_14
+      rect:
+        serializedVersion: 2
+        x: 507
+        y: 557
+        width: 92
+        height: 172
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gothicKnight 1_15
+      rect:
+        serializedVersion: 2
+        x: 788
+        y: 573
+        width: 88
+        height: 171
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gothicKnight 1_16
+      rect:
+        serializedVersion: 2
+        x: 1072
+        y: 558
+        width: 86
+        height: 171
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gothicKnight 1_17
+      rect:
+        serializedVersion: 2
+        x: 1231
+        y: 558
+        width: 88
+        height: 174
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gothicKnight 1_18
+      rect:
+        serializedVersion: 2
+        x: 1416
+        y: 558
+        width: 85
+        height: 171
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gothicKnight 1_19
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 237
+        width: 86
+        height: 174
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gothicKnight 1_20
+      rect:
+        serializedVersion: 2
+        x: 274
+        y: 239
+        width: 88
+        height: 173
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gothicKnight 1_21
+      rect:
+        serializedVersion: 2
+        x: 435
+        y: 239
+        width: 86
+        height: 170
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gothicKnight 1_22
+      rect:
+        serializedVersion: 2
+        x: 716
+        y: 253
+        width: 89
+        height: 172
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gothicKnight 1_23
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 237
+        width: 92
+        height: 174
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gothicKnight 1_24
+      rect:
+        serializedVersion: 2
+        x: 1201
+        y: 240
+        width: 94
+        height: 174
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gothicKnight 1_25
+      rect:
+        serializedVersion: 2
+        x: 1488
+        y: 254
+        width: 84
+        height: 171
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gothicKnight 1_26
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 2
+        width: 171
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gothicKnight 1_27
+      rect:
+        serializedVersion: 2
+        x: 269
+        y: 0
+        width: 171
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 

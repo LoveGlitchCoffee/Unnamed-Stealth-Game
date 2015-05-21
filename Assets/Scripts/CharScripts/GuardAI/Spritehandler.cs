@@ -5,15 +5,14 @@ using UnityEngineInternal;
 public class Spritehandler : MonoBehaviour
 {
 
-    private Patrol _Patrol;
+    
     [HideInInspector] public bool GuardIdle { get; set; }
     private Animator _anim;
     [HideInInspector] public bool SpriteLeft { get; set; }
 
 	
 	void Awake ()
-	{
-	    _Patrol = GetComponent<Patrol>();
+	{	
 	    _anim = GetComponent<Animator>();
 	    SpriteLeft = false;
 	}
@@ -21,7 +20,7 @@ public class Spritehandler : MonoBehaviour
     /*
      * Changes guard animation to idle accordingly
      */
-    void FixedUpdate()
+    void Update()
     {        
         _anim.SetBool("idle",GuardIdle);
     }
