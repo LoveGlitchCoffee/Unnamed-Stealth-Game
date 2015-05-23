@@ -82,7 +82,7 @@ public class Patrol : MonoBehaviour {
         float currentTime = 0f;
         float maxWaitTime = 10f;
 
-        GetComponent<Spritehandler>().GuardIdle = true;
+        GetComponent<Spritehandler>().PlayAnimation("idle");
 
         while (currentTime < maxWaitTime)
         {
@@ -90,7 +90,7 @@ public class Patrol : MonoBehaviour {
             yield return null;
         }
 
-        GetComponent<Spritehandler>().GuardIdle = false;
+        GetComponent<Spritehandler>().StopAnimation("idle");
     }
 
 

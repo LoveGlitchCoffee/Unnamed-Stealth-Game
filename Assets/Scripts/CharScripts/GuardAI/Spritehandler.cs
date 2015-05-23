@@ -5,8 +5,7 @@ using UnityEngineInternal;
 public class Spritehandler : MonoBehaviour
 {
 
-    
-    [HideInInspector] public bool GuardIdle { get; set; }
+        
     private Animator _anim;
     [HideInInspector] public bool SpriteLeft { get; set; }
 
@@ -17,13 +16,6 @@ public class Spritehandler : MonoBehaviour
 	    SpriteLeft = false;
 	}
 	
-    /*
-     * Changes guard animation to idle accordingly
-     */
-    void Update()
-    {        
-        _anim.SetBool("idle",GuardIdle);
-    }
 
     /*
      * Flips the sprite
@@ -34,5 +26,15 @@ public class Spritehandler : MonoBehaviour
         localScale.x *= -1;
         gameObject.transform.localScale = localScale;
         SpriteLeft = !SpriteLeft;
+    }
+
+    public void PlayAnimation(string anim)
+    {
+        _anim.SetBool(anim, true);
+    }
+
+    public void StopAnimation(string anim)
+    {
+        _anim.SetBool(anim, false);
     }
 }

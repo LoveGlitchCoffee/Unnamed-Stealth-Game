@@ -8,6 +8,7 @@ public class CoinLover : MonoBehaviour, IBehaviour
     private Pathfinding _pathFinding;
     private Patrol _patrolBehav;
     private GuardSoundHandler _soundHandler;
+    private Spritehandler _spriteHand;
     private PlayerDetection _detector;
     private LineRenderer _visionCone;
 
@@ -15,9 +16,11 @@ public class CoinLover : MonoBehaviour, IBehaviour
     {
         _pathFinding = GetComponent<Pathfinding>();
         _patrolBehav = GetComponent<Patrol>();
+        _spriteHand = GetComponent<Spritehandler>();
         _soundHandler = GetComponent<GuardSoundHandler>();
          _detector = transform.GetChild(0).GetComponent<PlayerDetection>();
         _visionCone = transform.GetChild(0).GetComponent<LineRenderer>();
+        
     }
 
     /*
@@ -44,11 +47,11 @@ public class CoinLover : MonoBehaviour, IBehaviour
         _patrolBehav.enabled = false;
         _detector.enabled = false;
         _visionCone.enabled = false;
-
-        Debug.Log("got coin");
+        
         Destroy(coin);
         _soundHandler.PlaySound("Confused", 0.5f);
-
+        _spriteHand.PlayAnimation("idle");
+        
         while (timer < maxTime)
         {            
             timer+= 0.03f;
@@ -57,6 +60,7 @@ public class CoinLover : MonoBehaviour, IBehaviour
 
         _visionCone.enabled = true;
         _detector.enabled = true;        
+        _spriteHand.StopAnimation("idle");
         yield return StartCoroutine(_pathFinding.FinishPatrol());                
         yield return StartCoroutine(_patrolBehav.Wait());
         _pathFinding.ResumePatrolStabaliser();        

@@ -7,7 +7,7 @@ public class SceneHandler : MonoBehaviour
 
     private Fading _sceneFader;    
     private GameObject _restart;
-    private DescriptionWriter _writer;
+    private DescriptionWriter _writer;    
     public List<Object> RetainedObjects;
     private GameObject _player;
     private GameObject _cameraLead;
@@ -17,11 +17,7 @@ public class SceneHandler : MonoBehaviour
         _sceneFader = GetComponent<Fading>();    
         _restart = transform.GetChild(0).gameObject;
         _writer = GameObject.FindGameObjectWithTag("DescriptionBox").GetComponentInParent<DescriptionWriter>();
-
-        for (int i = 0; i < RetainedObjects.Count; i++)
-        {
-            DontDestroyOnLoad(RetainedObjects[i]);
-        }
+        
 
         _player = (GameObject) RetainedObjects[RetainedObjects.Count - 1];        //always place player last
         _cameraLead =  (GameObject) RetainedObjects[RetainedObjects.Count - 2]; // always place lead next to last
@@ -34,6 +30,16 @@ public class SceneHandler : MonoBehaviour
     {        
         int currentLevel = Application.loadedLevel;
         Application.LoadLevel(currentLevel);
+
+        if (currentLevel == 1)
+        {
+            for (int i = 0; i < RetainedObjects.Count; i++)
+            {
+                 Destroy(RetainedObjects[i]);
+            }    
+        }
+        
+
         _sceneFader.FadeIn();
     }
 
@@ -49,11 +55,18 @@ public class SceneHandler : MonoBehaviour
 
     public void ToNextLevel()
     {
+        for (int i = 0; i < RetainedObjects.Count; i++)
+        {
+            DontDestroyOnLoad(RetainedObjects[i]);
+        }
+
         int currentLevel = Application.loadedLevel;
         
         _sceneFader.FadeOut();
 
-        StartCoroutine(_sceneFader.FadeToNextLevel(3f, currentLevel, _player, _cameraLead));        
+        StartCoroutine(_sceneFader.FadeToNextLevel(3f, currentLevel, _player, _cameraLead));    
+    
+
     }
    
 

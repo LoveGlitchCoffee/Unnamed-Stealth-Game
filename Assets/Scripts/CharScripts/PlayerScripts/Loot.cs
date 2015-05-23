@@ -24,6 +24,7 @@ public class Loot : MonoBehaviour
 
         if (_canLoot && Input.GetKeyDown(_loot))
         {
+            _canLoot = false;
             StartCoroutine(LootItem());
         }
     }
@@ -41,9 +42,10 @@ public class Loot : MonoBehaviour
 
     private void TransferToInvetory()
     {
-        _inventory.GetComponent<InventoryLogic>().AddItem(_lootableId);
-        Destroy(_destroyable);
-        _canLoot = false;
+        if (_inventory.GetComponent<InventoryLogic>().AddItem(_lootableId))
+        {
+            Destroy(_destroyable);            
+        }        
     }
 
 

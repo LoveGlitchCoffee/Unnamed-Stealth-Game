@@ -39,7 +39,7 @@ public class InventoryRenderer : MonoBehaviour
             newInventorySpace.GetComponent<ItemUI>().ItemSlotNumber = itemSlotNumber;
             itemSlotNumber++;
 
-            _iLogic.PlayerTools.Add(new Tool()); // add empty item
+            _iLogic.PlayerTools[i] = new Tool(); // add empty item
             newInventorySpace.transform.name = "slot " + i;
             newInventorySpace.transform.SetParent(this.transform);
             newInventorySpace.GetComponent<RectTransform>().localPosition = new Vector2(StartX, 0);

@@ -18,9 +18,10 @@ public class Door : MonoBehaviour, IInteractive
     {        
         Tool key = inventory.ReturnToolDb().ToolDatabase[keyIndex];
 
-        if (inventory.PlayerTools.Contains(key))
+        if (inventory.IndexOf(key) != -1)
         {            
             _sceneHandler.ToNextLevel();
+            inventory.RemoveItem(inventory.IndexOf(key));
         }                   
     }
         

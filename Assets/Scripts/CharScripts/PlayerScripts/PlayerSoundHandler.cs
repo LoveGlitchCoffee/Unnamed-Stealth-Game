@@ -8,7 +8,7 @@ public class PlayerSoundHandler : MonoBehaviour
 	
 	void Awake ()
 	{
-	    _audioSource = GetComponent<AudioSource>();
+	    _audioSource = GetComponent<AudioSource>();        
 	}
 
 

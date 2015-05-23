@@ -51,10 +51,7 @@ public class Node : MonoBehaviour, IComparable<Node>
     public void SetUpNode(ref GraphOfMap graph)
     {       
         _successors = new List<Node>();
-        Node newNode = graph.nodeWith(this);  
-
-        if (newNode.GetX() == 0)
-            Debug.Log("15 setup");
+        Node newNode = graph.nodeWith(this);          
     }    
 
     /**
@@ -66,13 +63,10 @@ public class Node : MonoBehaviour, IComparable<Node>
         {
             Node node = graph.ReturnGraph().ElementAt(i);
 
-            if (node.GetX() == 15)
-                Debug.Log("node 15 found");
-            
             if (node.GetX() == GetX() - direction && node.GetY() == GetY())
             {
                 AddSuccessor(node, ref graph);  
-                Debug.Log("successor " + node.GetX() +", " + node.GetY());
+                //Debug.Log("successor " + node.GetX() +", " + node.GetY());
             }
         }
     }

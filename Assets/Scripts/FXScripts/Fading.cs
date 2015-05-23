@@ -24,13 +24,13 @@ public class Fading : MonoBehaviour
 
     public IEnumerator FadeToNextLevel(float numberOfSeconds,int currentLevel, GameObject player, GameObject cameraLead)
     {
+        //Debug.Log("go to next level");
         yield return new WaitForSeconds(numberOfSeconds);
         player.GetComponent<PlayerMapRelation>().SetNodeManually(null);        
 
         Application.LoadLevel(currentLevel + 1);
         player.GetComponent<PlayerMapRelation>().GetNewMap();        
         player.transform.position = new Vector3(0,0);
-        
 
         cameraLead.GetComponent<MoveLead>().ContactWall = false;
         cameraLead.transform.position = new Vector3(3.5f, 0);

@@ -24,7 +24,7 @@ public class Identifer : MonoBehaviour
         _identity = identityTool;
         SetImage();
         SetPickUpSound();
-        SetSortingLayer();
+        //SetSortingLayer();
     }
 
     public void SetPickUpSound()

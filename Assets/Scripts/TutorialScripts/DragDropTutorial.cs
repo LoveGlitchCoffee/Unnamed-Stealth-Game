@@ -29,7 +29,7 @@ public class DragDropTutorial : MonoBehaviour
 
     void Update()
     {
-        if (_inventory.PlayerTools.Contains(_firstCoin))
+        if (_inventory.IndexOf(_firstCoin) != -1)
         {
             StartCoroutine(DragAndDropTutorial());
             enabled = false;

@@ -13,6 +13,8 @@ public class Pathfinding : MonoBehaviour
     private Spritehandler _spriteHand;
     private VisionConeRender _coneRender;
 
+    private CircleCollider2D _catcher;
+
     private float _speed = 4f;
     private const float PatrolSpeed = 2f;
 
@@ -27,6 +29,7 @@ public class Pathfinding : MonoBehaviour
         _patrolBehav = GetComponent<Patrol>();
         _spriteHand = GetComponent<Spritehandler>();
         _coneRender = transform.GetChild(0).GetComponent<VisionConeRender>();
+        _catcher = GetComponent<CircleCollider2D>();
     }
 
     /*
@@ -126,7 +129,8 @@ public class Pathfinding : MonoBehaviour
      */
     IEnumerator JumpToPlatform(Vector2 startPosition, Vector2 platformPosition)
     {
-        GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 500f));
+        GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 1000f));
+
         while ((Vector2)transform.position != platformPosition)
         {
             /*Debug.Log("time passed " + (Time.time - timeStamp));
@@ -143,8 +147,8 @@ public class Pathfinding : MonoBehaviour
 
             if (transform.position.y != platformPosition.y)
                 transform.position = new Vector2(newX, newY * 0.75f);*/
-            GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 350f));
-            transform.position = Vector2.MoveTowards(transform.position, platformPosition, Time.deltaTime * 5.5f);
+            GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 1000f));
+            transform.position = Vector2.MoveTowards(transform.position, platformPosition, Time.deltaTime * 5.8f);
                                         
             yield return 0;
         }
@@ -179,7 +183,8 @@ public class Pathfinding : MonoBehaviour
         //Debug.Log("starting new pursuit");
         StopAllCoroutines();
         _routeToGoal = CalculateRouteToDestination();       
-        _travelling = true;   
+        _travelling = true;
+        _catcher.enabled = true;
         
         yield return StartCoroutine(NavigateToGoal(_travelling));
                 
@@ -196,13 +201,14 @@ public class Pathfinding : MonoBehaviour
         {
             _detector.SeenPlayer = false;     
             _postSearch.enabled = true;
-            _spriteHand.GuardIdle = true;
+            _spriteHand.PlayAnimation("idle");
             yield return StartCoroutine(_postSearch.VisualSearch());
         }
 
         if (_postSearch.ResumePatrol)
         {
-            _spriteHand.GuardIdle = false;
+            _catcher.enabled = false;
+            _spriteHand.StopAnimation("idle");            
             yield return StartCoroutine(FinishPatrol());
             yield return StartCoroutine(_patrolBehav.Wait());
 

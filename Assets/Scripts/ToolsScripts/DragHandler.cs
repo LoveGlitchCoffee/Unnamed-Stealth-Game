@@ -63,15 +63,13 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public void OnEndDrag(PointerEventData eventData)
     {
         SetPhysicalProperties();
-
-        StartCoroutine(_soundHandler.SetSoundProperties(_physicalSpawn));
-
+        StartCoroutine(_soundHandler.SetSoundProperties(_physicalSpawn));        
         RemoveFromInventory();
     }
 
     private void RemoveFromInventory()
-    {
-        int indexOfDestoryed = _slotIn.GetComponent<ItemUI>().ItemSlotNumber;
+    {                
+        int indexOfDestoryed = _slotIn.GetComponent<ItemUI>().ItemSlotNumber;        
         _inventory.RemoveItem(indexOfDestoryed);
     }
     
