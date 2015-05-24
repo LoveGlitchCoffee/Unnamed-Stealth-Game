@@ -37,8 +37,7 @@ public class InventoryLogic : MonoBehaviour
                 break;
             }
         }
-        
-        Debug.Log("can place " + canPlaced);
+                
         return canPlaced;
 
     }
@@ -52,8 +51,7 @@ public class InventoryLogic : MonoBehaviour
         while (!placed && count < 4)
         {            
             if (PlayerTools[count].Name == null)
-            {
-                Debug.Log("adding item");
+            {                
                 PlayerTools[count] = item;
                 transform.GetChild(count).GetComponent<ItemUI>().UpdateSlot();
                 placed = true;
@@ -86,7 +84,7 @@ public class InventoryLogic : MonoBehaviour
                 transform.GetChild(i).GetComponent<ItemUI>().UpdateSlot();
         }*/
 
-        Debug.Log("remove at "+transform.GetChild(indexOfDestoryed).GetComponent<ItemUI>());
+        //Debug.Log("remove at "+transform.GetChild(indexOfDestoryed).GetComponent<ItemUI>());
         transform.GetChild(indexOfDestoryed).GetComponent<ItemUI>().UpdateSlot();
     }
 

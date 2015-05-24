@@ -6,19 +6,18 @@ public class MoveLead : MonoBehaviour
 
     private float DistanceFromPlayerX = 3.5f;
     private const float DistanceFromPlayerY = 1f;
-    private Transform _playerPosition;
-    private Movement _playerMovement;
+    private Transform _playerPosition;    
     private bool _showing = false;
     [HideInInspector] public bool ContactWall = false;
     private GameObject _cameraGroup;
     private Camera[] _cameras;
     private const int NoOfcameras = 4;
 
+    
 	void Start ()
 	{
 	    GameObject player = GameObject.FindGameObjectWithTag("Player");
-	    _playerPosition = player.transform;
-	    _playerMovement = player.GetComponent<Movement>();
+	    _playerPosition = player.transform;	    
 	    _cameraGroup = GameObject.FindGameObjectWithTag("CameraGroup");
 
         _cameras = new Camera[NoOfcameras];
@@ -28,19 +27,26 @@ public class MoveLead : MonoBehaviour
 	        _cameras[i] = _cameraGroup.transform.GetChild(i).GetComponent<Camera>();
 	    }
 	}
-	
-	
-	void Update () {
+
+    /*
+     * Lerps all camera after player
+     * Done by lerping a 'lead' to a certain position and just have camera follow on it
+     */
+    void Update () {
 
         if (!_showing && !ContactWall)
 	        transform.position = Vector3.Lerp(transform.position, new Vector3(_playerPosition.position.x + DistanceFromPlayerX,_playerPosition.position.y + DistanceFromPlayerY),Time.deltaTime*6f);
 	}
+
 
     public void SetDirection()
     {
         DistanceFromPlayerX *= -1f;
     }
 
+    /*
+     * Manually lerps camera to a certain position, use to show part of game to draw attention to, works with zooming
+     */
     public IEnumerator MoveToPosition(GameObject objectToMoveTo)
     {
         for (int i = 0; i < NoOfcameras; i++)
@@ -55,6 +61,9 @@ public class MoveLead : MonoBehaviour
         }
     }
 
+    /*
+     * Zooms all camera in, size decrease gradually
+     */
     IEnumerator ZoomIn(Camera camera)
     {        
         float zoomedSize = 2.5f;
@@ -67,6 +76,9 @@ public class MoveLead : MonoBehaviour
         }
     }
 
+    /*
+     * Zooms a specified camera out, size increase graudally
+     */
     IEnumerator ZoomOut(Camera camera)
     {
         float originalSize = 5f;
@@ -78,6 +90,9 @@ public class MoveLead : MonoBehaviour
         }
     }
 
+    /*
+     * Zooms all cameras out
+     */
     public void ZoomCamerasOut()
     {
         for (int i = 0; i < NoOfcameras; i++)
@@ -86,11 +101,18 @@ public class MoveLead : MonoBehaviour
         }
     }
 
+    /*
+     * Indicates if game is showing something of interest
+     * stops regular follow-player lerp
+     */
     public void IsShowing(bool showing)
     {        
         this._showing = showing;        
     }
 
+    /*
+     * If collide to wall, will stop lerping
+     */
     void OnCollisionEnter2D()
     {    
         ContactWall = true;

@@ -12,6 +12,9 @@ public class CameraLerp : MonoBehaviour
         _cameraLead = GameObject.FindGameObjectWithTag("CameraLead");
     }
 		
+    /*
+     * lerps camera to lead
+     */
 	void Update ()
 	{
 	    _camerasPosition.position = Vector3.Lerp(_camerasPosition.position, _cameraLead.transform.position, Time.deltaTime*6f);

@@ -8,6 +8,7 @@ public class Murophobia : MonoBehaviour{
     private Pathfinding _pathFinding;
     private Patrol _patrolBehav;
     private GuardSoundHandler _soundHandler;
+    private Spritehandler _spriteHandler;
     private PlayerDetection _detector;
     private LineRenderer _visionCone;
 
@@ -16,14 +17,19 @@ public class Murophobia : MonoBehaviour{
         _pathFinding = GetComponentInParent<Pathfinding>();
         _patrolBehav = GetComponentInParent<Patrol>();
         _soundHandler = GetComponentInParent<GuardSoundHandler>();
+        _spriteHandler = GetComponentInParent<Spritehandler>();
         _detector = GetComponent<PlayerDetection>();
         _visionCone = GetComponent<LineRenderer>();
     }
 
     void OnTriggerEnter2D(Collider2D col)
-    {
+    {        
+
         if (col.gameObject.tag == lootTag && col.GetComponent<Identifer>().ReturnIdentity() == ratName)
         {
+            _patrolBehav.StopAllCoroutines();
+            _pathFinding.StopAllCoroutines();
+            _detector.StopAllCoroutines();
             StartCoroutine(PhobiaReaction());
         }
     }
@@ -34,21 +40,19 @@ public class Murophobia : MonoBehaviour{
      */
     IEnumerator PhobiaReaction()
     {
-        const float realiseTime = 3f;
-        float timer = 0f;
-
-        
-        while (timer < realiseTime)
-        {
-            timer += 1f;
-            yield return null;
-        }
-
         _patrolBehav.enabled = false;
         _detector.enabled = false;
         _visionCone.enabled = false;
 
-
+        const float realiseTime = 3f;
+        float timer = 0f;
+        
+        while (timer < realiseTime)
+        {
+            timer += 1f;            
+            yield return null;
+        }
+      
         _soundHandler.PlaySound("Confused", 0.5f);        
     }
 

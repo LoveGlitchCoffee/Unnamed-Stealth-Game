@@ -125,11 +125,12 @@ public class Pathfinding : MonoBehaviour
 
 
     /*
-     * Moves guard to platform by lerping but y position + sin(y) so larger proportion to x and creates curve
+     * Moves guard to platform by lerping but add force (which decrease each frame) to simulate jump curve
      */
     IEnumerator JumpToPlatform(Vector2 startPosition, Vector2 platformPosition)
     {
-        GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 1000f));
+
+        float jumpForce = 2700f;
 
         while ((Vector2)transform.position != platformPosition)
         {
@@ -147,8 +148,14 @@ public class Pathfinding : MonoBehaviour
 
             if (transform.position.y != platformPosition.y)
                 transform.position = new Vector2(newX, newY * 0.75f);*/
-            GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 1000f));
-            transform.position = Vector2.MoveTowards(transform.position, platformPosition, Time.deltaTime * 5.8f);
+
+            GetComponent<Rigidbody2D>().AddForce(new Vector2(300f, jumpForce));
+            if (jumpForce > 0)
+            {
+                jumpForce -= 270f;    
+            }
+            
+            transform.position = Vector2.MoveTowards(transform.position, platformPosition, Time.deltaTime * 2.6f);
                                         
             yield return 0;
         }

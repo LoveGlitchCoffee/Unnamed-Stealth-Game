@@ -38,6 +38,13 @@ public class SceneHandler : MonoBehaviour
                  Destroy(RetainedObjects[i]);
             }    
         }
+
+        if (_player.GetComponent<PlayerNPCRelation>().dead)
+        {
+            _player.GetComponent<PlayerNPCRelation>().dead = false;
+            _player.transform.position = new Vector3(0, 0);
+        }
+            
         
 
         _sceneFader.FadeIn();

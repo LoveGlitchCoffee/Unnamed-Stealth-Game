@@ -11,7 +11,9 @@ public class GuardSoundHandler : MonoBehaviour
 	    _audioSource = GetComponent<AudioSource>();
 	}
 	
-	
+	/*
+     * Plays sound, specified, by string, at specified volumn
+     */
     public void PlaySound(string soundName, float volume)
     {
         _audioSource.clip = Resources.Load<AudioClip>(soundName);

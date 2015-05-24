@@ -260,7 +260,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
                     if (nodeCollider != null)
                     {
                         Vector2 nodePosition = nodeCollider.transform.position;                        
-
+                        //bug here
                         if (!(nodePosition.x < pointLastSeen.x) && !(nodePosition.y > pointLastSeen.y))
                             alternateNode = nodeCollider.gameObject.GetComponent<Node>();
                     }
