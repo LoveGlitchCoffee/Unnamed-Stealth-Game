@@ -130,7 +130,7 @@ public class Pathfinding : MonoBehaviour
     IEnumerator JumpToPlatform(Vector2 startPosition, Vector2 platformPosition)
     {
 
-        float jumpForce = 2700f;
+        float jumpForce = 3800f;
 
         while ((Vector2)transform.position != platformPosition)
         {
@@ -152,10 +152,10 @@ public class Pathfinding : MonoBehaviour
             GetComponent<Rigidbody2D>().AddForce(new Vector2(300f, jumpForce));
             if (jumpForce > 0)
             {
-                jumpForce -= 270f;    
+                jumpForce -= 250f;    
             }
             
-            transform.position = Vector2.MoveTowards(transform.position, platformPosition, Time.deltaTime * 2.6f);
+            transform.position = Vector2.MoveTowards(transform.position, platformPosition, Time.deltaTime * 2.4f);
                                         
             yield return 0;
         }

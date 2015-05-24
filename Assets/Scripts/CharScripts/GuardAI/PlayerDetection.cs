@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using UnityEngine;
 
-public class PlayerDetection : MonoBehaviour, IDetection
+public class PlayerDetection : MonoBehaviour
 {
 
     private Pathfinding _pathFinder;
@@ -12,16 +13,9 @@ public class PlayerDetection : MonoBehaviour, IDetection
     
     private GameObject _player;
     private GameObject _gameMap;
-
    
-    private const int LayerLiving = 11;
-    private const int LayerEnvi = 10;
-    private LayerMask _detectLiving;
-    private LayerMask _detectEnvi;
-    private LayerMask _detectLayerMask;
 
-    private const string PlayerTag = "Player";
-    private const float EyeDistance = 0.4f;
+    private const string PlayerTag = "Player";    
 
     private List<Vector2> _leftVision = new List<Vector2>();
     private List<Vector2> _rightVision = new List<Vector2>();
@@ -29,9 +23,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
 
     private bool _sensePlayer = false;
     [HideInInspector] public bool SeenPlayer = false;  
-
-	Ray2D _lineOfSight;
-    private int _sightDistance;
+	    
 
     private VisionConeRender _coneRender;
     private Color _suspicion = Color.yellow;
@@ -39,6 +31,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
     private Color _blind = Color.grey;
 
     private RaycastHit2D detectPlayer;
+    private DetectionCommon _detection;
 
     /*
      * Set up script dependencies
@@ -49,7 +42,8 @@ public class PlayerDetection : MonoBehaviour, IDetection
         _patrolBehav = gameObject.GetComponentInParent<Patrol>();
         _player = GameObject.FindGameObjectWithTag(PlayerTag);
         _gameMap = GameObject.FindGameObjectWithTag("Map");
-        _soundHandler = GetComponentInParent<GuardSoundHandler>();        
+        _soundHandler = GetComponentInParent<GuardSoundHandler>();
+        _detection = GetComponent<DetectionCommon>();
     }
 
     /**
@@ -58,14 +52,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
      * Vision cone is just reverse of one another
      */
 	void Start () {
-
-	    _detectLiving = 1 << LayerLiving;
-	    _detectEnvi = 1 << LayerEnvi;
-
-	    _detectLayerMask = _detectLiving | _detectEnvi;
-
-	    _sightDistance = 5;
-
+	    
 	    SetUpVisionCone();        
 	}
 
@@ -78,7 +65,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
         _leftVision.Add(new Vector2(-0.2f, 0.5f));
         _leftVision.Add(new Vector2(-5f, 1.6f));
         _leftVision.Add(new Vector2(-5f, -0.8f));
-        _leftVision.Add(new Vector2(-0.2f, EyeDistance));
+        _leftVision.Add(new Vector2(-0.2f, _detection.GetEyeDistance()));
 
 
         for (int i = 0; i < 4; i++)
@@ -102,14 +89,7 @@ public class PlayerDetection : MonoBehaviour, IDetection
 	{
 	    if (_sensePlayer && !SeenPlayer)
 	    {
-	        if (_patrolBehav.GoingLeft)
-	        {
-	            CheckLineOfSight(-0.5f);
-	        }
-	        else
-	        {
-	            CheckLineOfSight(0.5f);
-	        }
+	        CheckSightForPlayer(_player);
 	    }
 			
 	}
@@ -123,30 +103,22 @@ public class PlayerDetection : MonoBehaviour, IDetection
         _coneRender.SetConeShape(_visionCone.points);
     }
 
-    /**
-     * Calculates the direction to cast ray, should be direction towards player
-     */
-    private Vector2 CalculateDirection()
-    {
-        return new Vector2(_player.transform.position.x - gameObject.transform.position.x, _player.transform.position.y - gameObject.transform.position.y);
-    }
+    
 
     /**
      * Ray cast towards player if within vision cone
      * If ray cast hits player, i.e. no obstacles between them, then enable guard's pursue behaviour, turning off patrol behaviour     
      */
-    public void CheckLineOfSight(float direction)
-	{
-        _lineOfSight = new Ray2D(new Vector2(gameObject.transform.position.x + direction, gameObject.transform.position.y + EyeDistance), CalculateDirection());
-        RaycastHit2D detectPlayer = Physics2D.Raycast(_lineOfSight.origin, _lineOfSight.direction, _sightDistance, _detectLayerMask); // distance is x distance                               
-        Debug.DrawLine(_lineOfSight.origin, detectPlayer.point);        
+    public void CheckSightForPlayer(GameObject player)
+    {
+        detectPlayer = _detection.CheckIfHit(player);
 
         if (detectPlayer.collider != null && detectPlayer.collider.tag == PlayerTag)
         {
             _patrolBehav.enabled = false;
             _sensePlayer = false;
             SeenPlayer = true;            
-            StartCoroutine(ReactToDetection(detectPlayer, direction));
+            StartCoroutine(ReactToDetection(detectPlayer));
         }
 	}
 
@@ -154,14 +126,14 @@ public class PlayerDetection : MonoBehaviour, IDetection
      * reaciton is to be astonished for 0.5 seconds before assuring that player is defintely within line of sight or not
      * if player is defenitely seen, pursue player, else go to where player was last seen, cautiously.
      */
-    IEnumerator ReactToDetection(RaycastHit2D playerLastSeen, float direction)
+    IEnumerator ReactToDetection(RaycastHit2D playerLastSeen)
     {
         
         _coneRender.ActivateState(_suspicion);
         detectPlayer = new RaycastHit2D();
         GraphOfMap graph = _gameMap.GetComponent<NodeGenerator>().ReturnGeneratedGraph();
 
-        yield return StartCoroutine(Baffled(direction));        
+        yield return StartCoroutine(Baffled());        
 
         SetNavigationState(playerLastSeen, detectPlayer, graph);        
                 
@@ -173,17 +145,13 @@ public class PlayerDetection : MonoBehaviour, IDetection
      * guard stops and enter suspicion state for 0.5 seconds
      * If guard still see player after baffled, enter alarmed pursuit     
      */
-    private IEnumerator Baffled(float direction)
+    private IEnumerator Baffled()
     {
         float baffledTime = 0f;        
 
         while (baffledTime < 0.5f)
         {
-            _lineOfSight =
-                new Ray2D(new Vector2(gameObject.transform.position.x + direction, gameObject.transform.position.y + EyeDistance),
-                    CalculateDirection());
-            detectPlayer = Physics2D.Raycast(_lineOfSight.origin, _lineOfSight.direction, _sightDistance, _detectLayerMask);
-            Debug.DrawLine(_lineOfSight.origin, detectPlayer.point);
+            detectPlayer = _detection.CheckIfHit(_player);
 
             baffledTime += 1f*Time.deltaTime;
             yield return null;

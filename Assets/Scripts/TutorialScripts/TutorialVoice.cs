@@ -8,12 +8,12 @@ public class TutorialVoice : MonoBehaviour
     private bool _instructing = true;
     private DescriptionWriter _writer;
     private GameObject _guard;
-    private MoveLead _leadMover;
+    private CameraLeadController _leadMover;
 
 	void Start ()
 	{
 	    _guard = GameObject.FindGameObjectWithTag("Guard");
-	    _leadMover = GameObject.FindGameObjectWithTag("CameraLead").GetComponent<MoveLead>();
+	    _leadMover = GameObject.FindGameObjectWithTag("CameraLead").GetComponent<CameraLeadController>();
         _writer = GetComponentInParent<DescriptionWriter>();
 
 	    //StartCoroutine(WriteTutorial());	    

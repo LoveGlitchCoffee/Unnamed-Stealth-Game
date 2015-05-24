@@ -19,7 +19,7 @@ public class Movement : MonoBehaviour {
     private Rigidbody2D _playerRb;
     public Transform GroundCheck;
     private PlayerSoundHandler _soundHandler;    
-    private MoveLead _leadMovement;
+    private CameraLeadController _leadMovement;
 
     private const int _enviMask = 10;
     private const int _groundMask = 15;
@@ -33,7 +33,7 @@ public class Movement : MonoBehaviour {
 	    //_flipLerp = transform.GetChild(1).GetComponent<FlipLerp>();
 	    _anim = gameObject.GetComponent<Animator>();
 	    _playerRb = gameObject.GetComponent<Rigidbody2D>();
-	    _leadMovement = GameObject.FindGameObjectWithTag("CameraLead").GetComponent<MoveLead>();
+	    _leadMovement = GameObject.FindGameObjectWithTag("CameraLead").GetComponent<CameraLeadController>();
 	    _detectEnvi = 1 << _enviMask;
 	    _detectGround = 1 << _groundMask;
 

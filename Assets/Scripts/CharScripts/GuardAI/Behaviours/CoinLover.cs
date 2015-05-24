@@ -1,56 +1,33 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 
-public class CoinLover : MonoBehaviour, IBehaviour
+public class CoinLover : IBehaviour
 {
-    private const string lootTag = "Lootable";
-    private const string coinName = "coin";
-    private Pathfinding _pathFinding;
-    private Patrol _patrolBehav;
-    private GuardSoundHandler _soundHandler;
-    private Spritehandler _spriteHand;
-    private PlayerDetection _detector;
-    private LineRenderer _visionCone;
-
+    
     void Awake()
     {
-        _pathFinding = GetComponent<Pathfinding>();
-        _patrolBehav = GetComponent<Patrol>();
-        _spriteHand = GetComponent<Spritehandler>();
-        _soundHandler = GetComponent<GuardSoundHandler>();
-         _detector = transform.GetChild(0).GetComponent<PlayerDetection>();
-        _visionCone = transform.GetChild(0).GetComponent<LineRenderer>();
-        
+        base.AssignComponents();
+        WeaknessItem = "coin";
     }
 
-    /*
-     * If guard comes in contact with a coin on the ground. He stops all movement and detection
-     */
-    void OnTriggerEnter2D(Collider2D col)
+    void OnTriggerStay2D(Collider2D col)
     {
-        if (col.tag == lootTag && col.GetComponent<Identifer>().ReturnIdentity() == coinName)
-        {       
-            _pathFinding.StopAllCoroutines();
-            _detector.StopAllCoroutines();            
-            StartCoroutine(AdmireCoin(col.gameObject));
-        }
+        base.ReactToWeakness(col);
     }
 
     /*
+     * The behaviour is reaction to coin
+     * Guard navigates to coin's position
      * All movement and detection is disabled for a set period of time
      */
-    IEnumerator AdmireCoin(GameObject coin)
+    override protected IEnumerator ActivateBehaviour(GameObject item)
     {
         const float maxTime = 7f;
         float timer = 0f;
-                
-        _patrolBehav.enabled = false;
-        _detector.enabled = false;
-        _visionCone.enabled = false;
-        
-        Destroy(coin);
+                                
+        Destroy(item);
         _soundHandler.PlaySound("Confused", 0.5f);
-        _spriteHand.PlayAnimation("idle");
+        _spriteHandler.PlayAnimation("idle");
         
         while (timer < maxTime)
         {            
@@ -58,18 +35,13 @@ public class CoinLover : MonoBehaviour, IBehaviour
             yield return null;
         }
 
-        _visionCone.enabled = true;
-        _detector.enabled = true;        
-        _spriteHand.StopAnimation("idle");
-        yield return StartCoroutine(_pathFinding.FinishPatrol());                
-        yield return StartCoroutine(_patrolBehav.Wait());
-        _pathFinding.ResumePatrolStabaliser();        
-        _patrolBehav.enabled = true;       
-        StartCoroutine(_patrolBehav.Patrolling());         
+        _spriteHandler.StopAnimation("idle");
+
+        StartCoroutine(ResumeCoroutines());
     }
 
 
-    public string ReturnBehaviourDescription()
+    public override string ReturnBehaviourDescription()
     {
         return "Greedy and love coins, if he sees one, he'll forget the world just to look at it";
     }

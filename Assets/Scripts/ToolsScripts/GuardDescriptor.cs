@@ -10,7 +10,7 @@ public class GuardDescriptor : MonoBehaviour {
     void Start()
     {
         _descriptionBox = GameObject.FindGameObjectWithTag("DescriptionBox").GetComponent<Text>(); 
-        _behaviour = GetComponent<IBehaviour>();
+        _behaviour = transform.GetChild(0).GetComponent<IBehaviour>();
         _soundHandler = GetComponent<GuardSoundHandler>();
     }
 

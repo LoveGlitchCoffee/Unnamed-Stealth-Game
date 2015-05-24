@@ -9,14 +9,16 @@ public class FirstClick : MonoBehaviour
     private GameObject _player;
     private GameObject _coin;
     private CommonTutorialFunctions _tutFunc;
-    private MoveLead _leadMover;    
+    private CameraLeadController _leadMover;
+    private CameraController _cameraFx;
 
 	void Start ()
 	{
 	    GameObject _description = GameObject.FindGameObjectWithTag("DescriptionBox");
         _tutorial = _description.GetComponent<TutorialVoice>();
 	    _writer = _description.GetComponentInParent<DescriptionWriter>();
-	    _leadMover = GameObject.FindGameObjectWithTag("CameraLead").GetComponent<MoveLead>();
+	    _leadMover = GameObject.FindGameObjectWithTag("CameraLead").GetComponent<CameraLeadController>();
+	    _cameraFx = GameObject.FindGameObjectWithTag("CameraGroup").GetComponent<CameraController>();
 
         _player = GameObject.FindGameObjectWithTag("Player");	 
 
@@ -53,7 +55,7 @@ public class FirstClick : MonoBehaviour
         StartCoroutine(_leadMover.MoveToPosition(_coin));
 
         yield return new WaitForSeconds(3f);
-        _leadMover.ZoomCamerasOut();
+        _cameraFx.ZoomCameras(false);
         _leadMover.IsShowing(false);
     }
 
