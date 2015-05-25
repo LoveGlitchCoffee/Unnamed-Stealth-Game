@@ -20,13 +20,16 @@ public class CoinLover : IBehaviour
      * Guard navigates to coin's position
      * All movement and detection is disabled for a set period of time
      */
-    override protected IEnumerator ActivateBehaviour(GameObject item)
+    override protected IEnumerator ActivateBehaviour(GameObject item, Node nodeItemIn)
     {
         const float maxTime = 7f;
         float timer = 0f;
+
+        _soundHandler.PlaySound("Intrigued", 0.5f);
+        
+        yield return StartCoroutine(_pathFinding.GoToItem(nodeItemIn));
                                 
-        Destroy(item);
-        _soundHandler.PlaySound("Confused", 0.5f);
+        Destroy(item);        
         _spriteHandler.PlayAnimation("idle");
         
         while (timer < maxTime)

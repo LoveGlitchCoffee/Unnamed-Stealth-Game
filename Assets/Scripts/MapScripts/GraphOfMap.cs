@@ -16,6 +16,8 @@ public struct GraphOfMap
         bool nodeFound = false;
         int i = 0;
 
+        
+        
         while (nodeFound == false && i < AbstractMap.Count)
         {
             if (AbstractMap.ElementAt(i).GetX() == node.GetX() && AbstractMap.ElementAt(i).GetY() == node.GetY())

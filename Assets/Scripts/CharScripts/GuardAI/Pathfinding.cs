@@ -17,6 +17,8 @@ public class Pathfinding : MonoBehaviour
 
     private float _speed = 4f;
     private const float PatrolSpeed = 2f;
+    public const float ChaseSpeed = 4f;
+    public const float CautiousSpeed = 1f;
 
     private Node[] _routeToGoal;
     private Node _goal;
@@ -98,6 +100,7 @@ public class Pathfinding : MonoBehaviour
         {
            // Debug.Log("next position's x is: " + nextPosition.GetX());
 
+            Debug.Log(transform.position.y);
             if (nextPosition.GetY() > transform.position.y)
             {                                 
                 yield return StartCoroutine(JumpToPlatform(transform.position, nextPosition.gameObject.transform.position));                         
@@ -130,7 +133,7 @@ public class Pathfinding : MonoBehaviour
     IEnumerator JumpToPlatform(Vector2 startPosition, Vector2 platformPosition)
     {
 
-        float jumpForce = 3800f;
+        float jumpForce = 3200f;
 
         while ((Vector2)transform.position != platformPosition)
         {
@@ -152,10 +155,14 @@ public class Pathfinding : MonoBehaviour
             GetComponent<Rigidbody2D>().AddForce(new Vector2(300f, jumpForce));
             if (jumpForce > 0)
             {
-                jumpForce -= 250f;    
+                jumpForce -= 255f;    
+            }
+            else
+            {
+                jumpForce = 0;
             }
             
-            transform.position = Vector2.MoveTowards(transform.position, platformPosition, Time.deltaTime * 2.4f);
+            transform.position = Vector2.MoveTowards(transform.position, platformPosition, Time.deltaTime * 3.5f);
                                         
             yield return 0;
         }
@@ -285,4 +292,23 @@ public class Pathfinding : MonoBehaviour
     }
 
 
+    public IEnumerator GoToItem(Node nodeItemIn)
+    {
+        StopAllCoroutines();
+        SetGoal(nodeItemIn);
+        _routeToGoal = CalculateRouteToDestination();
+        SetSpeed(ChaseSpeed);
+
+        yield return StartCoroutine(NavigateToGoal(true));
+    }
+
+    public float ReturnChaseSpeed()
+    {
+        return ChaseSpeed;
+    }
+
+    public float ReturnCautiousSpeed()
+    {
+        return CautiousSpeed;
+    }
 }

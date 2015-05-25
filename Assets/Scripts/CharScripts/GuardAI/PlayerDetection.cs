@@ -11,8 +11,7 @@ public class PlayerDetection : MonoBehaviour
     private Patrol _patrolBehav;
     private GuardSoundHandler _soundHandler;
     
-    private GameObject _player;
-    private GameObject _gameMap;
+    private GameObject _player;    
    
 
     private const string PlayerTag = "Player";    
@@ -40,8 +39,7 @@ public class PlayerDetection : MonoBehaviour
     {
         _pathFinder = gameObject.GetComponentInParent<Pathfinding>();
         _patrolBehav = gameObject.GetComponentInParent<Patrol>();
-        _player = GameObject.FindGameObjectWithTag(PlayerTag);
-        _gameMap = GameObject.FindGameObjectWithTag("Map");
+        _player = GameObject.FindGameObjectWithTag(PlayerTag);        
         _soundHandler = GetComponentInParent<GuardSoundHandler>();
         _detection = GetComponent<DetectionCommon>();
     }
@@ -130,12 +128,11 @@ public class PlayerDetection : MonoBehaviour
     {
         
         _coneRender.ActivateState(_suspicion);
-        detectPlayer = new RaycastHit2D();
-        GraphOfMap graph = _gameMap.GetComponent<NodeGenerator>().ReturnGeneratedGraph();
+        detectPlayer = new RaycastHit2D();        
 
         yield return StartCoroutine(Baffled());        
 
-        SetNavigationState(playerLastSeen, detectPlayer, graph);        
+        SetNavigationState(playerLastSeen, detectPlayer);        
                 
         StartCoroutine(_pathFinder.StartPursuit());
     }
@@ -162,21 +159,21 @@ public class PlayerDetection : MonoBehaviour
          * Depending on whether guard still detects player or not after baffling
          * Guard will set either suspicion or alarmed state for the pursuit (travel to last seen position)
          */
-    private void SetNavigationState(RaycastHit2D playerLastSeen, RaycastHit2D detectPlayer, GraphOfMap graph)
+    private void SetNavigationState(RaycastHit2D playerLastSeen, RaycastHit2D detectPlayer)
     {
-        Node nodeLastSeen = CalculateNodeLastSeen(playerLastSeen, graph);
+        Node nodeLastSeen = _detection.CalculateNodeLastSeen(playerLastSeen);
 
         if (detectPlayer.collider != null && detectPlayer.collider.tag == PlayerTag)
         {
             //Debug.Log("pursue");
             _coneRender.ActivateState(_alarmed);
             _soundHandler.PlaySound("Alarmed", 0.75f);
-            _pathFinder.SetSpeed(4f);
+            _pathFinder.SetSpeed(_pathFinder.ReturnChaseSpeed());
             _pathFinder.SetGoal(nodeLastSeen); // last seen when detect, not after baffled
         }
         else
         {
-            _pathFinder.SetSpeed(1f);
+            _pathFinder.SetSpeed(_pathFinder.ReturnCautiousSpeed());
             _pathFinder.SetGoal(nodeLastSeen);
             SeenPlayer = false; //so still chase
         }
@@ -185,76 +182,7 @@ public class PlayerDetection : MonoBehaviour
             transform.parent.gameObject.layer = 11;
     }
 
-   
-
-    /*
-     * Calculates the node player last seen (checks which collider overlaps point of last seen
-     * if last seen is outside collider, calculate closest point
-     */
-    private Node CalculateNodeLastSeen(RaycastHit2D playerLastSeen, GraphOfMap graph)
-    {
-        Vector2 pointLastSeen = playerLastSeen.point;
-        Node alternateNode = null;
-        //Debug.Log("point last seen " + pointLastSeen);
-
-        alternateNode = CheckIfOverlapPoint(pointLastSeen, alternateNode, graph);        
-
-        if (alternateNode == null)
-        {
-            //Debug.Log("point last seen " + pointLastSeen.x + ", " + pointLastSeen.y);            
-
-            if (_patrolBehav.GoingLeft)
-            {                
-                for (int i = 0; i < _gameMap.transform.childCount; i++)
-                {
-                    CircleCollider2D nodeCollider = _gameMap.transform.GetChild(i).GetComponent<CircleCollider2D>();
-
-                    if (nodeCollider != null)
-                    {
-                        Vector2 nodePosition = nodeCollider.transform.position;                        
-
-                        if (!(nodePosition.x > pointLastSeen.x) && !(nodePosition.y > pointLastSeen.y))
-                            alternateNode = nodeCollider.gameObject.GetComponent<Node>();
-                    }                    
-                }
-            }
-            else if (!_patrolBehav.GoingLeft)
-            {                
-                
-                for (int i = _gameMap.transform.childCount - 1; i > -1; i--)
-                {
-                    CircleCollider2D nodeCollider = _gameMap.transform.GetChild(i).GetComponent<CircleCollider2D>();
-
-                    if (nodeCollider != null)
-                    {
-                        Vector2 nodePosition = nodeCollider.transform.position;                        
-                        //bug here
-                        if (!(nodePosition.x < pointLastSeen.x) && !(nodePosition.y > pointLastSeen.y))
-                            alternateNode = nodeCollider.gameObject.GetComponent<Node>();
-                    }
-                }
-            
-            }    
-        }
-        
-        return alternateNode;
-    }
-
-    private Node CheckIfOverlapPoint(Vector2 pointLastSeen, Node alternate, GraphOfMap graph)
-    {
-            for (int i = 0; i < _gameMap.transform.childCount; i++)
-            {
-                Collider2D nodeCollider = _gameMap.transform.GetChild(i).GetComponent<CircleCollider2D>();
-
-                if (nodeCollider != null)
-                {
-                    if (nodeCollider.OverlapPoint(pointLastSeen))
-                        return graph.nodeWith(nodeCollider.gameObject.GetComponent<Node>());
-                }
-            }
-
-        return alternate;
-    }
+      
 
 
     /**

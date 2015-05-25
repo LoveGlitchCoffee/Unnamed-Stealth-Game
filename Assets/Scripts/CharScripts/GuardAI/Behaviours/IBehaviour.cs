@@ -34,17 +34,19 @@ public abstract class IBehaviour : MonoBehaviour
     * If guard comes in contact with the item they have a 'weakness' towards
      * Raycast to check if they can see it
      * If they can see it, activate their corresponding behaviour
+     * NOTE: the node item is in may or may not be used
     */
     public void ReactToWeakness(Collider2D col)
     {
         if (col.tag == LootTag && col.GetComponent<Identifer>().ReturnIdentity() == WeaknessItem)
         {
             RaycastHit2D detectItem = _detection.CheckIfHit(col.gameObject);
+            Node nodeItemIn = _detection.CalculateNodeLastSeen(detectItem);            
 
             if (detectItem.collider != null && detectItem.collider.tag == LootTag)
             {
                 StopExistingCoroutines();
-                StartCoroutine(ActivateBehaviour(col.gameObject));    
+                StartCoroutine(ActivateBehaviour(col.gameObject, nodeItemIn));    
             }            
         }
     }
@@ -60,7 +62,7 @@ public abstract class IBehaviour : MonoBehaviour
         
         _patrolBehav.enabled = false;
         _playerDetector.enabled = false;
-        this.enabled = false; //should stop continuos detection
+        this.enabled = false; //should stop continuos detection, doesn't seem to be
         _visionCone.enabled = false;
     }
 
@@ -81,7 +83,7 @@ public abstract class IBehaviour : MonoBehaviour
         StartCoroutine(_patrolBehav.Patrolling());
     }
 
-    protected abstract IEnumerator ActivateBehaviour(GameObject item);
+    protected abstract IEnumerator ActivateBehaviour(GameObject item, Node nodeItemIn);
     public abstract string ReturnBehaviourDescription();
 
     

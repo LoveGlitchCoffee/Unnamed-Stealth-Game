@@ -18,6 +18,9 @@ public class DetectionCommon : MonoBehaviour {
     private const float EyeDistance = 0.4f;
     private int _sightDistance;
 
+    private GameObject _gameMap;
+    private GraphOfMap _graph;
+
     void Awake()
     {
         _detectLiving = 1 << LayerLiving;
@@ -31,6 +34,9 @@ public class DetectionCommon : MonoBehaviour {
         _sightDistance = 5;
 
         _patrolBehav = GetComponentInParent<Patrol>();
+
+        _gameMap = GameObject.FindGameObjectWithTag("Map");
+        _graph = _gameMap.GetComponent<NodeGenerator>().ReturnGeneratedGraph();        
     }
 
 
@@ -60,5 +66,75 @@ public class DetectionCommon : MonoBehaviour {
     public float GetEyeDistance()
     {
         return EyeDistance;
+    }
+
+    /*
+     * Calculates the node player last seen (checks which collider overlaps point of last seen
+     * if last seen is outside collider, calculate closest point
+     */
+    public Node CalculateNodeLastSeen(RaycastHit2D itemLastSeen)
+    {
+        Vector2 pointLastSeen = itemLastSeen.point;
+        Node alternateNode = null;
+
+        //Debug.Log("point last seen " + pointLastSeen);        
+
+        alternateNode = CheckIfOverlapPoint(pointLastSeen, alternateNode);        
+
+        if (alternateNode == null)
+        {            
+
+            if (_patrolBehav.GoingLeft)
+            {
+                for (int i = 0; i < _gameMap.transform.childCount; i++)
+                {
+                    CircleCollider2D nodeCollider = _gameMap.transform.GetChild(i).GetComponent<CircleCollider2D>();
+
+                    if (nodeCollider != null)
+                    {
+                        Vector2 nodePosition = nodeCollider.transform.position;
+
+                        if (!(nodePosition.x > pointLastSeen.x) && !(nodePosition.y == pointLastSeen.y))
+                            alternateNode = nodeCollider.gameObject.GetComponent<Node>();
+                    }
+                }
+            }
+            else if (!_patrolBehav.GoingLeft)
+            {
+
+                for (int i = _gameMap.transform.childCount - 1; i > -1; i--)
+                {
+                    CircleCollider2D nodeCollider = _gameMap.transform.GetChild(i).GetComponent<CircleCollider2D>();
+
+                    if (nodeCollider != null)
+                    {
+                        Vector2 nodePosition = nodeCollider.transform.position;
+                        //do more maths to determine which node to search
+                        if (!(nodePosition.x < pointLastSeen.x) && !(nodePosition.y == pointLastSeen.y))
+                            alternateNode = nodeCollider.gameObject.GetComponent<Node>();
+                    }
+                }
+
+            }
+        }        
+
+        //Debug.Log(alternateNode.GetX() +", "+ alternateNode.GetY());
+        return alternateNode;
+    }
+
+    private Node CheckIfOverlapPoint(Vector2 pointLastSeen, Node alternate)
+    {
+        for (int i = 0; i < _gameMap.transform.childCount; i++)
+        {
+            Collider2D nodeCollider = _gameMap.transform.GetChild(i).GetComponent<CircleCollider2D>();
+
+            if (nodeCollider != null)
+            {                
+                if (nodeCollider.OverlapPoint(pointLastSeen))                    
+                    return _graph.nodeWith(nodeCollider.gameObject.GetComponent<Node>());
+            }
+        }
+
+        return alternate;
     }
 }

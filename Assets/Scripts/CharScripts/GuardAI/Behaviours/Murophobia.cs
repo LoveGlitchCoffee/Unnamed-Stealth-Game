@@ -30,7 +30,7 @@ public class Murophobia : IBehaviour {
      * Guard takes short moment to 'realise' there is a rat in sight
      * then all movement and detection is disabled indefinitely until rat is removed from detection
      */
-    protected override IEnumerator ActivateBehaviour(GameObject item)
+    protected override IEnumerator ActivateBehaviour(GameObject item, Node nodeItemIn)
     {
         const float realiseTime = 3f;
         float timer = 0f;
