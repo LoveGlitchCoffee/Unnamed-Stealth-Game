@@ -37,7 +37,7 @@ public class Fading : MonoBehaviour
 
         Application.LoadLevel(currentLevel + 1);
         player.GetComponent<PlayerMapRelation>().GetNewMap();
-        player.transform.position = new Vector3(0, 0);
+        player.transform.position = new Vector3(0, 0);        
 
         cameraLead.GetComponent<CameraLeadController>().ContactWall = false;
         cameraLead.transform.position = new Vector3(3.5f, 0);

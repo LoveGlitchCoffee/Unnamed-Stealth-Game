@@ -84,8 +84,7 @@ public class Pathfinding : MonoBehaviour
                 yield return StartCoroutine(MoveToNextPosition(_routeToGoal[i]));                
             }
 
-            travelling = false;
-
+            travelling = false;            
         } while (travelling);
 
     }
@@ -99,8 +98,7 @@ public class Pathfinding : MonoBehaviour
         while (!(transform.position.x == nextPosition.GetX()))
         {
            // Debug.Log("next position's x is: " + nextPosition.GetX());
-
-            Debug.Log(transform.position.y);
+            
             if (nextPosition.GetY() > transform.position.y)
             {                                 
                 yield return StartCoroutine(JumpToPlatform(transform.position, nextPosition.gameObject.transform.position));                         

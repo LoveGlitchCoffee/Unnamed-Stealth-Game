@@ -43,6 +43,11 @@ public class SceneHandler : MonoBehaviour
         {
             _player.GetComponent<PlayerNPCRelation>().dead = false;
             _player.transform.position = new Vector3(0, 0);
+
+            _player.GetComponent<Animator>().SetBool("dead", false);
+            _player.GetComponent<Movement>().enabled = true;
+            _player.GetComponent<CircleCollider2D>().enabled = true;
+            gameObject.layer = 13;
         }
             
         

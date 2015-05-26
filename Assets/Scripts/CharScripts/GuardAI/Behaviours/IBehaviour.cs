@@ -17,7 +17,7 @@ public abstract class IBehaviour : MonoBehaviour
     private DetectionCommon _detection;
 
     protected const string LootTag = "Lootable";
-    public string WeaknessItem;
+    protected string WeaknessItem;
 
     protected void AssignComponents()
     {
@@ -61,8 +61,7 @@ public abstract class IBehaviour : MonoBehaviour
         _playerDetector.StopAllCoroutines();
         
         _patrolBehav.enabled = false;
-        _playerDetector.enabled = false;
-        this.enabled = false; //should stop continuos detection, doesn't seem to be
+        _playerDetector.enabled = false;        
         _visionCone.enabled = false;
     }
 
@@ -72,10 +71,9 @@ public abstract class IBehaviour : MonoBehaviour
     protected IEnumerator ResumeCoroutines()
     {
         _visionCone.enabled = true;
-        _playerDetector.enabled = true;
-        this.enabled = true;
+        _playerDetector.enabled = true;        
 
-        yield return StartCoroutine(_pathFinding.FinishPatrol());
+        yield return StartCoroutine(_pathFinding.FinishPatrol());        
         yield return StartCoroutine(_patrolBehav.Wait());
         _pathFinding.ResumePatrolStabaliser();
 

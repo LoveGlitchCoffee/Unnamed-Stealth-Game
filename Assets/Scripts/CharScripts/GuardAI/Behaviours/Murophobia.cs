@@ -1,16 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Murophobia : IBehaviour {
-    
+public class Murophobia : IBehaviour
+{
+
+    private GameObject _guard;
+
     void Awake()
     {
         base.AssignComponents();
         WeaknessItem = "rat";
+        _guard = GameObject.FindGameObjectWithTag("RatGuard").transform.GetChild(0).gameObject;
     }
 
     void OnTriggerEnter2D(Collider2D col)
-    {
+    {        
         base.ReactToWeakness(col);
     }
     
@@ -21,7 +25,10 @@ public class Murophobia : IBehaviour {
     {
         if (col.gameObject.tag == LootTag && col.GetComponent<Identifer>().ReturnIdentity() == WeaknessItem)
         {
-            StartCoroutine(ResumeCoroutines());            
+            Debug.Log("no longer see rat");            
+            _spriteHandler.StopAnimation("Scared");       
+            StartCoroutine(ResumeCoroutines());      
+            Debug.Log("resumed patrol");
         }
     }
     
@@ -40,8 +47,21 @@ public class Murophobia : IBehaviour {
             timer += 1f;
             yield return null;
         }
+        
 
-        _soundHandler.PlaySound("Confused", 0.5f);               
+        GetComponentInParent<Rigidbody2D>().AddForce(new Vector2(0, 200f));
+        _soundHandler.PlaySound("Scared", 0.5f);
+        _spriteHandler.PlayAnimation("Scared");
+
+        timer = 0f;
+        float jumpTIme = 2f;
+
+        while (timer < jumpTIme)
+        {
+            timer += 0.3f;
+            yield return null;
+        }
+        
     }
 
     public override string ReturnBehaviourDescription()

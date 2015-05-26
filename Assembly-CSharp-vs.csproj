@@ -46,6 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\DrawBoundaries.cs" />
      <Compile Include="Assets\Scripts\CharScripts\GuardAI\Behaviours\CoinLover.cs" />
      <Compile Include="Assets\Scripts\CharScripts\GuardAI\Behaviours\IBehaviour.cs" />
      <Compile Include="Assets\Scripts\CharScripts\GuardAI\Behaviours\Murophobia.cs" />

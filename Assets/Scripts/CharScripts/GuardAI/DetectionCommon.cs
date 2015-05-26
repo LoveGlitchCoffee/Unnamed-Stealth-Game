@@ -31,7 +31,7 @@ public class DetectionCommon : MonoBehaviour {
 
         _detectLayerMask = _detectLayerMask0 | _detectItem;
 
-        _sightDistance = 5;
+        _sightDistance = 4;
 
         _patrolBehav = GetComponentInParent<Patrol>();
 
