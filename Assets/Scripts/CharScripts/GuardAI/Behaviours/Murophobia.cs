@@ -4,18 +4,18 @@ using System.Collections;
 public class Murophobia : IBehaviour
 {
 
-    private RatCollecting _ratCollect;
+    private RatCollecting _ratCollect;    
 
     void Awake()
     {
         base.AssignComponents();
         WeaknessItem = "rat";
-        _ratCollect = GetComponent<RatCollecting>();
+        _ratCollect = GetComponent<RatCollecting>();     
     }
 
     void OnTriggerEnter2D(Collider2D col)
-    {        
-        base.ReactToWeakness(col);
+    {                
+        base.ReactToWeakness(col);        
     }
     
 
@@ -25,10 +25,11 @@ public class Murophobia : IBehaviour
      * Guard takes short moment to 'realise' there is a rat in sight
      * then all movement and detection is disabled indefinitely until rat is removed from detection
      */
-    protected override IEnumerator ActivateBehaviour(GameObject item, Node nodeItemIn)
+    protected override IEnumerator ActivateBehaviour(GameObject item, Node nodeItemIn, RaycastHit2D detectItem)
     {
+        GetComponent<PolygonCollider2D>().enabled = false;
         const float realiseTime = 3f;
-        float timer = 0f;
+        float timer = 0f;        
 
         while (timer < realiseTime)
         {
@@ -50,11 +51,12 @@ public class Murophobia : IBehaviour
             yield return null;
         }
 
-        yield return StartCoroutine(_ratCollect.RatGuardCollect(item,nodeItemIn));
+        yield return StartCoroutine(_ratCollect.RatGuardCollect(item,detectItem));
 
         _spriteHandler.StopAnimation("Scared");
-        StartCoroutine(ResumeCoroutines());      
-        
+        StartCoroutine(ResumeCoroutines());
+        enabled = true;
+
     }
 
     public override string ReturnBehaviourDescription()

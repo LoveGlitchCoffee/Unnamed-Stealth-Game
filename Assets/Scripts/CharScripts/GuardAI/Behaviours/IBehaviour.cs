@@ -41,12 +41,12 @@ public abstract class IBehaviour : MonoBehaviour
         if (col.tag == LootTag && col.GetComponent<Identifer>().ReturnIdentity() == WeaknessItem)
         {
             RaycastHit2D detectItem = _detection.CheckIfHit(col.gameObject);
-            Node nodeItemIn = _detection.CalculateNodeLastSeen(detectItem);            
+            Node nodeItemIn = _detection.CalculateNodeLastSeen(detectItem, null);            
 
             if (detectItem.collider != null && detectItem.collider.tag == LootTag)
             {
                 StopExistingCoroutines();
-                StartCoroutine(ActivateBehaviour(col.gameObject, nodeItemIn));    
+                StartCoroutine(ActivateBehaviour(col.gameObject, nodeItemIn, detectItem));    
             }            
         }
     }
@@ -81,7 +81,7 @@ public abstract class IBehaviour : MonoBehaviour
         StartCoroutine(_patrolBehav.Patrolling());
     }
 
-    protected abstract IEnumerator ActivateBehaviour(GameObject item, Node nodeItemIn);
+    protected abstract IEnumerator ActivateBehaviour(GameObject item, Node nodeItemIn, RaycastHit2D detectItem);
     public abstract string ReturnBehaviourDescription();
 
     

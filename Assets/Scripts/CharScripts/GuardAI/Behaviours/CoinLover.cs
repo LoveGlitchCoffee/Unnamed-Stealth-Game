@@ -20,7 +20,7 @@ public class CoinLover : IBehaviour
      * Guard navigates to coin's position
      * All movement and detection is disabled for a set period of time
      */
-    override protected IEnumerator ActivateBehaviour(GameObject item, Node nodeItemIn)
+    override protected IEnumerator ActivateBehaviour(GameObject item, Node nodeItemIn, RaycastHit2D detecItem)
     {
         const float maxTime = 7f;
         float timer = 0f;

@@ -13,7 +13,8 @@ public class InventoryLogic : MonoBehaviour
 
     void Start()
     {                
-        //AddItem(0);
+        AddItem(0);
+        AddItem(2);
     }
     
     public ToolDB ReturnToolDb()

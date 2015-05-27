@@ -6,6 +6,7 @@ public class RatCollecting : MonoBehaviour {
     private GameObject _ratGuard;
     private GameObject[] _guardsWithRat;
     public GameObject InteractablePrefab;
+    private DetectionCommon _detection;
 
     /*
      * In all of the guards in the scene with a rat, or had 1
@@ -14,32 +15,38 @@ public class RatCollecting : MonoBehaviour {
      */
     void Start()
     {
-        _guardsWithRat = GameObject.FindGameObjectsWithTag("RatGuard");    
-             
+        _guardsWithRat = GameObject.FindGameObjectsWithTag("RatGuard");
+        _detection = GetComponent<DetectionCommon>();   
     }
 
-    public IEnumerator RatGuardCollect(GameObject item, Node nodeItemIn)
+    public IEnumerator RatGuardCollect(GameObject item, RaycastHit2D detectRat)
     {
         _ratGuard = FindGuardWithoutRat();
+        Debug.Log(_ratGuard.name);
+        Node nodeItemIn = _detection.CalculateNodeLastSeen(detectRat, _ratGuard);
 
-        yield return _ratGuard.GetComponent<Pathfinding>().GoToItem(nodeItemIn);
-
+        Debug.Log("node is " + nodeItemIn.GetX() + ", " + nodeItemIn.GetY());
+        
+        yield return StartCoroutine(_ratGuard.GetComponent<Pathfinding>().GoToItem(nodeItemIn));
+        Debug.Log("found rat");
         Destroy(item);
-        ReEquipRat();
+        ReEquipRat();        
     }
 
     private void ReEquipRat()
     {
-        InteractablePrefab.layer = 9;
+        GameObject newRat = Instantiate(InteractablePrefab);
+        newRat.transform.parent = _ratGuard.transform.parent;
+        newRat.layer = 2;
         //may have to do sorting layer
-        InteractablePrefab.AddComponent<Animator>();
-        InteractablePrefab.GetComponent<Animator>().runtimeAnimatorController =
+        newRat.AddComponent<Animator>();
+        newRat.GetComponent<Animator>().runtimeAnimatorController =
             Resources.Load("RatAnimation") as RuntimeAnimatorController;
-        InteractablePrefab.AddComponent<FollowGuard>();
-        InteractablePrefab.AddComponent<PresetIdentity>();
-        InteractablePrefab.GetComponent<PresetIdentity>().indexInDb = 2;
+        newRat.AddComponent<FollowGuard>();
+        newRat.AddComponent<PresetIdentity>();
+        newRat.GetComponent<PresetIdentity>().indexInDb = 2;
 
-        InteractablePrefab.transform.parent = _ratGuard.transform.parent;
+        
 
     }
 
@@ -47,10 +54,15 @@ public class RatCollecting : MonoBehaviour {
     {
         for (int i = 0; i < _guardsWithRat.Length; i++)
         {
-            if (_guardsWithRat[i].transform.childCount < 2)
-                return _guardsWithRat[i];
+            if (_guardsWithRat[i].transform.childCount < 1)
+            {
+                Debug.Log(_guardsWithRat[i].transform.GetChild(0).name);
+                return _guardsWithRat[i].transform.GetChild(0).gameObject;
+            }
+                
         }
 
-        return _guardsWithRat[0]; // should never reach here, but as contingency
+        //testing, should be 2
+        return _guardsWithRat[0].transform.GetChild(1).gameObject; // should never reach here, but as contingency
     }
 }

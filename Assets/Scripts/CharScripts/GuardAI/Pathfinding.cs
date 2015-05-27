@@ -293,10 +293,11 @@ public class Pathfinding : MonoBehaviour
     public IEnumerator GoToItem(Node nodeItemIn)
     {
         StopAllCoroutines();
+        _patrolBehav.StopAllCoroutines();
         SetGoal(nodeItemIn);
         _routeToGoal = CalculateRouteToDestination();
         SetSpeed(ChaseSpeed);
-
+        Debug.Log("going to item");
         yield return StartCoroutine(NavigateToGoal(true));
     }
 
