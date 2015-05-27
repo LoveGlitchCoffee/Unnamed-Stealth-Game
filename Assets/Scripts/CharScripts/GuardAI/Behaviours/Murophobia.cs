@@ -4,13 +4,13 @@ using System.Collections;
 public class Murophobia : IBehaviour
 {
 
-    private GameObject _guard;
+    private RatCollecting _ratCollect;
 
     void Awake()
     {
         base.AssignComponents();
         WeaknessItem = "rat";
-        _guard = GameObject.FindGameObjectWithTag("RatGuard").transform.GetChild(0).gameObject;
+        _ratCollect = GetComponent<RatCollecting>();
     }
 
     void OnTriggerEnter2D(Collider2D col)
@@ -18,19 +18,7 @@ public class Murophobia : IBehaviour
         base.ReactToWeakness(col);
     }
     
-    /*
-     * Guard only resumes patrolling if the rat is out of sight
-     */
-    void OnTriggerExit2D(Collider2D col)
-    {
-        if (col.gameObject.tag == LootTag && col.GetComponent<Identifer>().ReturnIdentity() == WeaknessItem)
-        {
-            Debug.Log("no longer see rat");            
-            _spriteHandler.StopAnimation("Scared");       
-            StartCoroutine(ResumeCoroutines());      
-            Debug.Log("resumed patrol");
-        }
-    }
+
     
     /*
      * This is behavour toward rats
@@ -61,6 +49,11 @@ public class Murophobia : IBehaviour
             timer += 0.3f;
             yield return null;
         }
+
+        yield return StartCoroutine(_ratCollect.RatGuardCollect(item,nodeItemIn));
+
+        _spriteHandler.StopAnimation("Scared");
+        StartCoroutine(ResumeCoroutines());      
         
     }
 
