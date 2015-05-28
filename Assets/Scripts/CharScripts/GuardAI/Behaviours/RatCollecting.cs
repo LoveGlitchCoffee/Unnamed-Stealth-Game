@@ -30,12 +30,26 @@ public class RatCollecting : MonoBehaviour {
         yield return StartCoroutine(_ratGuard.GetComponent<Pathfinding>().GoToItem(nodeItemIn));
         Debug.Log("found rat");
         Destroy(item);
-        ReEquipRat();        
+        ReEquipRat();
+
+        StartCoroutine(ResumePatrolAfterCollect());
+    }
+
+    IEnumerator ResumePatrolAfterCollect()
+    {
+        yield return null;
+
+        yield return StartCoroutine(_ratGuard.GetComponent<Pathfinding>().FinishPatrol());
+        StartCoroutine(_ratGuard.GetComponent<Patrol>().Wait());
+        _ratGuard.GetComponent<Pathfinding>().ResumePatrolStabaliser();
+
+        _ratGuard.GetComponent<Patrol>().enabled = true;
+        StartCoroutine(_ratGuard.GetComponent<Patrol>().Patrolling());
     }
 
     private void ReEquipRat()
     {
-        GameObject newRat = Instantiate(InteractablePrefab);
+        GameObject newRat = (GameObject) Instantiate(InteractablePrefab, _ratGuard.transform.position, new Quaternion(0,0,0,0));
         newRat.transform.parent = _ratGuard.transform.parent;
         newRat.layer = 2;
         //may have to do sorting layer
@@ -43,26 +57,24 @@ public class RatCollecting : MonoBehaviour {
         newRat.GetComponent<Animator>().runtimeAnimatorController =
             Resources.Load("RatAnimation") as RuntimeAnimatorController;
         newRat.AddComponent<FollowGuard>();
+        newRat.GetComponent<SpriteRenderer>().sortingLayerName = "LivingTool";
         newRat.AddComponent<PresetIdentity>();
         newRat.GetComponent<PresetIdentity>().indexInDb = 2;
-
-        
-
+        newRat.GetComponent<CircleCollider2D>().enabled = true;
     }
 
     private GameObject FindGuardWithoutRat()
     {
         for (int i = 0; i < _guardsWithRat.Length; i++)
         {
-            if (_guardsWithRat[i].transform.childCount < 1)
+            if (_guardsWithRat[i].transform.childCount < 2)
             {
                 Debug.Log(_guardsWithRat[i].transform.GetChild(0).name);
                 return _guardsWithRat[i].transform.GetChild(0).gameObject;
             }
                 
         }
-
-        //testing, should be 2
-        return _guardsWithRat[0].transform.GetChild(1).gameObject; // should never reach here, but as contingency
+        
+        return _guardsWithRat[0].transform.GetChild(0).gameObject; // should never reach here, but as contingency
     }
 }

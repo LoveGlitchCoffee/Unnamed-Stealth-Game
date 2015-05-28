@@ -17,8 +17,8 @@ public class Pathfinding : MonoBehaviour
 
     private float _speed = 4f;
     private const float PatrolSpeed = 2f;
-    public const float ChaseSpeed = 4f;
-    public const float CautiousSpeed = 1f;
+    private const float ChaseSpeed = 4f;
+    private const float CautiousSpeed = 1f;
 
     private Node[] _routeToGoal;
     private Node _goal;
@@ -297,7 +297,7 @@ public class Pathfinding : MonoBehaviour
         SetGoal(nodeItemIn);
         _routeToGoal = CalculateRouteToDestination();
         SetSpeed(ChaseSpeed);
-        Debug.Log("going to item");
+        
         yield return StartCoroutine(NavigateToGoal(true));
     }
 

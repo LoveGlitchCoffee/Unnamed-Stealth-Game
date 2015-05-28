@@ -47,7 +47,8 @@ public class SceneHandler : MonoBehaviour
             _player.GetComponent<Animator>().SetBool("dead", false);
             _player.GetComponent<Movement>().enabled = true;
             _player.GetComponent<CircleCollider2D>().enabled = true;
-            gameObject.layer = 13;
+            _player.layer = 11;
+            GetComponent<CanvasGroup>().blocksRaycasts = false;
         }
             
         

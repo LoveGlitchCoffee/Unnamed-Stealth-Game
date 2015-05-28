@@ -8,7 +8,7 @@ public class FollowGuard : MonoBehaviour
 
 	void Awake ()
 	{
-	    _guard = transform.parent.GetChild(1).gameObject;
+	    _guard = transform.parent.Find("Guard").gameObject;
 	}
 	
 	

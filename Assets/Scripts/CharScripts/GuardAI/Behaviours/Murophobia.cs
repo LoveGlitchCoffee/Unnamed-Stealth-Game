@@ -28,14 +28,14 @@ public class Murophobia : IBehaviour
     protected override IEnumerator ActivateBehaviour(GameObject item, Node nodeItemIn, RaycastHit2D detectItem)
     {
         GetComponent<PolygonCollider2D>().enabled = false;
-        const float realiseTime = 3f;
+        //const float realiseTime = 3f;
         float timer = 0f;        
 
-        while (timer < realiseTime)
+        /*while (timer < realiseTime)
         {
             timer += 1f;
             yield return null;
-        }
+        }*/
         
 
         GetComponentInParent<Rigidbody2D>().AddForce(new Vector2(0, 200f));
