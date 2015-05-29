@@ -134,21 +134,7 @@ public class Pathfinding : MonoBehaviour
         float jumpForce = 3200f;
 
         while ((Vector2)transform.position != platformPosition)
-        {
-            /*Debug.Log("time passed " + (Time.time - timeStamp));
-
-            transform.position = Vector2.MoveTowards(transform.position, platformPosition, ((Time.time - timeStamp)/(timeToJump))/1.25f);
-            
-            Debug.Log("old y position " + transform.position.y);
-            Debug.Log("add on " + (bendPosition.y * Mathf.Sin(Mathf.Clamp01((Time.time - timeStamp)/timeToJump)*Mathf.PI)));
-            
-            float newY = transform.position.y + bendPosition.y * Mathf.Sin(Mathf.Clamp01((Time.time - timeStamp)/timeToJump)*Mathf.PI);            
-            float newX = transform.position.x + bendPosition.x * Mathf.Sin(Mathf.Clamp01((Time.time - timeStamp) / timeToJump) * Mathf.PI);
-            
-            Debug.Log("new y position " + newY);
-
-            if (transform.position.y != platformPosition.y)
-                transform.position = new Vector2(newX, newY * 0.75f);*/
+        {            
 
             GetComponent<Rigidbody2D>().AddForce(new Vector2(300f, jumpForce));
             if (jumpForce > 0)
@@ -289,7 +275,10 @@ public class Pathfinding : MonoBehaviour
         return newRoute;
     }
 
-
+    /*
+     * Stops all behaviours and set goal for guard's search to be
+     * node item is in (passed parameter)
+     */
     public IEnumerator GoToItem(Node nodeItemIn)
     {
         StopAllCoroutines();

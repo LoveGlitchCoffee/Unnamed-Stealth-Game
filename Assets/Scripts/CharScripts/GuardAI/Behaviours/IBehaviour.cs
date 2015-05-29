@@ -58,7 +58,9 @@ public abstract class IBehaviour : MonoBehaviour
     public void StopExistingCoroutines()
     {
         _pathFinding.StopAllCoroutines();
+        _patrolBehav.StopAllCoroutines();
         _playerDetector.StopAllCoroutines();
+        //enabled = false;
         
         _patrolBehav.enabled = false;
         _playerDetector.enabled = false;        
@@ -71,7 +73,8 @@ public abstract class IBehaviour : MonoBehaviour
     protected IEnumerator ResumeCoroutines()
     {
         _visionCone.enabled = true;
-        _playerDetector.enabled = true;        
+        _playerDetector.enabled = true;
+        //enabled = true;
 
         yield return StartCoroutine(_pathFinding.FinishPatrol());        
         yield return StartCoroutine(_patrolBehav.Wait());

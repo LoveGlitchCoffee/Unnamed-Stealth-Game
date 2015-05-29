@@ -46,7 +46,6 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\DrawBoundaries.cs" />
      <Compile Include="Assets\Scripts\CharScripts\GuardAI\Behaviours\CoinLover.cs" />
      <Compile Include="Assets\Scripts\CharScripts\GuardAI\Behaviours\IBehaviour.cs" />
      <Compile Include="Assets\Scripts\CharScripts\GuardAI\Behaviours\Murophobia.cs" />
@@ -78,6 +77,7 @@
      <Compile Include="Assets\Scripts\MapScripts\Node.cs" />
      <Compile Include="Assets\Scripts\MapScripts\NodeGenerator.cs" />
      <Compile Include="Assets\Scripts\SceneScripts\DescriptionWriter.cs" />
+     <Compile Include="Assets\Scripts\SceneScripts\DrawBoundaries.cs" />
      <Compile Include="Assets\Scripts\SceneScripts\MenuDescription.cs" />
      <Compile Include="Assets\Scripts\SceneScripts\SceneHandler.cs" />
      <Compile Include="Assets\Scripts\ToolsScripts\DragHandler.cs" />

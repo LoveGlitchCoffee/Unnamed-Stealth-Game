@@ -19,26 +19,31 @@ public class RatCollecting : MonoBehaviour {
         _detection = GetComponent<DetectionCommon>();   
     }
 
+    /*
+     * Reset the node the rat is in, so it is from the owning guard's prespective, for search
+     * When search complete, destroy the item and re-equip it back on to the owning guard
+     */
     public IEnumerator RatGuardCollect(GameObject item, RaycastHit2D detectRat)
     {
-        _ratGuard = FindGuardWithoutRat();
-        Debug.Log(_ratGuard.name);
+        
+        _ratGuard = FindGuardWithoutRat();        
+        
         Node nodeItemIn = _detection.CalculateNodeLastSeen(detectRat, _ratGuard);
 
-        Debug.Log("node is " + nodeItemIn.GetX() + ", " + nodeItemIn.GetY());
-        
+        //Debug.Log("node is " + nodeItemIn.GetX() + ", " + nodeItemIn.GetY());
+        _ratGuard.GetComponent<Spritehandler>().StopAnimation("idle");
         yield return StartCoroutine(_ratGuard.GetComponent<Pathfinding>().GoToItem(nodeItemIn));
-        Debug.Log("found rat");
+        
         Destroy(item);
         ReEquipRat();
-
         StartCoroutine(ResumePatrolAfterCollect());
     }
 
+    /*
+     * Duplicate code with post-pursuit, awaiting design decision
+     */
     IEnumerator ResumePatrolAfterCollect()
-    {
-        yield return null;
-
+    {        
         yield return StartCoroutine(_ratGuard.GetComponent<Pathfinding>().FinishPatrol());
         StartCoroutine(_ratGuard.GetComponent<Patrol>().Wait());
         _ratGuard.GetComponent<Pathfinding>().ResumePatrolStabaliser();
@@ -47,12 +52,15 @@ public class RatCollecting : MonoBehaviour {
         StartCoroutine(_ratGuard.GetComponent<Patrol>().Patrolling());
     }
 
+    /*
+     * Instantiates a tool with rat identity
+     * reassign this to the ratguard group with apprpriate settings
+     */
     private void ReEquipRat()
     {
         GameObject newRat = (GameObject) Instantiate(InteractablePrefab, _ratGuard.transform.position, new Quaternion(0,0,0,0));
         newRat.transform.parent = _ratGuard.transform.parent;
-        newRat.layer = 2;
-        //may have to do sorting layer
+        newRat.layer = 2;        
         newRat.AddComponent<Animator>();
         newRat.GetComponent<Animator>().runtimeAnimatorController =
             Resources.Load("RatAnimation") as RuntimeAnimatorController;
@@ -63,6 +71,11 @@ public class RatCollecting : MonoBehaviour {
         newRat.GetComponent<CircleCollider2D>().enabled = true;
     }
 
+    /*
+     * Finds the guard without a rat (who initially had one, so belongs to _guardsWithRat group)
+     * index 0 as they should be the only child of the group
+     * as contingency, could just the first guard without rat in group
+     */
     private GameObject FindGuardWithoutRat()
     {
         for (int i = 0; i < _guardsWithRat.Length; i++)
@@ -75,6 +88,6 @@ public class RatCollecting : MonoBehaviour {
                 
         }
         
-        return _guardsWithRat[0].transform.GetChild(0).gameObject; // should never reach here, but as contingency
+        return _guardsWithRat[0].transform.GetChild(0).gameObject; 
     }
 }

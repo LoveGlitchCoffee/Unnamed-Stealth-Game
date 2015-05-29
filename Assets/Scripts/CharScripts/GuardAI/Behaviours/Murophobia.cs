@@ -17,47 +17,53 @@ public class Murophobia : IBehaviour
     {                
         base.ReactToWeakness(col);        
     }
-    
-
-    
+        
     /*
-     * This is behavour toward rats
-     * Guard takes short moment to 'realise' there is a rat in sight
-     * then all movement and detection is disabled indefinitely until rat is removed from detection
+     * This is behavour toward rats     
+     * all movement and detection is disabled indefinitely until rat is collected by owning guard
      */
     protected override IEnumerator ActivateBehaviour(GameObject item, Node nodeItemIn, RaycastHit2D detectItem)
     {
         GetComponent<PolygonCollider2D>().enabled = false;
-        //const float realiseTime = 3f;
-        float timer = 0f;        
 
-        /*while (timer < realiseTime)
-        {
-            timer += 1f;
-            yield return null;
-        }*/
-        
 
-        GetComponentInParent<Rigidbody2D>().AddForce(new Vector2(0, 200f));
         _soundHandler.PlaySound("Scared", 0.5f);
         _spriteHandler.PlayAnimation("Scared");
 
-        timer = 0f;
-        float jumpTIme = 2f;
+        StartCoroutine(ScaredJumpPhysics());
+        
+        yield return StartCoroutine(_ratCollect.RatGuardCollect(item,detectItem));
+        
+        _spriteHandler.StopAnimation("Scared");
+        StartCoroutine(ResumeCoroutines());
+        GetComponent<PolygonCollider2D>().enabled = true;
 
-        while (timer < jumpTIme)
+    }
+
+    IEnumerator ScaredJumpPhysics()
+    {
+        float timer = 0f;
+        float jumpTime = 3f;
+        float fallSpeed = 0.5f;
+        Vector3 initialPosition = transform.parent.position;
+        Vector3 goalHeight = new Vector3(initialPosition.x,initialPosition.y + 2f);
+
+        while (timer < jumpTime)
         {
+            transform.parent.position = Vector3.Lerp(transform.parent.position, goalHeight, (timer/jumpTime));
             timer += 0.3f;
             yield return null;
         }
 
-        yield return StartCoroutine(_ratCollect.RatGuardCollect(item,detectItem));
+        while (transform.parent.position.y > initialPosition.y)
+        {
+            transform.parent.position = Vector3.MoveTowards(transform.parent.position, initialPosition, fallSpeed);
+            yield return null;
+        }
 
-        _spriteHandler.StopAnimation("Scared");
-        StartCoroutine(ResumeCoroutines());
-        enabled = true;
-
+        transform.parent.position = initialPosition;
     }
+
 
     public override string ReturnBehaviourDescription()
     {

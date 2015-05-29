@@ -88,7 +88,7 @@ public class DetectionCommon : MonoBehaviour {
         }
 
 
-        Debug.Log("point last seen " + pointLastSeen);        
+        //Debug.Log("point last seen " + pointLastSeen);        
 
         alternateNode = CheckIfOverlapPoint(pointLastSeen, alternateNode);        
 
@@ -108,13 +108,13 @@ public class DetectionCommon : MonoBehaviour {
                         if (!(nodePosition.x > pointLastSeen.x))
                             if (nodeLower)
                             {
-                                Debug.Log("node is lower");
+                                //Debug.Log("node is lower");
                                 if (nodePosition.y <= pointLastSeen.y)
                                     alternateNode = nodeCollider.gameObject.GetComponent<Node>();    
                             }
                             else
                             {
-                                Debug.Log("node is higher");
+                                //Debug.Log("node is higher");
                                 if (nodePosition.y >= pointLastSeen.y)
                                     alternateNode = nodeCollider.gameObject.GetComponent<Node>(); 
                             }
@@ -136,13 +136,13 @@ public class DetectionCommon : MonoBehaviour {
                         if (!(nodePosition.x < pointLastSeen.x))
                             if (nodeLower)
                             {
-                                Debug.Log("node is lower");
+                                //Debug.Log("node is lower");
                                 if (nodePosition.y <= pointLastSeen.y)
                                     alternateNode = nodeCollider.gameObject.GetComponent<Node>();
                             }
                             else
                             {
-                                Debug.Log("node is higher");
+                                //Debug.Log("node is higher");
                                 if (nodePosition.y >= pointLastSeen.y)
                                     alternateNode = nodeCollider.gameObject.GetComponent<Node>();
                             }
@@ -152,7 +152,7 @@ public class DetectionCommon : MonoBehaviour {
             }
         }        
 
-        Debug.Log(alternateNode.GetX() +", "+ alternateNode.GetY());
+        //Debug.Log(alternateNode.GetX() +", "+ alternateNode.GetY());
         return alternateNode;
     }
 
