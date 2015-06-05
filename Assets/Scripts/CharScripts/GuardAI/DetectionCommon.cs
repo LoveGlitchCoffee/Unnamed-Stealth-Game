@@ -78,23 +78,19 @@ public class DetectionCommon : MonoBehaviour {
     {
         Vector2 pointLastSeen = itemLastSeen.point;
         Node alternateNode = null;
-        bool nodeLower;
+        bool guardIsLower;
 
         if (guard == null)
-            nodeLower = _patrolBehav.ReturnNodeGuardAt().GetY() > pointLastSeen.y;
+            guardIsLower = _patrolBehav.ReturnNodeGuardAt().GetY() > pointLastSeen.y;
         else
         {
-            nodeLower = guard.GetComponent<Patrol>().ReturnNodeGuardAt().GetY() > pointLastSeen.y;
+            guardIsLower = guard.GetComponent<Patrol>().ReturnNodeGuardAt().GetY() > pointLastSeen.y;
         }
-
-
-        //Debug.Log("point last seen " + pointLastSeen);        
-
+        
         alternateNode = CheckIfOverlapPoint(pointLastSeen, alternateNode);        
 
         if (alternateNode == null)
-        {            
-
+        {                        
             if (_patrolBehav.GoingLeft)
             {
                 for (int i = 0; i < _gameMap.transform.childCount; i++)
@@ -105,20 +101,22 @@ public class DetectionCommon : MonoBehaviour {
                     {
                         Vector2 nodePosition = nodeCollider.transform.position;
 
-                        if (!(nodePosition.x > pointLastSeen.x))
-                            if (nodeLower)
-                            {
-                                //Debug.Log("node is lower");
-                                if (nodePosition.y <= pointLastSeen.y)
-                                    alternateNode = nodeCollider.gameObject.GetComponent<Node>();    
+                        if (nodePosition.x < pointLastSeen.x)
+                        {
+                            if (guardIsLower)
+                            {                                
+                                if (nodePosition.y >= pointLastSeen.y)
+                                    alternateNode = nodeCollider.gameObject.GetComponent<Node>();
                             }
                             else
-                            {
-                                //Debug.Log("node is higher");
-                                if (nodePosition.y >= pointLastSeen.y)
-                                    alternateNode = nodeCollider.gameObject.GetComponent<Node>(); 
+                            {     
+                                if (nodePosition.y <= pointLastSeen.y)
+                                {                                    
+                                    alternateNode = nodeCollider.gameObject.GetComponent<Node>();
+                                }
+                                    
                             }
-                            
+                        }                                                        
                     }
                 }
             }
@@ -132,27 +130,27 @@ public class DetectionCommon : MonoBehaviour {
                     if (nodeCollider != null)
                     {
                         Vector2 nodePosition = nodeCollider.transform.position;
-                        
-                        if (!(nodePosition.x < pointLastSeen.x))
-                            if (nodeLower)
-                            {
-                                //Debug.Log("node is lower");
-                                if (nodePosition.y <= pointLastSeen.y)
-                                    alternateNode = nodeCollider.gameObject.GetComponent<Node>();
-                            }
-                            else
-                            {
-                                //Debug.Log("node is higher");
+
+                        if (nodePosition.x > pointLastSeen.x)
+                        {
+                            if (guardIsLower)
+                            {                                
                                 if (nodePosition.y >= pointLastSeen.y)
                                     alternateNode = nodeCollider.gameObject.GetComponent<Node>();
                             }
+                            else
+                            {                             
+                                if (nodePosition.y <= pointLastSeen.y)
+                                    alternateNode = nodeCollider.gameObject.GetComponent<Node>();
+                            }
+                        }
                     }
                 }
 
             }
         }        
 
-        //Debug.Log(alternateNode.GetX() +", "+ alternateNode.GetY());
+        Debug.Log(alternateNode.GetX() +", "+ alternateNode.GetY());
         return alternateNode;
     }
 

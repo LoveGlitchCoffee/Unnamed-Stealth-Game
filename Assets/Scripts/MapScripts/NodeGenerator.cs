@@ -56,12 +56,12 @@ public class NodeGenerator : MonoBehaviour
     private void GenerateNodes()
     {
 
-        for (int j = StartY; j < MapHeight; j++)        
+        for (int j = StartY; j < MapLength; j++)        
         {
-            for (int i = StartX; i < MapLength; i++)
+            for (int i = StartX; i < MapHeight; i++)
             {
                 GameObject newPos =
-                    (GameObject) Instantiate(Node, new Vector2(i*(NodeDistance), j*(NodeDistance)), Node.transform.rotation);
+                    (GameObject) Instantiate(Node, new Vector2(j*(NodeDistance), i*(NodeDistance)), Node.transform.rotation);
                 newPos.transform.parent = gameObject.transform;
                 newPos.layer = 12;
 

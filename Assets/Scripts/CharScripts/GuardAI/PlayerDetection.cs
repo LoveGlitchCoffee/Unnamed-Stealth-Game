@@ -162,6 +162,7 @@ public class PlayerDetection : MonoBehaviour
     private void SetNavigationState(RaycastHit2D playerLastSeen, RaycastHit2D detectPlayer)
     {
         Node nodeLastSeen = _detection.CalculateNodeLastSeen(playerLastSeen, null);
+        Debug.Log("node is " + nodeLastSeen);
 
         if (detectPlayer.collider != null && detectPlayer.collider.tag == PlayerTag)
         {
