@@ -12,8 +12,7 @@ public class Pathfinding : MonoBehaviour
     private Patrol _patrolBehav;
     private Spritehandler _spriteHand;
     private VisionConeRender _coneRender;
-
-    private CircleCollider2D _catcher;
+    
 
     private float _speed = 4f;
     private const float PatrolSpeed = 2f;
@@ -30,8 +29,7 @@ public class Pathfinding : MonoBehaviour
         _postSearch = GetComponentInChildren<FindPlayer>();
         _patrolBehav = GetComponent<Patrol>();
         _spriteHand = GetComponent<Spritehandler>();
-        _coneRender = transform.GetChild(0).GetComponent<VisionConeRender>();
-        _catcher = GetComponent<CircleCollider2D>();
+        _coneRender = transform.GetChild(0).GetComponent<VisionConeRender>();        
     }
 
     /*
@@ -182,7 +180,7 @@ public class Pathfinding : MonoBehaviour
         StopAllCoroutines();
         _routeToGoal = CalculateRouteToDestination();       
         _travelling = true;
-        _catcher.enabled = true;
+        _player.GetComponent<PlayerNPCRelation>().CanDie = true;
         
         yield return StartCoroutine(NavigateToGoal(_travelling));
                 
@@ -205,7 +203,7 @@ public class Pathfinding : MonoBehaviour
 
         if (_postSearch.ResumePatrol)
         {
-            _catcher.enabled = false;
+            _player.GetComponent<PlayerNPCRelation>().CanDie = false;
             _spriteHand.StopAnimation("idle");            
             yield return StartCoroutine(FinishPatrol());
             yield return StartCoroutine(_patrolBehav.Wait());

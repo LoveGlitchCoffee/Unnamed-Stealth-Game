@@ -41,7 +41,7 @@ public abstract class IBehaviour : MonoBehaviour
         if (col.tag == LootTag && col.GetComponent<Identifer>().ReturnIdentity() == WeaknessItem)
         {
             RaycastHit2D detectItem = _detection.CheckIfHit(col.gameObject);
-            Node nodeItemIn = _detection.CalculateNodeLastSeen(detectItem, null);            
+            Node nodeItemIn = _detection.CalculateNodeLastSeen(detectItem);            
 
             if (detectItem.collider != null && detectItem.collider.tag == LootTag)
             {

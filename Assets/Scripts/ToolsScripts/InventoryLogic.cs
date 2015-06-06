@@ -12,9 +12,13 @@ public class InventoryLogic : MonoBehaviour
 	}
 
     void Start()
-    {                
-        //AddItem(0);
-        //AddItem(2);
+    {
+        for (int i = 0; i < PlayerTools.Length; i++)
+        {
+            PlayerTools[i] = new Tool();
+        }
+        AddItem(0);
+        AddItem(0);        
     }
     
     public ToolDB ReturnToolDb()
@@ -50,10 +54,10 @@ public class InventoryLogic : MonoBehaviour
         
 
         while (!placed && count < 4)
-        {            
+        {                        
             if (PlayerTools[count].Name == null)
             {                
-                PlayerTools[count] = item;
+                PlayerTools[count] = item;                
                 transform.GetChild(count).GetComponent<ItemUI>().UpdateSlot();
                 placed = true;
             }

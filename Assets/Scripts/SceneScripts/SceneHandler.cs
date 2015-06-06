@@ -11,16 +11,18 @@ public class SceneHandler : MonoBehaviour
     public List<Object> RetainedObjects;
     private GameObject _player;
     private GameObject _cameraLead;
+    private InventoryLogic _inventory;
+    private Tool[] _savedTools;
 
     void Awake()
     {
         _sceneFader = GetComponent<Fading>();    
         _restart = transform.GetChild(0).gameObject;
         _writer = GameObject.FindGameObjectWithTag("DescriptionBox").GetComponentInParent<DescriptionWriter>();
+        _inventory = GameObject.FindGameObjectWithTag("Inventory").GetComponent<InventoryLogic>();
+         _player = (GameObject)RetainedObjects[RetainedObjects.Count - 1];        //always place player last
+         _cameraLead = (GameObject)RetainedObjects[RetainedObjects.Count - 2]; // always place lead next to last    
         
-
-        _player = (GameObject) RetainedObjects[RetainedObjects.Count - 1];        //always place player last
-        _cameraLead =  (GameObject) RetainedObjects[RetainedObjects.Count - 2]; // always place lead next to last
     }
 
     /*
@@ -33,6 +35,7 @@ public class SceneHandler : MonoBehaviour
 
         if (currentLevel == 1)
         {
+            Debug.Log("at level 1");
             for (int i = 0; i < RetainedObjects.Count; i++)
             {
                  Destroy(RetainedObjects[i]);
@@ -43,7 +46,7 @@ public class SceneHandler : MonoBehaviour
         {
             _player.GetComponent<PlayerNPCRelation>().dead = false;
             _player.transform.position = new Vector3(0, 0);
-
+            ReloadInventory();
             _player.GetComponent<Animator>().SetBool("dead", false);
             _player.GetComponent<Movement>().enabled = true;
             _player.GetComponent<CircleCollider2D>().enabled = true;
@@ -54,6 +57,25 @@ public class SceneHandler : MonoBehaviour
         
 
         _sceneFader.FadeIn();
+    }
+
+    private void ReloadInventory()
+    {
+
+        for (int i = 0; i < 4; i++)
+        {
+            _inventory.RemoveItem(i);
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (_savedTools[i].ItemId != null)
+            {                
+                Debug.Log("adding " + _savedTools[i].Name);
+                int savedItemId = _savedTools[i].ItemId;
+                _inventory.AddItem(savedItemId);
+            }
+        }
     }
 
 
@@ -72,15 +94,20 @@ public class SceneHandler : MonoBehaviour
         {
             DontDestroyOnLoad(RetainedObjects[i]);
         }
-
-        int currentLevel = Application.loadedLevel;
         
+        int currentLevel = Application.loadedLevel;        
         _sceneFader.FadeOut();
+        
 
-        StartCoroutine(_sceneFader.FadeToNextLevel(3f, currentLevel, _player, _cameraLead));    
-    
-
+        StartCoroutine(_sceneFader.FadeToNextLevel(3f, currentLevel, _player, _cameraLead));        
     }
-   
 
+    public void SaveInventory()
+    {
+        _savedTools = _inventory.PlayerTools;
+        /*for (int i = 0; i < _savedTools.Length; i++)
+        {            
+        }*/
+        
+    }
 }

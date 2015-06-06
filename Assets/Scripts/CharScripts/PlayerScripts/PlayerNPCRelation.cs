@@ -9,7 +9,7 @@ public class PlayerNPCRelation : MonoBehaviour
     private Movement _playerMovement;
     private SceneHandler _sceneHandler;
     private Rigidbody2D _rbody;
-    private bool allowed = false;
+    public bool CanDie = false;
 
     [HideInInspector] public bool dead { get; set; }
 
@@ -27,7 +27,7 @@ public class PlayerNPCRelation : MonoBehaviour
      */
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.tag == GuardTag && allowed)
+        if (col.gameObject.tag == GuardTag && CanDie)
         {                                   
             _anim.SetBool("dead",true);
             _playerMovement.enabled = false;

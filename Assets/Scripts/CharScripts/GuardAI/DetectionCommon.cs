@@ -74,83 +74,77 @@ public class DetectionCommon : MonoBehaviour {
      * Calculates the node player last seen (checks which collider overlaps point of last seen
      * if last seen is outside collider, calculate closest point
      */
-    public Node CalculateNodeLastSeen(RaycastHit2D itemLastSeen, GameObject guard)
+    public Node CalculateNodeLastSeen(RaycastHit2D itemLastSeen)
     {
         Vector2 pointLastSeen = itemLastSeen.point;
-        Node alternateNode = null;
-        bool guardIsLower;
-
-        if (guard == null)
-            guardIsLower = _patrolBehav.ReturnNodeGuardAt().GetY() > pointLastSeen.y;
-        else
-        {
-            guardIsLower = guard.GetComponent<Patrol>().ReturnNodeGuardAt().GetY() > pointLastSeen.y;
-        }
+        Node alternateNode = null;               
         
-        alternateNode = CheckIfOverlapPoint(pointLastSeen, alternateNode);        
+        alternateNode = CheckIfOverlapPoint(pointLastSeen, alternateNode);
 
-        if (alternateNode == null)
-        {                        
-            if (_patrolBehav.GoingLeft)
+        if (alternateNode != null)
+            return alternateNode;
+
+        //float DetermineLevelLimit(pointLastSeen);
+
+        if (_patrolBehav.GoingLeft)
+        {
+            for (int i = 0; i < _gameMap.transform.childCount; i++)
             {
-                for (int i = 0; i < _gameMap.transform.childCount; i++)
+                CircleCollider2D nodeCollider = _gameMap.transform.GetChild(i).GetComponent<CircleCollider2D>();
+
+                alternateNode = FindAlternateNode(nodeCollider, pointLastSeen, alternateNode, _patrolBehav.GoingLeft);                   
+                    
+            }
+        }
+        else if (!_patrolBehav.GoingLeft)
+        {
+            for (int i = _gameMap.transform.childCount - 1; i > -1; i--)
+            {
+                CircleCollider2D nodeCollider = _gameMap.transform.GetChild(i).GetComponent<CircleCollider2D>();
+
+                alternateNode = FindAlternateNode(nodeCollider, pointLastSeen, alternateNode, _patrolBehav.GoingLeft);
+            }
+        }
+
+        
+
+        //Debug.Log(alternateNode.GetX() +", "+ alternateNode.GetY());
+        return alternateNode;
+    }
+
+    private void DetermineLevelLimit(Vector2 pointLastSeen)
+    {
+                
+    }
+
+    private static Node FindAlternateNode(CircleCollider2D nodeCollider, Vector2 pointLastSeen,
+        Node alternateNode, bool goingLeft)
+    {
+        const double threshold = 1f;
+
+        if (nodeCollider != null)
+        {
+            Vector2 nodePosition = nodeCollider.transform.position;
+
+            if (goingLeft)
+            {
+                
+                if ((nodePosition.x < pointLastSeen.x) && (nodePosition.y <= (pointLastSeen.y + threshold)))
                 {
-                    CircleCollider2D nodeCollider = _gameMap.transform.GetChild(i).GetComponent<CircleCollider2D>();
-
-                    if (nodeCollider != null)
-                    {
-                        Vector2 nodePosition = nodeCollider.transform.position;
-
-                        if (nodePosition.x < pointLastSeen.x)
-                        {
-                            if (guardIsLower)
-                            {                                
-                                if (nodePosition.y >= pointLastSeen.y)
-                                    alternateNode = nodeCollider.gameObject.GetComponent<Node>();
-                            }
-                            else
-                            {     
-                                if (nodePosition.y <= pointLastSeen.y)
-                                {                                    
-                                    alternateNode = nodeCollider.gameObject.GetComponent<Node>();
-                                }
-                                    
-                            }
-                        }                                                        
-                    }
+                    alternateNode = nodeCollider.transform.gameObject.GetComponent<Node>();
                 }
             }
-            else if (!_patrolBehav.GoingLeft)
+
+            else
             {
-
-                for (int i = _gameMap.transform.childCount - 1; i > -1; i--)
+                if ((nodePosition.x > pointLastSeen.x) && (nodePosition.y <= (pointLastSeen.y + threshold)))
                 {
-                    CircleCollider2D nodeCollider = _gameMap.transform.GetChild(i).GetComponent<CircleCollider2D>();
-
-                    if (nodeCollider != null)
-                    {
-                        Vector2 nodePosition = nodeCollider.transform.position;
-
-                        if (nodePosition.x > pointLastSeen.x)
-                        {
-                            if (guardIsLower)
-                            {                                
-                                if (nodePosition.y >= pointLastSeen.y)
-                                    alternateNode = nodeCollider.gameObject.GetComponent<Node>();
-                            }
-                            else
-                            {                             
-                                if (nodePosition.y <= pointLastSeen.y)
-                                    alternateNode = nodeCollider.gameObject.GetComponent<Node>();
-                            }
-                        }
-                    }
+                    alternateNode = nodeCollider.transform.gameObject.GetComponent<Node>();
                 }
-
             }
-        }        
+        }
 
-        Debug.Log(alternateNode.GetX() +", "+ alternateNode.GetY());
+        //Debug.Log(alternateNode.GetX() + ", " + alternateNode.GetY());
         return alternateNode;
     }
 

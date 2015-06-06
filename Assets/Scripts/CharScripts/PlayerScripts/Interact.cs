@@ -21,7 +21,7 @@ public class Interact : MonoBehaviour
     void Update()
     {
         if (_canInteract && Input.GetKeyDown(engage))
-        {            
+        {                        
             _interactObj.PerformPurpose(_inventory);
         }
     }
@@ -45,10 +45,14 @@ public class Interact : MonoBehaviour
     void OnTriggerExit2D(Collider2D col)
     {
         if (col.tag == interactTag)
-        {            
+        {                        
             _canInteract = false;
             _interactObj = null;
         }
     }
 
+    public void SetInteract(bool canInteract)
+    {        
+        _canInteract = canInteract;
+    }
 }

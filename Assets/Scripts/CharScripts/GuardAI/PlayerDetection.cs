@@ -161,14 +161,13 @@ public class PlayerDetection : MonoBehaviour
          */
     private void SetNavigationState(RaycastHit2D playerLastSeen, RaycastHit2D detectPlayer)
     {
-        Node nodeLastSeen = _detection.CalculateNodeLastSeen(playerLastSeen, null);
-        Debug.Log("node is " + nodeLastSeen);
+        Node nodeLastSeen = _detection.CalculateNodeLastSeen(playerLastSeen);        
 
         if (detectPlayer.collider != null && detectPlayer.collider.tag == PlayerTag)
         {
             //Debug.Log("pursue");
             _coneRender.ActivateState(_alarmed);
-            _soundHandler.PlaySound("Alarmed", 0.75f);
+            _soundHandler.PlaySound("Alarmed", 0.75f);            
             _pathFinder.SetSpeed(_pathFinder.ReturnChaseSpeed());
             _pathFinder.SetGoal(nodeLastSeen); // last seen when detect, not after baffled
         }
@@ -179,6 +178,7 @@ public class PlayerDetection : MonoBehaviour
             SeenPlayer = false; //so still chase
         }
 
+        Debug.Log(nodeLastSeen);
         if (nodeLastSeen.GetY() > _patrolBehav.ReturnNodeGuardAt().GetY())
             transform.parent.gameObject.layer = 11;
     }
