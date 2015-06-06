@@ -177,8 +177,7 @@ public class PlayerDetection : MonoBehaviour
             _pathFinder.SetGoal(nodeLastSeen);
             SeenPlayer = false; //so still chase
         }
-
-        Debug.Log(nodeLastSeen);
+        
         if (nodeLastSeen.GetY() > _patrolBehav.ReturnNodeGuardAt().GetY())
             transform.parent.gameObject.layer = 11;
     }

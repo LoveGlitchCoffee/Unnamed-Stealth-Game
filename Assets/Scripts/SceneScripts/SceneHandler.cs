@@ -34,8 +34,7 @@ public class SceneHandler : MonoBehaviour
         Application.LoadLevel(currentLevel);
 
         if (currentLevel == 1)
-        {
-            Debug.Log("at level 1");
+        {            
             for (int i = 0; i < RetainedObjects.Count; i++)
             {
                  Destroy(RetainedObjects[i]);
@@ -67,11 +66,11 @@ public class SceneHandler : MonoBehaviour
             _inventory.RemoveItem(i);
         }
 
-        for (int i = 0; i < 4; i++)
-        {
-            if (_savedTools[i].ItemId != null)
+        for (int i = 0; i < _savedTools.Length; i++)
+        {            
+            if (_savedTools[i].Name != null)
             {                
-                Debug.Log("adding " + _savedTools[i].Name);
+                //Debug.Log("adding " + _savedTools[i].Name);
                 int savedItemId = _savedTools[i].ItemId;
                 _inventory.AddItem(savedItemId);
             }
@@ -104,10 +103,18 @@ public class SceneHandler : MonoBehaviour
 
     public void SaveInventory()
     {
-        _savedTools = _inventory.PlayerTools;
-        /*for (int i = 0; i < _savedTools.Length; i++)
-        {            
-        }*/
+
+        _savedTools = new Tool[_inventory.PlayerTools.Length];
+
+        for (int i = 0; i < _inventory.PlayerTools.Length; i++)
+        {
+            _savedTools[i] = _inventory.PlayerTools[i];
+        }
+
+        for (int i = 0; i < _savedTools.Length; i++)
+        {    
+            Debug.Log(_savedTools[i].Name);
+        }
         
     }
 }
