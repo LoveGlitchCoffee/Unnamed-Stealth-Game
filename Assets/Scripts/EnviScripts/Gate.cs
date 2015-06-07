@@ -4,9 +4,14 @@ using System.Collections;
 public class Gate : MonoBehaviour, IInteractive
 {
 
-    private Animator _anim;
+    private AudioSource _audio;
     [HideInInspector]
     public bool CanOpen;
+
+    void Awake()
+    {
+        _audio = GetComponent<AudioSource>();
+    }
 
 
     public void PerformPurpose(InventoryLogic inventory)
@@ -21,6 +26,8 @@ public class Gate : MonoBehaviour, IInteractive
      */
     public IEnumerator Open()
     {
+        _audio.Play();
+
         GetComponent<BoxCollider2D>().enabled = false;
 
         while (transform.localScale.y > 0)

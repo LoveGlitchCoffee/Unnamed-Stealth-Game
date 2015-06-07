@@ -65,6 +65,7 @@
      <Compile Include="Assets\Scripts\CharScripts\PlayerScripts\PlayerNPCRelation.cs" />
      <Compile Include="Assets\Scripts\CharScripts\PlayerScripts\PlayerSoundHandler.cs" />
      <Compile Include="Assets\Scripts\EnviScripts\Door.cs" />
+     <Compile Include="Assets\Scripts\EnviScripts\EnviAudioController.cs" />
      <Compile Include="Assets\Scripts\EnviScripts\FlickerLight.cs" />
      <Compile Include="Assets\Scripts\EnviScripts\Gate.cs" />
      <Compile Include="Assets\Scripts\EnviScripts\IInteractive.cs" />
