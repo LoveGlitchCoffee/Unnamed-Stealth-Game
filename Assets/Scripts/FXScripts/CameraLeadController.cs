@@ -23,11 +23,13 @@ public class CameraLeadController : MonoBehaviour
      * Lerps all camera after player
      * Done by lerping a 'lead' to a certain position and just have camera follow on it
      */
-    void Update () {
+    void Update ()
+    {
 
         if (!_showing && !ContactWall)
-	        transform.position = Vector3.Lerp(transform.position, new Vector3(_playerPosition.position.x + DistanceFromPlayerX,_playerPosition.position.y + DistanceFromPlayerY),Time.deltaTime*6f);
-	}
+            transform.position = new Vector3(_playerPosition.position.x + DistanceFromPlayerX,
+                _playerPosition.position.y + DistanceFromPlayerY);
+    }
 
     /*
      * Set direction to which player is facing

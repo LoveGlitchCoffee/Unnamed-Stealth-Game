@@ -35,6 +35,9 @@ public class SceneHandler : MonoBehaviour
     {        
         int currentLevel = Application.loadedLevel;
         Application.LoadLevel(currentLevel);
+        _restart.SetActive(false);
+        StartCoroutine(_writer.WriteNarration(""));
+        
 
         if (currentLevel == 1)
         {            
@@ -108,7 +111,8 @@ public class SceneHandler : MonoBehaviour
         
         int currentLevel = Application.loadedLevel;        
         _sceneFader.FadeOut();
-        
+
+        StartCoroutine(_writer.WriteNarration(""));
 
         StartCoroutine(_sceneFader.FadeToNextLevel(3f, currentLevel, _player, _cameraLead));        
     }

@@ -28,7 +28,7 @@ public class CameraController : MonoBehaviour
      */
 	void Update ()
 	{
-	    _camerasPosition.position = Vector3.Lerp(_camerasPosition.position, _cameraLead.transform.position, Time.deltaTime*6f);
+	    _camerasPosition.position = Vector3.Lerp(_camerasPosition.position, _cameraLead.transform.position, Time.deltaTime*4f);
 	}
 
     /*
