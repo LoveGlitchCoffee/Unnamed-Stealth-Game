@@ -85,6 +85,7 @@
      <Compile Include="Assets\Scripts\SceneScripts\DrawBoundaries.cs" />
      <Compile Include="Assets\Scripts\SceneScripts\MenuDescription.cs" />
      <Compile Include="Assets\Scripts\SceneScripts\MenuSceneHandler.cs" />
+     <Compile Include="Assets\Scripts\SceneScripts\QuitGame.cs" />
      <Compile Include="Assets\Scripts\SceneScripts\SceneHandler.cs" />
      <Compile Include="Assets\Scripts\ToolsScripts\DragHandler.cs" />
      <Compile Include="Assets\Scripts\ToolsScripts\DragSoundHandler.cs" />
