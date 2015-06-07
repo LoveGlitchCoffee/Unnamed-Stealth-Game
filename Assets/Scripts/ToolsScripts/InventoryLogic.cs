@@ -16,9 +16,7 @@ public class InventoryLogic : MonoBehaviour
         for (int i = 0; i < PlayerTools.Length; i++)
         {
             PlayerTools[i] = new Tool();
-        }
-        AddItem(0);
-        AddItem(0);        
+        }       
     }
     
     public ToolDB ReturnToolDb()
@@ -68,28 +66,12 @@ public class InventoryLogic : MonoBehaviour
         }
 
         return placed;
-
-        /*for (int i = 0; i < PlayerTools.Length; i++)
-        {
-            if (PlayerTools[i].Name == null)
-            {                
-                PlayerTools[i] = item;
-                transform.GetChild(i).GetComponent<ItemUI>().UpdateSlot();
-                break;
-            }            
-        }*/
     }
 
     public void RemoveItem(int indexOfDestoryed)
     {
         PlayerTools[indexOfDestoryed] = new Tool();        
 
-        /*for (int i = 0; i < PlayerTools.Length; i++)
-        {            
-                transform.GetChild(i).GetComponent<ItemUI>().UpdateSlot();
-        }*/
-
-        //Debug.Log("remove at "+transform.GetChild(indexOfDestoryed).GetComponent<ItemUI>());
         transform.GetChild(indexOfDestoryed).GetComponent<ItemUI>().UpdateSlot();
     }
 

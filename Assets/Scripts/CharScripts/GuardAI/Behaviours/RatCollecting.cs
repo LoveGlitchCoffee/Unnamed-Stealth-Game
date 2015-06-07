@@ -29,8 +29,7 @@ public class RatCollecting : MonoBehaviour {
         _ratGuard = FindGuardWithoutRat();        
         
         Node nodeItemIn = _detection.CalculateNodeLastSeen(detectRat);
-
-        //Debug.Log("node is " + nodeItemIn.GetX() + ", " + nodeItemIn.GetY());
+        
         _ratGuard.GetComponent<Spritehandler>().StopAnimation("idle");
         yield return StartCoroutine(_ratGuard.GetComponent<Pathfinding>().GoToItem(nodeItemIn));
         

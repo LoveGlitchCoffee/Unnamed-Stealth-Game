@@ -13,9 +13,11 @@ public class DrawBoundaries : MonoBehaviour
     private int _currentX;
     public int CurrentY;
 
+    /*
+     * Draws ground
+     */
 	void Start ()
 	{
-
 	    _currentX = StartX;
 
 	    for (int i = 0; i < Height; i++)

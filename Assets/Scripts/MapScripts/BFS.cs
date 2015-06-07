@@ -17,9 +17,7 @@ public struct BFS
 
         Node current;
         Node parent;
-
         
-
         List<Node> path = new List<Node> {start};
 
         _frontier.Clear();
@@ -46,13 +44,6 @@ public struct BFS
                         parent = _possiblePath[current];
                         current = parent;
                     } 
-
-                    /*for (int i = 0; i < _possiblePath.Count; i++)
-                    {
-                        Node successor = _possiblePath.Keys.ElementAt(i);
-                        Node parnt = _possiblePath.Values.ElementAt(i);
-                        Debug.Log("successor is (" + successor.GetX() + ", " + successor.GetY() +  "), parent is (" + parnt.GetX() + ", " + parnt.GetY() + ")");
-                    }*/
 
                     path.RemoveAt(0);
                     path.Reverse_NoHeapAlloc();

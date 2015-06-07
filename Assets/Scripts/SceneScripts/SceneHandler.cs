@@ -27,6 +27,9 @@ public class SceneHandler : MonoBehaviour
 
     /*
      * Resets scene on button click
+     * For objects that are not destroyed on scene load (mainly player),
+     * Move them back to original position, set original layers and other setup like animation, also return inventory to previous state
+     * Destroys retained objects if first level, as it already loads
      */
     public void ResetScene()
     {        
@@ -58,9 +61,11 @@ public class SceneHandler : MonoBehaviour
         _sceneFader.FadeIn();
     }
 
+    /*
+     * Resets inventory to state that was saved
+     */
     private void ReloadInventory()
     {
-
         for (int i = 0; i < 4; i++)
         {
             _inventory.RemoveItem(i);
@@ -77,7 +82,9 @@ public class SceneHandler : MonoBehaviour
         }
     }
 
-
+    /*
+     * Create lose effect and activates canvas group
+     */
     public IEnumerator Restart()
     {                
         yield return StartCoroutine(_writer.WriteNarration("No wonder you were caught in the first place"));
@@ -87,6 +94,11 @@ public class SceneHandler : MonoBehaviour
         _restart.SetActive(true);
     }
 
+
+    /*
+     * Retains object that are not destroyed when scene load
+     * Actual loading occurs in Fading script, else would not work as this is an event function
+     */
     public void ToNextLevel()
     {
         for (int i = 0; i < RetainedObjects.Count; i++)
@@ -101,20 +113,16 @@ public class SceneHandler : MonoBehaviour
         StartCoroutine(_sceneFader.FadeToNextLevel(3f, currentLevel, _player, _cameraLead));        
     }
 
+    /*
+     * Saves state of inventory into an array
+     */
     public void SaveInventory()
     {
-
         _savedTools = new Tool[_inventory.PlayerTools.Length];
 
         for (int i = 0; i < _inventory.PlayerTools.Length; i++)
         {
             _savedTools[i] = _inventory.PlayerTools[i];
         }
-
-        for (int i = 0; i < _savedTools.Length; i++)
-        {    
-            Debug.Log(_savedTools[i].Name);
-        }
-        
     }
 }

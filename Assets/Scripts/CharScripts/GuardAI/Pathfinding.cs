@@ -69,12 +69,6 @@ public class Pathfinding : MonoBehaviour
      */
     IEnumerator NavigateToGoal(bool travelling)
     {
-        /*for (int i = 0; i < _routeToGoal.Length; i++)
-        {
-            Node node = _routeToGoal[i];
-            Debug.Log(node.GetX() + ", " + node.GetY());
-        }*/
-
         do
         {
             for (int i = 0; i < _routeToGoal.Length; i++)
@@ -84,7 +78,6 @@ public class Pathfinding : MonoBehaviour
 
             travelling = false;            
         } while (travelling);
-
     }
    
 
@@ -94,9 +87,7 @@ public class Pathfinding : MonoBehaviour
     public IEnumerator MoveToNextPosition(Node nextPosition)
     {        
         while (!(transform.position.x == nextPosition.GetX()))
-        {
-           // Debug.Log("next position's x is: " + nextPosition.GetX());
-            
+        {                       
             if (nextPosition.GetY() > transform.position.y)
             {                                 
                 yield return StartCoroutine(JumpToPlatform(transform.position, nextPosition.gameObject.transform.position));                         
@@ -147,9 +138,7 @@ public class Pathfinding : MonoBehaviour
             transform.position = Vector2.MoveTowards(transform.position, platformPosition, Time.deltaTime * 3.5f);
                                         
             yield return 0;
-        }
-
-        //Debug.Log("finish jump");
+        }        
     }
 
     /*
@@ -175,8 +164,7 @@ public class Pathfinding : MonoBehaviour
      * 
      */
     public IEnumerator StartPursuit()
-    {
-        //Debug.Log("starting new pursuit");
+    {        
         StopAllCoroutines();
         _routeToGoal = CalculateRouteToDestination();       
         _travelling = true;
@@ -186,6 +174,7 @@ public class Pathfinding : MonoBehaviour
                 
         yield return StartCoroutine(PostPursuit());
     }
+
 
     /*
      * For certain conditions after finishing a pursuit performs the according action
@@ -260,13 +249,10 @@ public class Pathfinding : MonoBehaviour
     {        
         Node[] newRoute = new Node[routeToReverse.Length];
         int counter = 0;
-
-        //Debug.Log("new route length will be " + newRoute.Length);
-
+        
         for (int i = routeToReverse.Length - 1; i > -1; i--)
         {
-            newRoute[counter] = routeToReverse[i];
-          //  Debug.Log("new route " + newRoute[counter].GetX() +", " + newRoute[counter].GetY());
+            newRoute[counter] = routeToReverse[i];        
             counter++;
         }
         

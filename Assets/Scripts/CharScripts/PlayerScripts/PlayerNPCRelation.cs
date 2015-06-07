@@ -23,7 +23,8 @@ public class PlayerNPCRelation : MonoBehaviour
 	}
 
     /*
-     * If touch guard, player dies
+     * If touch guard and guard is alarmed, player dies
+     * Awaiting disng decision on whether this should be on guard
      */
     void OnTriggerEnter2D(Collider2D col)
     {

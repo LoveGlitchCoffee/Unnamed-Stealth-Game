@@ -18,6 +18,9 @@ public class ShineEffect : MonoBehaviour
 	    StartCoroutine(ShineLight());
 	}
 
+    /*
+     * Creates shine effect by lerping light intensity back and forth
+     */
     private IEnumerator ShineLight()
     {
         bool shine = true;
@@ -45,10 +48,6 @@ public class ShineEffect : MonoBehaviour
             }
 
             yield return null;
-        }
-           
-            
-            
-        
+        }                                         
     }
 }

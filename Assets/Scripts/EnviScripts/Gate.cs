@@ -15,9 +15,12 @@ public class Gate : MonoBehaviour, IInteractive
             StartCoroutine(Open());
     }
 
+    /*
+     * Gate's collider disabled, allow player to progress to certain area of the map
+     * Scale adjustments are 'animations'
+     */
     public IEnumerator Open()
     {
-
         GetComponent<BoxCollider2D>().enabled = false;
 
         while (transform.localScale.y > 0)

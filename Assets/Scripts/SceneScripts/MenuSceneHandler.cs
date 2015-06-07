@@ -11,6 +11,11 @@ public class MenuSceneHandler : MonoBehaviour
         _fader = GetComponent<Fading>();
     }
 
+    /*
+     * Specific function for menu
+     * Fades into game
+     * Cannot use that of regular scene handler because conflicts in terms of facilities used, e.g. inventory doesn't exist here
+     */
     public void ToGame()
     {
         _fader.FadeOut();

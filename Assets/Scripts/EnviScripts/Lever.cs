@@ -8,7 +8,11 @@ public class Lever : MonoBehaviour, IInteractive
     public string GateName;
     private Animator _anim;
 
-    //extendible to anything, not just opening gates, keep <IInteractive>
+    /*
+     * Currently open gates
+     * Lever is connected to a certain gate
+     * extendible to anything, not just opening gates, keep <IInteractive>
+     */
     void Awake()
     {
         GameObject[] gates = GameObject.FindGameObjectsWithTag("Gates");
@@ -26,7 +30,9 @@ public class Lever : MonoBehaviour, IInteractive
     }
 
 
-    /**haven't thought of way around this
+    /*
+     * Purpose is to activate gate opening
+     * Currenly only applicable to gate
      */
     public void PerformPurpose(InventoryLogic inventory)
     {

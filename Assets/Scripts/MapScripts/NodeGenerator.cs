@@ -76,9 +76,6 @@ public class NodeGenerator : MonoBehaviour
 
             if (node.GetY() < NodeDistance)
             {
-                //Debug.Log("node is " + node.GetX() + ", " + node.GetY());
-                //Debug.Log("node first " + (node.GetX() - NodeDistance));
-                //Debug.Log("node second " + (node.GetX() + NodeDistance));
                 node.AddNeighbour(-NodeDistance, ref _graph);
                 node.AddNeighbour(NodeDistance, ref _graph);               
             }

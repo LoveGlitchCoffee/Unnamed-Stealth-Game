@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class DetectionCommon : MonoBehaviour {
 
@@ -39,7 +38,11 @@ public class DetectionCommon : MonoBehaviour {
         _graph = _gameMap.GetComponent<NodeGenerator>().ReturnGeneratedGraph();        
     }
 
-
+    /*
+     * Ray casts towards the item that is passed
+     * returns information about the 'hit', if there is one
+     * direction is determined by guard's orientation
+     */
     public RaycastHit2D CheckIfHit(GameObject itemToCheckFor)
     {
         float direction = 0.5f;
@@ -56,12 +59,13 @@ public class DetectionCommon : MonoBehaviour {
 
     
     /**
-     * Calculates the direction to cast ray, should be direction towards player
+     * Calculates the direction to cast ray, should be direction towards given object
      */
     private Vector2 CalculateDirection(GameObject itemGameObject)
     {
         return new Vector2(itemGameObject.transform.position.x - gameObject.transform.position.x, itemGameObject.transform.position.y - gameObject.transform.position.y);
     }
+
 
     public float GetEyeDistance()
     {
@@ -69,10 +73,10 @@ public class DetectionCommon : MonoBehaviour {
     }
 
     
-
     /*
      * Calculates the node player last seen (checks which collider overlaps point of last seen
      * if last seen is outside collider, calculate closest point
+     * NOTE: depending on guard's orientation, node is checked in ascending or descending order of index
      */
     public Node CalculateNodeLastSeen(RaycastHit2D itemLastSeen)
     {
@@ -83,40 +87,37 @@ public class DetectionCommon : MonoBehaviour {
 
         if (alternateNode != null)
             return alternateNode;
-
-        //float DetermineLevelLimit(pointLastSeen);
+        
 
         if (_patrolBehav.GoingLeft)
         {
             for (int i = 0; i < _gameMap.transform.childCount; i++)
             {
                 CircleCollider2D nodeCollider = _gameMap.transform.GetChild(i).GetComponent<CircleCollider2D>();
-
-                alternateNode = FindAlternateNode(nodeCollider, pointLastSeen, alternateNode, _patrolBehav.GoingLeft);                   
-                    
+                alternateNode = FindAlternateNode(nodeCollider, pointLastSeen, alternateNode, _patrolBehav.GoingLeft);
             }
         }
+
+
         else if (!_patrolBehav.GoingLeft)
         {
             for (int i = _gameMap.transform.childCount - 1; i > -1; i--)
             {
                 CircleCollider2D nodeCollider = _gameMap.transform.GetChild(i).GetComponent<CircleCollider2D>();
-
                 alternateNode = FindAlternateNode(nodeCollider, pointLastSeen, alternateNode, _patrolBehav.GoingLeft);
             }
         }
-
-        
 
         //Debug.Log(alternateNode.GetX() +", "+ alternateNode.GetY());
         return alternateNode;
     }
 
-    private void DetermineLevelLimit(Vector2 pointLastSeen)
-    {
-                
-    }
-
+    /*
+     * Used if point last seen does not overlap with any node on map
+     * Depending on whether guard is heading left or right, check x coordinates of each node accordingly
+     * So long as y position of node is less than that of point last seen (add threshold to prevent lower than lowest y of 1.5),
+     * coordinates are valid
+     */
     private static Node FindAlternateNode(CircleCollider2D nodeCollider, Vector2 pointLastSeen,
         Node alternateNode, bool goingLeft)
     {
@@ -143,10 +144,10 @@ public class DetectionCommon : MonoBehaviour {
                 }
             }
         }
-
-        //Debug.Log(alternateNode.GetX() + ", " + alternateNode.GetY());
+        
         return alternateNode;
     }
+
 
     private Node CheckIfOverlapPoint(Vector2 pointLastSeen, Node alternate)
     {

@@ -40,6 +40,9 @@ public class Murophobia : IBehaviour
 
     }
 
+    /*
+     * Simulate the scared guard jumping
+     */
     IEnumerator ScaredJumpPhysics()
     {
         float timer = 0f;
@@ -67,6 +70,6 @@ public class Murophobia : IBehaviour
 
     public override string ReturnBehaviourDescription()
     {
-        return "swarmed by rats when he was a child, scarred him for life";
+        return "Swarmed by rats when he was a child, scarred him for life";
     }
 }

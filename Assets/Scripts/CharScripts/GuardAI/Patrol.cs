@@ -110,8 +110,7 @@ public class Patrol : MonoBehaviour {
                 
                 if (node.GetX() == Coordinates[j] && node.GetY() == Coordinates[j + 1])
                 {
-                    route[counter] = node;
-                    //Debug.Log("node is " + node.GetX() + ", " + node.GetY());
+                    route[counter] = node;                    
                     counter++;
                 }
             }       
@@ -133,9 +132,7 @@ public class Patrol : MonoBehaviour {
                 GameObject.FindGameObjectWithTag("Map")
                     .GetComponent<NodeGenerator>()
                     .ReturnGeneratedGraph()
-                    .nodeWith(col.GetComponent<Node>());
-
-            //Debug.Log(_nodeGuardAt.GetX() + ", " + _nodeGuardAt.GetY());
+                    .nodeWith(col.GetComponent<Node>());            
         }
     }
 

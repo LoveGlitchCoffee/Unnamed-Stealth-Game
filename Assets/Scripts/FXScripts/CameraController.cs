@@ -38,7 +38,6 @@ public class CameraController : MonoBehaviour
     {
         float zoomedSize = 2.5f;
 
-
         while (camera.orthographicSize > zoomedSize)
         {
             camera.orthographicSize -= 0.1f;
