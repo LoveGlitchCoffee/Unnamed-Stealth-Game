@@ -73,6 +73,8 @@
      <Compile Include="Assets\Scripts\FXScripts\CameraController.cs" />
      <Compile Include="Assets\Scripts\FXScripts\CameraLeadController.cs" />
      <Compile Include="Assets\Scripts\FXScripts\Fading.cs" />
+     <Compile Include="Assets\Scripts\FXScripts\ShowGateOpened.cs" />
+     <Compile Include="Assets\Scripts\FXScripts\ShowLever.cs" />
      <Compile Include="Assets\Scripts\MapScripts\BFS.cs" />
      <Compile Include="Assets\Scripts\MapScripts\GraphOfMap.cs" />
      <Compile Include="Assets\Scripts\MapScripts\ListExtensions.cs" />

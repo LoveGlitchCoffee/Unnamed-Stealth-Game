@@ -23,37 +23,12 @@ public class TutorialVoice : MonoBehaviour
 
     private IEnumerator ShowGuard()
     {        
-        yield return new WaitForSeconds(0f); //initiall 3 sconds, for test purpose
+        yield return new WaitForSeconds(3f);
 
         _leadMover.IsShowing(true);
         StartCoroutine(_leadMover.MoveToPosition(_guard));
         StartCoroutine(_writer.WriteNarration("Click on the guard, I will tell you his sin"));
     }
-
-
-    /*private IEnumerator WriteTutorial()
-    {
-        int narrationCount = 0;
-        
-        TutorialCursorSwitch();
-
-        while (_instructing)
-        {
-            if (narrationCount == _narration.Length)
-            {
-                _instructing = false;
-            }
-            else
-            {                     
-                yield return StartCoroutine(_writer.WriteNarration(_narration[narrationCount]));
-                narrationCount++;            
-            }                        
-        }
-        
-        TutorialCursorSwitch();
-    }*/
-
-    
 
     public void TutorialCursorSwitch()
     {

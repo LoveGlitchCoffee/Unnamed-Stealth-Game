@@ -6,7 +6,9 @@ public class Lever : MonoBehaviour, IInteractive
 
     private GameObject _gate;
     public string GateName;
-    private Animator _anim;
+    private Animator _anim;    
+    private ShowGateOpened _showGate;
+    
 
     /*
      * Currently open gates
@@ -27,6 +29,7 @@ public class Lever : MonoBehaviour, IInteractive
         }
 
         _anim = GetComponent<Animator>();
+        _showGate = GetComponent<ShowGateOpened>();
     }
 
 
@@ -37,9 +40,9 @@ public class Lever : MonoBehaviour, IInteractive
     public void PerformPurpose(InventoryLogic inventory)
     {
         _anim.SetBool("Activated", true);
+        StartCoroutine(_showGate.MoveCamera(_gate));
         _gate.GetComponent<Gate>().CanOpen = true;
         _gate.GetComponent<IInteractive>().PerformPurpose(inventory);
-
     }
 
 }

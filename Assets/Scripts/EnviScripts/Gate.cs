@@ -25,8 +25,8 @@ public class Gate : MonoBehaviour, IInteractive
 
         while (transform.localScale.y > 0)
         {
-            transform.localScale -= new Vector3(0, 0.2f);
-            transform.position += new Vector3(0, 0.05f);
+            transform.localScale -= new Vector3(0, 0.01f);
+            transform.position += new Vector3(0, 0.003f);
             yield return null;
         }
     }

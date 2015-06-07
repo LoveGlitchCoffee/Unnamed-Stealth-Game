@@ -16,7 +16,8 @@ public class InventoryLogic : MonoBehaviour
         for (int i = 0; i < PlayerTools.Length; i++)
         {
             PlayerTools[i] = new Tool();
-        }       
+        }
+        AddItem(0);
     }
     
     public ToolDB ReturnToolDb()
